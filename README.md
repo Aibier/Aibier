@@ -12,3 +12,5 @@ Here are interesting factors about me:
 - ⚡ Fun fact: I have over 10 years of experience building payment systems and thrive on crafting solutions using Golang.
 - Impactful Projects: Core Bankling, Cross Border Payment Platform, Taymas-Bank (gonna open source at the end of 2024, stay tunned)
 - Looking for someone have solid knowlednge in building payemnt platform (microservices)
+
+<img width="1247" alt="payment_architecture" src="https://github.com/user-attachments/assets/fa07a085-1485-4aa9-b20f-afb8b8e4243d">
