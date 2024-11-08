@@ -9,6 +9,7 @@ Here are interesting factors about me:
 - 💬 Ask me about building scalable payment systems, event-driven architectures, and optimizing services for performance and reliability.
 - 📫 How to reach me (https://www.linkedin.com/in/tony007/)
 - 😄 Tony 😂
+- 💬 Enducation: National University of Singapore, 2015 Master in CS
 - ⚡ Fun fact: I have over 10 years of experience building payment systems and thrive on crafting solutions using Golang.
 - Impactful Projects: Core Bankling, Cross Border Payment Platform, Taymas-Bank (gonna open source at the end of 2024, stay tunned)
 - Looking for someone have solid knowlednge in building payemnt platform (microservices)
