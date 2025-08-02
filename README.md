@@ -29,7 +29,7 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
 **Highlight Projects:**  
 - **Cross‑Border Payment Platform** → Unified FX and payout microservices handling $50M+ monthly volume  
 - **Core Banking System** → Architected high‑availability modules for account management & reconciliation  
-- **Taymas‑Bank** → *(Planned open‑source release by end of 2024 — stay tuned 👀)*  
+- **Taymas‑Bank** → *(Planned open‑source release by end of 2025 — contains all major bank integration samples, stay tuned 👀)*  
 
 ---
 
