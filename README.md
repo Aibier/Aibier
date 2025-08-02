@@ -42,7 +42,7 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
 
 - **Acceptance Service (Payment Webhook Service)**  
   - Architected a **real‑time payment acceptance platform** handling webhook‑driven transaction updates for merchants across multiple regions.  
-  - Enabled **seamless merchant onboarding** with automated validation, reducing manual KYC/AML checks.  
+  - Ensured a **real‑time 100% availability and aknowledgement to providers** 
   - Integrated **compliance and fraud detection workflows** in alignment with **MAS** and **HKMA** regulatory standards.  
   - Designed for **horizontal scalability** and **high availability** using AWS ECS, Kafka, and Redis, ensuring resilience during traffic spikes.  
   - Improved transaction success rates and lowered fraud risk through **event‑driven monitoring and alerting** with Datadog.  
