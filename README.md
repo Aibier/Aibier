@@ -2,17 +2,44 @@
 
 Here are some interesting facts about me:
 
-- 🔭 **Currently**: Software Engineering Manager (Payments & FX Infra) at [Aspire](https://weaspire.com/), a financial services company in Singapore offering all‑in‑one business operation features.  
-- 🌱 **Learning**: Preparing for the **AWS Solutions Architect – Associate** certification.  
+- 🔭 **Currently**: **Software Engineering Manager** (Payments & FX Infra) at [Aspire](https://weaspire.com/), leading high-performance engineering teams building mission-critical financial infrastructure for a Singapore-based fintech company offering all‑in‑one business operation features.  
 - 👯 **Collaboration**: Open to working on **high‑performance, distributed systems** and **payment system optimizations**.  
 - 🤔 **Seeking Help**: Exploring **cutting‑edge cloud infrastructure** and **DevOps practices**, especially in **AWS**.  
 - 💬 **Ask Me About**:  
-  - Building **scalable payment systems**  
-  - Designing **event‑driven architectures**  
+  - **Leading engineering teams** and building **scalable payment systems**  
+  - Designing **event‑driven architectures** and **microservices**  
+  - **Engineering management** and **team scaling** strategies  
   - Optimizing services for **performance and reliability**  
 - 📫 **Reach Me**: [LinkedIn](https://www.linkedin.com/in/tony007/)  
 - 🎓 **Education**: Master’s in Software Engineering, National University of Singapore (2023)  
 - ⚡ **Fun Fact**: I’ve spent **10+ years building payment systems** and thrive on crafting solutions with **Golang**.  
+
+---
+
+## 🛠️ Technical Skills
+
+**Languages & Frameworks:**
+- **Backend**: Go, Java, Python, Node.js
+- **Databases**: PostgreSQL, Redis, MongoDB, DynamoDB
+- **Message Queues**: Apache Kafka, RabbitMQ, AWS SQS
+- **Cloud & DevOps**: AWS (ECS, Lambda, RDS, CloudWatch), Docker, Kubernetes
+- **Monitoring**: Datadog, Prometheus, Grafana
+- **Payment Systems**: PCI DSS compliance, fraud detection, reconciliation
+
+**Architecture Patterns:**
+- Microservices architecture
+- Event-driven systems
+- CQRS and Event Sourcing
+- High-availability distributed systems
+- Real-time payment processing
+
+**Leadership & Management:**
+- Engineering team leadership (5-15 engineers)
+- Technical roadmap planning and execution
+- Cross-functional collaboration and stakeholder management
+- Agile/Scrum methodologies and sprint planning
+- Performance management and career development
+- Technical decision-making and architecture reviews
 
 ---
 
@@ -36,42 +63,75 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
 ## 🏆 Highlight Projects  
 
 - **Payout Service (Payment Integration Microservice)**  
-  - Designed and built to handle **multi‑currency global payouts** with high throughput and reliability.  
-  - Integrated with **JPM, DBS, Wise, HDFC, PayPal, Stripe, RippleNet, and 40+ other providers**.  
-  - Supports **event‑driven flows** via Kafka for near real‑time processing.  
+  - **Led engineering team** to design and build a system handling **multi‑currency global payouts** with high throughput and reliability.  
+  - **Managed integration projects** with **JPM, DBS, Wise, HDFC, PayPal, Stripe, RippleNet, and 40+ other providers**.  
+  - **Architected event‑driven flows** via Kafka for near real‑time processing, ensuring team alignment on technical decisions.  
 
 - **Acceptance Service (Payment Webhook Service)**  
-  - Architected a **real‑time payment acceptance platform** handling webhook‑driven transaction updates for merchants across multiple regions.  
-  - Ensured a **real‑time 100% availability and aknowledgement to providers** 
-  - Integrated **compliance and fraud detection workflows** in alignment with **MAS** and **HKMA** regulatory standards.  
-  - Designed for **horizontal scalability** and **high availability** using AWS ECS, Kafka, and Redis, ensuring resilience during traffic spikes.  
-  - Improved transaction success rates and lowered fraud risk through **event‑driven monitoring and alerting** with Datadog.  
+  - **Led cross-functional team** to architect a **real‑time payment acceptance platform** handling webhook‑driven transaction updates for merchants across multiple regions.  
+  - **Managed SLA commitments** ensuring **real‑time 100% availability and acknowledgement to providers**. 
+  - **Coordinated compliance initiatives** integrating **fraud detection workflows** in alignment with **MAS** and **HKMA** regulatory standards.  
+  - **Directed technical architecture** for **horizontal scalability** and **high availability** using AWS ECS, Kafka, and Redis, ensuring resilience during traffic spikes.  
+  - **Implemented monitoring strategies** improving transaction success rates and lowering fraud risk through **event‑driven monitoring and alerting** with Datadog.  
   
 
 - **Grab and TikTok Payment Processor (Thunes)**   
-  - Served as **Tech Lead** overseeing the integration of **GrabPay** and **TikTok Influencer Pay** into Thunes’ global cross‑border payment platform.   
-  - Supported **2M+ daily transactions**, ensuring low‑latency processing and high availability across APAC markets.  
-  - Engineered custom API bridges and routing logic to handle **regional settlement and compliance requirements**, reducing integration timelines by **50%**.  
-  - Delivered high‑throughput, low‑latency processing for millions of transactions, ensuring compliance with **regional settlement and regulatory requirements**.  
-  - Engineered custom API bridges and routing logic to reduce integration timelines by **50%** while improving reliability across APAC.  
- 
-  - Enabled merchants to process **millions of transactions monthly** with reduced latency and improved reliability.  
-  - Engineered custom API bridges to handle **regional variations in settlement and compliance requirements**, cutting integration time by 50%.  
+  - **Led technical team** as **Tech Lead** overseeing the integration of **GrabPay** and **TikTok Influencer Pay** into Thunes' global cross‑border payment platform.   
+  - **Managed high-volume operations** supporting **2M+ daily transactions**, ensuring low‑latency processing and high availability across APAC markets.  
+  - **Directed engineering efforts** for custom API bridges and routing logic to handle **regional settlement and compliance requirements**, reducing integration timelines by **50%**.  
+  - **Delivered business impact** enabling merchants to process **millions of transactions monthly** with reduced latency and improved reliability.  
 
 - **Cross‑Border Payment Platform**  
-  - Unified FX and payout microservices, handling **$50M+ monthly volume**.  
+  - **Led engineering initiatives** to unify FX and payout microservices, handling **$50M+ monthly volume**.  
 
 - **Core Banking System**  
-  - Architected high‑availability modules for **account management and reconciliation**.  
+  - **Managed architecture design** for high‑availability modules handling **account management and reconciliation**.  
 
-- **Taymas‑Bank** *(Open‑sourcing planned by end of 2024 — stay tuned 👀)*  
+- **Taymas‑Bank** *(Open‑sourcing planned by end of 2025 — stay tuned 👀)*  
 
 ---
 
 ## 💡 Looking For  
 
-I’m looking to connect with professionals who have **solid expertise in building payment platforms (microservices)** and share a passion for **scalable, resilient architectures**.  
+I'm looking to connect with **engineering leaders** and professionals who have **solid expertise in building payment platforms (microservices)** and share a passion for **scalable, resilient architectures**. Open to discussing **engineering management opportunities** and **technical leadership roles** in fintech and high-scale systems.
 
 ---
 
+## 📬 Let's Connect
+
+<div align="center">
+  <a href="https://www.linkedin.com/in/tony007/">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a>
+  <a href="mailto:your-email@example.com">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
+  </a>
+  <a href="https://github.com/Aibier">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+  </a>
+</div>  
+
+---
+
+## 📊 GitHub Stats
+
+<div align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=Aibier&show_icons=true&theme=dark&hide_border=true&count_private=true" alt="GitHub Stats" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Aibier&layout=compact&theme=dark&hide_border=true" alt="Top Languages" />
+</div>
+
+<div align="center">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=Aibier&theme=dark&hide_border=true" alt="GitHub Streak" />
+</div>
+
+---
+
+## 🏗️ Payment Architecture
+
 <img width="1247" alt="payment_architecture" src="https://github.com/user-attachments/assets/fa07a085-1485-4aa9-b20f-afb8b8e4243d">
+
+---
+
+<div align="center">
+  <img src="https://komarev.com/ghpvc/?username=Aibier&color=blue&style=flat-square&label=Profile+Views" alt="Profile Views" />
+</div>
