@@ -11,7 +11,9 @@ Here are some interesting facts about me:
   - **Engineering management** and **team scaling** strategies  
   - Optimizing services for **performance and reliability**  
 - 📫 **Reach Me**: [LinkedIn](https://www.linkedin.com/in/tony007/)  
-- 🎓 **Education**: Master’s in Software Engineering, National University of Singapore (2016)  
+- 🎓 **Education**:
+  - Master’s in Computer Science, National University of Singapore (2015)
+  - Master of Technology in Software Engineering (including big data engineering and scalable system design) , National University of Singapore (2021)
 - ⚡ **Fun Fact**: I’ve spent **10+ years building payment systems** and thrive on crafting solutions with **Golang**.  
 
 ---
