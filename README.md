@@ -84,7 +84,7 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
   - **Delivered business impact** enabling merchants to process **millions of transactions monthly** with reduced latency and improved reliability.  
 
 - **Cross‑Border Payment Platform**  
-  - **Led engineering initiatives** to unify FX and payout microservices, handling **$50M+ monthly volume**.  
+  - **Led engineering initiatives** to unify FX and payout microservices, handling 100,000+ daily transactions **3.0 billion SGD (30-day month)**.  
 
 - **Core Banking System**  
   - **Managed architecture design** for high‑availability modules handling **account management and reconciliation**.  
