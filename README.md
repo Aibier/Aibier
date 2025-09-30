@@ -52,7 +52,7 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
 **Key Integrations:**  
 - **Global Payment Networks**: Alipay, WeChat Pay, PayPal, Stripe, MoneyGram, RippleNet  
 - **FX & Cross‑Border Providers**: Wise, CurrencyCloud, Thunes  
-- **Major Banks**: J.P. Morgan, DBS Bank (SG/HK), Citibank, Standard Chartered, HDFC Bank, SeaBank, 9Pay  
+- **Major Banks**: J.P. Morgan, DBS Bank (SG/HK), Citibank, Standard Chartered, CZBank(China🇨🇳), HDFC Bank, SeaBank, 9Pay  
 - **Others**: Regional clearing systems and direct debit platforms  
 
 **Highlight Projects:**  
