@@ -117,8 +117,8 @@ I'm looking to connect with professionals who have **solid expertise in building
 
 ## 📄 Documents & Resources
 
-- 📋 **[Resume/CV](https://github.com/Aibier/resume.pdf)** - Download my latest resume
-- 📖 **[Technical Portfolio](https://github.com/Aibier/portfolio.pdf)** - Detailed technical projects and achievements
+- 📋 **[Resume/CV](https://github.com/Aibier/Aibier/blob/main/resume.pdf)** - Download my latest resume
+- 📖 **[Technical Portfolio](https://github.com/Aibier/Aibier/blob/main/portfolio.pdf)** - Detailed technical projects and achievements
 - 🏦 **[Bank Integration Guide](https://github.com/Aibier/bank-integrations.pdf)** - Comprehensive guide to payment system integrations
 
 ---
