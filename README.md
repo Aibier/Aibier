@@ -84,7 +84,7 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
   - **Delivered business impact** enabling merchants to process **millions of transactions monthly** with reduced latency and improved reliability.  
 
 - **Cross‑Border Payment Platform**  
-  - **Led engineering initiatives** to unify FX and payout microservices, handling 100,000+ daily transactions **3.0 billion SGD (30-day month)**.  
+  - Unified FX and payout microservices, handling **$50M+ monthly volume**.  
 
 - **Core Banking System**  
   - **Managed architecture design** for high‑availability modules handling **account management and reconciliation**.  
@@ -95,44 +95,8 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
 
 ## 💡 Looking For  
 
-I'm looking to connect with **engineering leaders** and professionals who have **solid expertise in building payment platforms (microservices)** and share a passion for **scalable, resilient architectures**. Open to discussing **engineering management opportunities** and **technical leadership roles** in fintech and high-scale systems.
+I’m looking to connect with professionals who have **solid expertise in building payment platforms (microservices)** and share a passion for **scalable, resilient architectures**.  
 
 ---
 
-## 📬 Let's Connect
-
-<div align="center">
-  <a href="https://www.linkedin.com/in/tony007/">
-    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
-  </a>
-  <a href="mailto:your-email@example.com">
-    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
-  </a>
-  <a href="https://github.com/Aibier">
-    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
-  </a>
-</div>  
-
----
-
-## 📊 GitHub Stats
-
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Aibier&show_icons=true&theme=dark&hide_border=true&count_private=true" alt="GitHub Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Aibier&layout=compact&theme=dark&hide_border=true" alt="Top Languages" />
-</div>
-
-<div align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=Aibier&theme=dark&hide_border=true" alt="GitHub Streak" />
-</div>
-
----
-
-## 🏗️ Payment Architecture
-<img width="1306" height="720" alt="Screenshot 2025-09-22 at 11 11 12 AM" src="https://github.com/user-attachments/assets/4488e2d0-e5cf-455e-a024-f393776ea4f7" />
-
----
-
-<div align="center">
-  <img src="https://komarev.com/ghpvc/?username=Aibier&color=blue&style=flat-square&label=Profile+Views" alt="Profile Views" />
-</div>
+<img width="1247" alt="payment_architecture" src="https://github.com/user-attachments/assets/fa07a085-1485-4aa9-b20f-afb8b8e4243d">
