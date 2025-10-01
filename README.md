@@ -138,8 +138,7 @@ I'm looking to connect with professionals who have **solid expertise in building
 
 ## 🏗️ Payment Architecture
 
-<img width="1247" alt="payment_architecture" src="https://github.com/user-attachments/assets/fa07a085-1485-4aa9-b20f-afb8b8e4243d">
-
+<img width="1306" height="720" alt="Screenshot 2025-09-22 at 11 11 12 AM" src="https://github.com/user-attachments/assets/4488e2d0-e5cf-455e-a024-f393776ea4f7" />
 ---
 
 <div align="center">
