@@ -95,8 +95,53 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
 
 ## 💡 Looking For  
 
-I’m looking to connect with professionals who have **solid expertise in building payment platforms (microservices)** and share a passion for **scalable, resilient architectures**.  
+I'm looking to connect with professionals who have **solid expertise in building payment platforms (microservices)** and share a passion for **scalable, resilient architectures**.  
 
 ---
 
+## 📬 Let's Connect
+
+<div align="center">
+  <a href="https://www.linkedin.com/in/tony007/">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a>
+  <a href="mailto:your-email@example.com">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
+  </a>
+  <a href="https://github.com/Aibier">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+  </a>
+</div>  
+
+---
+
+## 📄 Documents & Resources
+
+- 📋 **[Resume/CV](https://github.com/Aibier/resume.pdf)** - Download my latest resume
+- 📖 **[Technical Portfolio](https://github.com/Aibier/portfolio.pdf)** - Detailed technical projects and achievements
+- 🏦 **[Bank Integration Guide](https://github.com/Aibier/bank-integrations.pdf)** - Comprehensive guide to payment system integrations
+
+---
+
+## 📊 GitHub Stats
+
+<div align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=Aibier&show_icons=true&theme=dark&hide_border=true&count_private=true" alt="GitHub Stats" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Aibier&layout=compact&theme=dark&hide_border=true" alt="Top Languages" />
+</div>
+
+<div align="center">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=Aibier&theme=dark&hide_border=true" alt="GitHub Streak" />
+</div>
+
+---
+
+## 🏗️ Payment Architecture
+
 <img width="1247" alt="payment_architecture" src="https://github.com/user-attachments/assets/fa07a085-1485-4aa9-b20f-afb8b8e4243d">
+
+---
+
+<div align="center">
+  <img src="https://komarev.com/ghpvc/?username=Aibier&color=blue&style=flat-square&label=Profile+Views" alt="Profile Views" />
+</div>
