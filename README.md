@@ -12,6 +12,7 @@ Here are some interesting facts about me:
   - Optimizing services for **performance and reliability**  
 - 📫 **Reach Me**: [LinkedIn](https://www.linkedin.com/in/tony007/)  
 - 🎓 **Education**:
+  - Bachelor's in Management Science and Engineering of Central University of Finance & Economics (2011), Beijing China
   - Master’s in Computer Science, National University of Singapore (2015)
   - Master of Technology in Software Engineering (including big data engineering and scalable system design) , National University of Singapore (2021)
 - ⚡ **Fun Fact**: I’ve spent **10+ years building payment systems** and thrive on crafting solutions with **Golang**.  
@@ -21,10 +22,10 @@ Here are some interesting facts about me:
 ## 🛠️ Technical Skills
 
 **Languages & Frameworks:**
-- **Backend**: Go, Java, Python, Node.js
-- **Databases**: PostgreSQL, Redis, MongoDB, DynamoDB
+- **Backend**: Go, Java, Python, Perl, Node.js, Typescript 
+- **Databases**: PostgreSQL, Redis, MongoDB, DynamoDB, CockroachDB
 - **Message Queues**: Apache Kafka, RabbitMQ, AWS SQS
-- **Cloud & DevOps**: AWS (ECS, Lambda, RDS, CloudWatch), Docker, Kubernetes
+- **Cloud & DevOps**: AWS Cound(ECS, Lambda, RDS, CloudWatch), Docker, Kubernetes
 - **Monitoring**: Datadog, Prometheus, Grafana
 - **Payment Systems**: PCI DSS compliance, fraud detection, reconciliation
 
