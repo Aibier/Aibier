@@ -12,6 +12,7 @@ Here are some interesting facts about me:
   - Optimizing services for **performance and reliability**  
 - 📫 **Reach Me**: [LinkedIn](https://www.linkedin.com/in/tony007/)  
 - 🎓 **Education**:
+  -  Management Essentials by HBS Online (2025)
   - Bachelor's in Management Science and Engineering of Central University of Finance & Economics (2011), Beijing China
   - Master’s in Computer Science, National University of Singapore (2015)
   - Master of Technology in Software Engineering (including big data engineering and scalable system design) , National University of Singapore (2021)
