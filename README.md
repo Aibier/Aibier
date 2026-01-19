@@ -2,7 +2,7 @@
 
 Here are some interesting facts about me:
 
-- 🔭 **Currently**: **Software Engineering Manager** (Payments & FX Infra) at [Aspire](https://weaspire.com/), leading high-performance engineering teams building mission-critical financial infrastructure for a Singapore-based fintech company offering all‑in‑one business operation features.  
+- 🔭 **Currently**: **Senior Software Engineering Manager** at [YouTrip](https://www.you.co/sg/), leading high-performance engineering teams building mission-critical financial infrastructure for a Singapore-based fintech company offering the best rates for travellers.  
 - 👯 **Collaboration**: Open to working on **high‑performance, distributed systems** and **payment system optimizations**.  
 - 🤔 **Seeking Help**: Exploring **cutting‑edge cloud infrastructure** and **DevOps practices**, especially in **AWS**.  
 - 💬 **Ask Me About**:  
