@@ -2,7 +2,9 @@
 
 Here are some interesting facts about me:
 
-- 🔭 **Currently**: **Senior Software Engineering Manager** at [YouTrip](https://www.you.co/sg/), leading high-performance engineering teams building mission-critical financial infrastructure for a Singapore-based fintech company offering the best rates for travellers.  
+- 🔭 **Currently: Senior Software Engineering Manager at YouTrip**
+, leading high-performance engineering teams (20+ engineers) to build and scale mission-critical financial infrastructure. Driving both core consumer platform growth and the development of YouBiz, the B2B/business accounts division, delivering seamless multi-currency solutions and best-in-class rates for travellers and businesses alike.
+
 - 👯 **Collaboration**: Open to working on **high‑performance, distributed systems** and **payment system optimizations**.  
 - 🤔 **Seeking Help**: Exploring **cutting‑edge cloud infrastructure** and **DevOps practices**, especially in **AWS**.  
 - 💬 **Ask Me About**:  
