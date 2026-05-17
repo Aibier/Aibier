@@ -2,8 +2,7 @@
 
 Here are some interesting facts about me:
 
-- 🔭 **Currently: Senior Software Engineering Manager at YouTrip**
-, leading high-performance engineering teams (20+ engineers) to build and scale mission-critical financial infrastructure. Driving both core consumer platform growth and the development of YouBiz, the B2B/business accounts division, delivering seamless multi-currency solutions and best-in-class rates for travellers and businesses alike.
+- 🔭 **Currently: Software Engineering Manager, Payments & FX Infra at [Aspire](https://aspireapp.com/)**, leading a team of 10+ engineers building and scaling payment infrastructure, stablecoin integrations, and cross-border money-movement systems across APAC and globally.
 
 - 👯 **Collaboration**: Open to working on **high‑performance, distributed systems** and **payment system optimizations**.  
 - 🤔 **Seeking Help**: Exploring **cutting‑edge cloud infrastructure** and **DevOps practices**, especially in **AWS**.  
@@ -28,7 +27,7 @@ Here are some interesting facts about me:
 - **Backend**: Go, Java, Python, Perl, Node.js, Typescript 
 - **Databases**: PostgreSQL, Redis, MongoDB, DynamoDB, CockroachDB
 - **Message Queues**: Apache Kafka, RabbitMQ, AWS SQS
-- **Cloud & DevOps**: AWS Cound(ECS, Lambda, RDS, CloudWatch), Docker, Kubernetes
+- **Cloud & DevOps**: AWS Cloud (ECS, Lambda, RDS, CloudWatch), Docker, Kubernetes
 - **Monitoring**: Datadog, Prometheus, Grafana
 - **Payment Systems**: PCI DSS compliance, fraud detection, reconciliation
 
@@ -109,7 +108,7 @@ I'm looking to connect with professionals who have **solid expertise in building
   <a href="https://www.linkedin.com/in/tony007/">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
-  <a href="mailto:your-email@example.com">
+  <a href="mailto:tony.aizize@you.co">
     <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
   </a>
   <a href="https://github.com/Aibier">

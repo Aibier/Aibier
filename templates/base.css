@@ -1,0 +1,119 @@
+/* ── Reset ─────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Design tokens ──────────────────────────────────────────────────────────── */
+:root {
+  --text:    #1a1a1a;
+  --muted:   #555555;
+  --accent:  #1a56a0;
+  --border:  #d8d8d8;
+  --subtle:  #f6f7f8;
+  --font:    -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif;
+  --mono:    'SF Mono', 'Cascadia Code', Consolas, 'Liberation Mono', monospace;
+  --size:    10.5pt;
+  --lh:      1.55;
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────────── */
+body {
+  font-family: var(--font);
+  font-size:   var(--size);
+  color:       var(--text);
+  line-height: var(--lh);
+  background:  #fff;
+  /* Ensure backgrounds + colors render in print/PDF */
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page { max-width: 100%; }
+
+/* ── Typography ─────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+h1 { font-size: 1.9em;  margin-bottom: 0.25em; }
+h2 { font-size: 1.1em;  margin-top: 1.2em; margin-bottom: 0.4em; }
+h3 { font-size: 1.0em;  margin-top: 0.7em; margin-bottom: 0.1em; }
+h4 { font-size: 0.92em; margin-top: 0.5em; margin-bottom: 0.1em; }
+
+p         { margin-bottom: 0.35em; }
+a         { color: var(--accent); text-decoration: none; }
+strong    { font-weight: 700; }
+em        { font-style: italic; }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0.65em 0;
+}
+
+/* ── Lists ───────────────────────────────────────────────────────────────────── */
+ul, ol   { padding-left: 1.4em; margin-bottom: 0.35em; }
+li       { margin-bottom: 0.18em; line-height: 1.45; }
+
+/* ── Tables ──────────────────────────────────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
+  margin-bottom: 0.6em;
+}
+
+th {
+  background: var(--subtle);
+  font-weight: 700;
+  text-align: left;
+  padding: 0.35em 0.65em;
+  border-bottom: 2px solid var(--border);
+}
+
+td {
+  padding: 0.28em 0.65em;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+/* ── Code ────────────────────────────────────────────────────────────────────── */
+code {
+  font-family: var(--mono);
+  font-size: 0.87em;
+  background: var(--subtle);
+  padding: 0.08em 0.3em;
+  border-radius: 3px;
+}
+
+pre {
+  background: var(--subtle);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.75em 1em;
+  margin-bottom: 0.6em;
+  line-height: 1.45;
+  overflow: hidden;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.83em;
+}
+
+/* ── Blockquote ──────────────────────────────────────────────────────────────── */
+blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 0.8em;
+  color: var(--muted);
+  font-style: italic;
+  margin: 0.5em 0;
+}
+
+/* ── Print hints ─────────────────────────────────────────────────────────────── */
+@media print {
+  a          { color: var(--text); }
+  h2, h3     { page-break-after: avoid; }
+  table, pre { page-break-inside: avoid; }
+}

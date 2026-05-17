@@ -1,0 +1,111 @@
+/* ── Portfolio / Technical document theme ────────────────────────────────────
+   Extends base.css.  Optimised for multi-page technical specs and portfolios.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+/* ── DOCUMENT TITLE (h1) ─────────────────────────────────────────────────────── */
+.page > h1:first-child {
+  font-size: 2.0em;
+  font-weight: 800;
+  color: #111;
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 0.3em;
+  margin-bottom: 0.3em;
+}
+
+/* Subtitle / meta paragraph after h1 */
+.page > h1:first-child + p {
+  font-size: 0.9em;
+  color: var(--muted);
+  margin-bottom: 0.6em;
+}
+
+/* ── SECTION HEADERS ─────────────────────────────────────────────────────────── */
+h2 {
+  font-size: 1.25em;
+  font-weight: 700;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+  margin-top: 1.6em;
+  margin-bottom: 0.5em;
+}
+
+h3 {
+  font-size: 1.05em;
+  font-weight: 700;
+  color: #222;
+  margin-top: 1em;
+  margin-bottom: 0.25em;
+}
+
+h4 {
+  font-size: 0.92em;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.7em;
+  margin-bottom: 0.2em;
+}
+
+/* ── DATED HEADING support (shared with resume theme) ───────────────────────── */
+h3.dated {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5em;
+}
+
+h3.dated .job-date {
+  font-size: 0.88em;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── CODE BLOCKS (prominent in technical documents) ─────────────────────────── */
+pre {
+  background: #f0f4f8;
+  border: 1px solid #c6d6e8;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  padding: 0.85em 1em;
+  margin: 0.6em 0;
+  font-size: 0.82em;
+  line-height: 1.5;
+}
+
+code {
+  background: #eef2f7;
+  color: #1a3a5c;
+}
+
+/* ── TABLES ──────────────────────────────────────────────────────────────────── */
+th {
+  background: #e4edf7;
+  color: var(--accent);
+}
+
+tr:nth-child(even) td { background: #fafbfc; }
+
+/* First column as label */
+td:first-child { font-weight: 600; }
+
+/* ── BLOCKQUOTE as callout ────────────────────────────────────────────────────── */
+blockquote {
+  background: #f0f6ff;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  padding: 0.6em 1em;
+  color: var(--text);
+  font-style: normal;
+  margin: 0.6em 0;
+}
+
+/* ── Page breaks ─────────────────────────────────────────────────────────────── */
+h2 { page-break-before: auto; }
+
+/* Force a new page before a section by adding {.page-break} class manually.
+   Since marked produces plain elements, add a horizontal rule styled as a break: */
+/* hr.page-break { page-break-after: always; border: none; } */

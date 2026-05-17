@@ -1,0 +1,20 @@
+{
+  "name": "aibier-pdf-builder",
+  "version": "1.0.0",
+  "description": "Generic Markdown → PDF builder for resume and portfolio",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "resume":    "node scripts/build-pdf.js resume.md",
+    "portfolio": "node scripts/build-pdf.js portfolio.md",
+    "build":     "npm run resume && npm run portfolio"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked":      "^9.1.6",
+    "puppeteer":   "^21.5.2"
+  }
+}

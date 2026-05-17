@@ -1,0 +1,134 @@
+/* ── Resume theme ────────────────────────────────────────────────────────────
+   Extends base.css.  Optimised for single / two-page professional resumes.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+/* ── NAME (h1) ───────────────────────────────────────────────────────────────── */
+.page > h1:first-child {
+  font-size: 2.1em;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.3px;
+  color: #111;
+  margin-bottom: 0.08em;
+}
+
+/* Contact / subtitle paragraph immediately after h1 */
+.page > h1:first-child + p {
+  text-align: center;
+  font-size: 0.87em;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 0.05em;
+}
+
+/* ── SECTION HEADERS (h2) ────────────────────────────────────────────────────── */
+h2 {
+  font-size: 0.78em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.18em;
+  margin-top: 1.1em;
+  margin-bottom: 0.45em;
+}
+
+/* ── JOB ENTRY HEADING (h3) with "Title | Date" pattern ─────────────────────── */
+
+/* Produced by build-pdf.js when heading contains " | " */
+h3.dated {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5em;
+  font-size: 1.0em;
+  font-weight: 700;
+  margin-top: 0.75em;
+  margin-bottom: 0.04em;
+}
+
+h3.dated .job-title {
+  flex: 1;
+}
+
+h3.dated .job-date {
+  font-size: 0.88em;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* Plain h3 without date */
+h3:not(.dated) {
+  font-size: 1.0em;
+  font-weight: 700;
+  margin-top: 0.75em;
+}
+
+/* ── COMPANY / LOCATION line (bold text right after h3) ─────────────────────── */
+h3 + p {
+  font-size: 0.9em;
+  color: var(--muted);
+  margin-bottom: 0.25em;
+}
+
+h3 + p > strong:first-child {
+  font-weight: 700;
+  color: #333;
+}
+
+/* ── SUB-SECTION LABELS (h4 inside job entries) ─────────────────────────────── */
+h4 {
+  font-size: 0.82em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--muted);
+  margin-top: 0.55em;
+  margin-bottom: 0.18em;
+}
+
+/* ── BULLET LISTS ────────────────────────────────────────────────────────────── */
+ul li {
+  font-size: 0.97em;
+  line-height: 1.45;
+  margin-bottom: 0.17em;
+}
+
+/* Inline bold label in bullet: "- **Foo Bar:** description" */
+li > strong:first-child {
+  color: #222;
+}
+
+/* ── SKILLS TABLE ────────────────────────────────────────────────────────────── */
+table td:first-child {
+  width: 20%;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* No zebra stripes on resume skills table — cleaner look */
+tr:nth-child(even) td { background: transparent; }
+
+/* ── DIVIDERS ────────────────────────────────────────────────────────────────── */
+hr { margin: 0.55em 0; border-color: #ececec; }
+
+/* ── EDUCATION entries share h3.dated styling ─────────────────────────────────
+   No extra rules needed — the .dated class handles alignment.               */
+
+/* ── SUMMARY / MISSION italic paragraph ─────────────────────────────────────── */
+p > em:only-child {
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ── LANGUAGES line at bottom ───────────────────────────────────────────────── */
+.page > p:last-child {
+  text-align: center;
+  font-size: 0.88em;
+  color: var(--muted);
+  margin-top: 0.4em;
+}

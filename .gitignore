@@ -1,0 +1,13 @@
+node_modules/
+
+# Generated output directory (make pdf SRC=... --output dist/)
+dist/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
