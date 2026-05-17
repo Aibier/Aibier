@@ -27,7 +27,6 @@ This is Tony Aizize's GitHub profile repository (`Aibier/Aibier`). The special `
 - **Notable integrations**: 50+ banks/providers (JPM, DBS, Wise, PayPal, Stripe, RippleNet, GrabPay, TikTok Pay, etc.)
 - **Key numbers to preserve**: $50M+ monthly volume, 2M+ daily transactions, 50% integration timeline reduction
 - **Planned open-source project**: Taymas-Bank (bank integration samples — planned end of 2025)
-- **Email**: tony.aizize@you.co
 - **LinkedIn**: linkedin.com/in/tony007/
 - **GitHub**: github.com/Aibier
 
