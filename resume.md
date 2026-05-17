@@ -47,13 +47,32 @@ Central University of Finance and Economics, Beijing, China
 
 ## Work Experience
 
-### Software Engineering Manager (Payment & FX Infra) | Mar 2025 – Present
+### Senior Engineering Manager | Dec 2025 – Present
+**YouTrip** · Singapore
+
+**Singapore Engineering (YouTrip)**
+- Lead Singapore Engineering Teams delivering multi-currency wallets (MCA) and scalable card payment platforms.
+- Build and operate payment infrastructure supporting multi-currency wallets and card payment ecosystems.
+- Own core card capabilities including card issuing, top-ups, 3DS authentication flows, and exception handling.
+
+**YouBiz (Business Accounts)**
+- Lead YouBiz Engineering Teams building and operating business accounts and financial infrastructure for SMEs.
+
+**Platform & Leadership**
+- Lead multiple teams of 20+ engineers across YouTrip and YouBiz product lines.
+- Drive strategic initiatives to enhance platform scalability, resilience, and cross-border payment capabilities.
+- Improve system scalability and resiliency through microservice evolution, asynchronous processing, idempotency, and retry mechanisms.
+- Partner with Product, Risk, Compliance, and Operations to deliver secure, compliant, and scalable financial features.
+
+---
+
+### Software Engineering Manager (Payment & FX Infra) | Mar 2025 – Dec 2025
 **Aspire FT** · Singapore
 
 **Payment Infrastructure & Technical Leadership**
-- Lead payment (banks, payment providers) and stablecoin integrations across APAC and globally.
+- Led payment (banks, payment providers) and stablecoin integrations across APAC and globally.
 - Led the design and development of scalable payment infrastructure, optimizing money movement flows and ensuring high system efficiency.
-- Spearheaded the setup of payment technology infrastructure in Hong Kong, leading debit account payouts, FX transfers, and payout/payin integrations.
+- Spearheaded setup of payment technology infrastructure in Hong Kong, leading debit account payouts, FX transfers, and payout/payin integrations.
 - Designed and built a microservices-based Payment Service Architecture, enabling seamless market expansion and preparing tech infrastructure for new regions.
 
 **Team Leadership & Engineering Excellence**
@@ -68,24 +87,24 @@ Central University of Finance and Economics, Beijing, China
 **Aspire Financial Technologies** · Singapore
 
 **Architecture & System Design**
-- **Next-Gen Payment Service:** Architected a hybrid platform combining Monolith and Microservices to optimize scalability, enabling seamless handling of 13+ currencies (SGD, USD, EUR, GBP) across APAC and the US.
-- **Distributed Systems:** Designed a Redis-based rate limiter (sliding window & token bucket algorithms in Golang) to manage 500+ TPS, reducing API throttling incidents by 65%.
-- **API & Integrations:** Led development of RESTful APIs for merchant payments and gRPC services for inter-microservice communication, enhancing cross-border transaction reliability.
+- Architected a hybrid Monolith and Microservices platform to optimize scalability, enabling seamless handling of 13+ currencies (SGD, USD, EUR, GBP) across APAC and the US.
+- Designed a Redis-based rate limiter (sliding window & token bucket algorithms in Golang) to manage 500+ TPS, reducing API throttling incidents by 65%.
+- Led development of RESTful APIs for merchant payments and gRPC services for inter-microservice communication, enhancing cross-border transaction reliability.
 
 **Technical Implementation**
-- **API Maintainer for Go Projects:** Reviewed code, drove technical decisions, and built common libraries.
-- **Queue Frameworks:** Built a prioritization system using AWS SQS & Kafka, improving transaction throughput by 30% and reducing failed payments by 25%.
-- **Infrastructure as Code:** Deployed AWS ECS, RDS, and CI/CD pipelines to automate deployments, reducing release cycles from 2 hours to 15 minutes.
-- **Performance Optimization:** Instrumented Datadog dashboards and ELK stack for real-time monitoring, achieving 99.99% system uptime.
+- Served as API maintainer for Go projects: reviewed code, drove technical decisions, and built common libraries.
+- Built a queue prioritization system using AWS SQS & Kafka, improving transaction throughput by 30% and reducing failed payments by 25%.
+- Deployed AWS ECS, RDS, and CI/CD pipelines to automate deployments, reducing release cycles from 2 hours to 15 minutes.
+- Instrumented Datadog dashboards and ELK stack for real-time monitoring, achieving 99.99% system uptime.
 
 **Leadership & Team Management**
-- **Team Leadership:** Directed a 9-member engineering team managing SGD/USD/EUR/GBP FX transfers, reducing currency conversion costs by 18% through dynamic routing.
-- **Talent Development:** Hired and mentored 15+ engineers, instituting code review practices with SonarQube that cut critical bugs by 25%.
-- **Market Expansion:** Spearheaded technical infrastructure setup in Singapore, Hong Kong, and the USA for debit account issuance, enabling compliance with local regulations and entry into 3 new markets.
+- Directed a 9-member engineering team managing SGD/USD/EUR/GBP FX transfers, reducing currency conversion costs by 18% through dynamic routing.
+- Hired and mentored 15+ engineers, instituting code review practices with SonarQube that cut critical bugs by 25%.
+- Spearheaded technical infrastructure setup in Singapore, Hong Kong, and the USA for debit account issuance, enabling entry into 3 new markets.
 
 **Compliance & Scalability**
-- **Regulatory Alignment:** Engineered a Transaction Monitoring Tool to automate fraud detection, ensuring adherence to MAS and HKMA standards.
-- **QA & Code Quality:** Enforced rigorous testing frameworks, reducing production incidents by 40% post-deployment.
+- Engineered a Transaction Monitoring Tool to automate fraud detection, ensuring adherence to MAS and HKMA standards.
+- Enforced rigorous testing frameworks, reducing production incidents by 40% post-deployment.
 
 ---
 
@@ -120,11 +139,10 @@ Central University of Finance and Economics, Beijing, China
 ### Full Stack Developer | Dec 2016 – Jun 2019
 **Golden Equator Consulting** · Singapore
 
-- Developed REST APIs for Spectrum Mobile App.
-- Built Access Door Control System (Brivo Integration).
-- Developed React/Redux UI components and integrated Stripe payments for event space platform.
+- Developed REST APIs for Spectrum Mobile App and Access Door Control System (Brivo Integration).
+- Built React/Redux UI components and integrated Stripe payments for an event space platform.
 - Built e-commerce websites; managed group server stack: Python, Java, Node.js, React.js, PostgreSQL, MySQL, MongoDB.
-- **Applications:** Cerebro Platform APIs (Django REST Framework), Spectrum Global Mobile App (REST API), Golden Equator Group website.
+- Delivered Cerebro Platform APIs (Django REST Framework), Spectrum Global Mobile App, and the Golden Equator Group website.
 
 ---
 
@@ -137,11 +155,11 @@ Central University of Finance and Economics, Beijing, China
 
 ---
 
-### Full Stack Developer (Intern – Full-Time) | Apr 2016 – Sep 2016
+### Full Stack Developer (Intern) | Apr 2016 – Sep 2016
 **Besttours Singapore** · Singapore
 
-- Developed and maintained Singapore Changi Airport website frontend.
-- Involved in developing a One-Millionaire project; maintained Changi Airport website using CMS (AEM).
+- Developed and maintained Singapore Changi Airport website frontend using CMS (AEM).
+- Involved in developing a One-Millionaire project.
 - Technologies: PHP Laravel, CSS3, HTML5, Bootstrap.
 
 ---
