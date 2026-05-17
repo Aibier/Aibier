@@ -21,7 +21,7 @@ With proven expertise in **event-driven microservices, secure wallet integration
 
 ## Leadership & Strategy
 
-- **Team Leadership:** Managed & scaled teams of 10+ engineers in Core Payments & FX
+- **Team Leadership:** Managed & scaled teams of 20+ engineers in Core Payments & FX
 - **Strategic Execution:** Market expansion via stablecoin and fiat integrations
 - **Stakeholder Alignment:** Translating crypto/fintech architectures into business impact
 - **Culture:** Driving engineering best practices, performance management, and career growth

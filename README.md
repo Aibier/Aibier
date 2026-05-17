@@ -1,23 +1,44 @@
-## 👋 Hi there! I'm Tony (aka Aibier)
+## 👋 Hi there! I’m Tony (aka Aibier)
 
-Here are some interesting facts about me:
+Engineering Leader & hands-on Payment Architect with **10+ years** building mission-critical payment platforms at high-growth fintechs.
 
-- 🔭 **Currently: Software Engineering Manager, Payments & FX Infra at [Aspire](https://aspireapp.com/)**, leading a team of 10+ engineers building and scaling payment infrastructure, stablecoin integrations, and cross-border money-movement systems across APAC and globally.
+Currently leading **20+ engineers** at **[YouTrip](https://www.you.co)**, delivering multi-currency wallets and card payment platforms processing **Billions of Dollars annually**, serving millions of users across APAC.
 
-- 👯 **Collaboration**: Open to working on **high‑performance, distributed systems** and **payment system optimizations**.  
-- 🤔 **Seeking Help**: Exploring **cutting‑edge cloud infrastructure** and **DevOps practices**, especially in **AWS**.  
-- 💬 **Ask Me About**:  
-  - **Leading engineering teams** and building **scalable payment systems**  
-  - Designing **event‑driven architectures** and **microservices**  
-  - **Engineering management** and **team scaling** strategies  
-  - Optimizing services for **performance and reliability**  
+---
+
+### 🔹 What I Do
+
+✅ Architect and scale payment infrastructure (card issuing, FX, cross-border payments, ledger design)  
+✅ Lead engineering teams delivering multi-currency wallets and business account platforms  
+✅ Design microservices architectures enabling seamless market expansion  
+✅ Manage all major payment integrations and third-party technical communications with **50+ banks and payment providers** globally  
+
+### 🔹 Track Record
+
+✅ **YouTrip**: Leading MCA and YouBiz engineering teams, owning core card capabilities including 3DS, top-ups, and business accounts.  
+✅ **Aspire**: Architected payment infrastructure (building multi-currency business accounts) across Singapore, Hong Kong, and Australia; designed microservices-based payment service architecture integrating with business virtual account, payout and FX providers.  
+✅ **Thunes**: Integrated 15+ payment partners including Alipay, DBS, Grab, RippleNet, MoneyGram.  
+
+### 🔹 Architecture Expertise
+
+Payment Systems | Card Issuing | FX/Cross-border | Ledger Design | Microservices | API Design | Distributed Systems
+
+### 🔹 Tech Stack
+
+**Golang** | Python | PHP | Java | Kafka | PostgreSQL | Redis | Docker | AWS | Kubernetes
+
+---
+
+I’m passionate about building developer-friendly, resilient payment platforms and driving engineering excellence. I thrive at the intersection of strategy, architecture, and execution — turning complex payments challenges into scalable solutions.
+
+Always open to connecting with fellow fintech builders and payment enthusiasts.
+
 - 📫 **Reach Me**: [LinkedIn](https://www.linkedin.com/in/tony007/)  
 - 🎓 **Education**:
-  -  Management Essentials by HBS Online (2025)
-  - Bachelor's in Management Science and Engineering of Central University of Finance & Economics (2011), Beijing China
+  - Management Essentials by HBS Online (2025)
+  - Bachelor’s in Management Science and Engineering, Central University of Finance & Economics (2011), Beijing China
   - Master’s in Computer Science, National University of Singapore (2015)
-  - Master of Technology in Software Engineering (including big data engineering and scalable system design) , National University of Singapore (2021)
-- ⚡ **Fun Fact**: I’ve spent **10+ years building payment systems** and thrive on crafting solutions with **Golang**.  
+  - Master of Technology in Software Engineering (including big data engineering and scalable system design), National University of Singapore (2021)
 
 ---
 
