@@ -2,8 +2,8 @@
 title: Fiat-Crypto Native Payment Infrastructure
 theme: portfolio
 format: A4
-margin: 0.70in
-margin_top: 0.75in
+margin: 0.65in
+margin_top: 0.70in
 ---
 
 # Fiat-Crypto Native Payment Infrastructure
@@ -12,477 +12,1330 @@ margin_top: 0.75in
 
 ---
 
-## Executive Summary
+## 1. System Architecture Overview
 
-This portfolio documents the architecture of a production-grade **fiat-crypto bridge platform** — a system that enables seamless conversion between traditional fiat currencies and stablecoins (USDC, USDT) across multiple payment rails and blockchain networks.
-
-The platform handles two core operations: **On-Ramp** (fiat → stablecoin) and **Off-Ramp** (stablecoin → fiat), serving both consumer wallets and institutional merchants across APAC, EMEA, and the US. It is designed for regulatory compliance from day one — embedding AML screening, KYC verification, and Travel Rule reporting into every transaction flow.
-
-**Scale targets:** 500+ TPS, 99.99% uptime, sub-500ms API acknowledgement, full AML/KYC coverage, multi-chain stablecoin support.
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         API GATEWAY LAYER                               │
+│   API Gateway · Load Balancer · Rate Limiter (per client) · Routing     │
+└────────────────────────────────┬────────────────────────────────────────┘
+                                 │
+        ┌────────────────────────┼───────────────────────┐
+        │                        │                       │
+┌───────▼────────┐    ┌──────────▼──────────┐  ┌────────▼────────┐
+│  CORE SERVICE  │    │  MESSAGE QUEUE LAYER │  │  CACHE LAYER    │
+│                │    │                      │  │                 │
+│ · Validation & │◄──►│  Apache Kafka        │  │  Redis Cache    │
+│   Acknowledge  │    │  Event Streaming     │  │  Hot Data       │
+│ · Ledger Entry │    │  Async Communication │  │  Performance    │
+│ · Idempotency  │    │  Event Sourcing      │  │  Optimization   │
+│ · User/Account │    └──────────────────────┘  └─────────────────┘
+└───────┬────────┘
+        │
+┌───────▼──────────────────────────────────────────────────────────────┐
+│                        DATABASE LAYER (CockroachDB)                  │
+│   Accounts         Transactions        Cards          Compliance      │
+│   User Data        All Records         Card Info      KYC/AML Checks  │
+│   KYC Status       ──────────          Limits &       Audit Logs      │
+└──────────────────────────────────────────────────────────────────────┘
+        │
+┌───────┴──────────────────────────────────────────────────────────────┐
+│                        CORE SERVICES                                  │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌────────────────────┐  │
+│  │  PAYOUT SERVICE  │  │ CARD CONNECTOR   │  │ ACCEPTANCE SERVICE │  │
+│  │  Third Party     │  │ SERVICE          │  │ Provider Notif.    │  │
+│  │  Integration     │  │ Card Transaction │  │ Status Updates     │  │
+│  │  Fiat/Crypto     │  │ Handling         │  │                    │  │
+│  └────────┬─────────┘  └──────────────────┘  └────────────────────┘  │
+│  ┌────────▼─────────────────────────────────────────────────────────┐ │
+│  │  AML SERVICE                                                     │ │
+│  │  AML/Compliance Checks · Risk Assessment                         │ │
+│  └──────────────────────────────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────────────────────────┘
+        │
+┌───────┴──────────────────────────────────────────────────────────────┐
+│                        EXTERNAL SYSTEMS                               │
+│  Traditional Banks       Crypto Providers        Payment Rails        │
+│  DBS, JPM, HSBC          Circle USDC              ACH, SEPA           │
+│                          Tether USDT              PIX, UPI, MPesa     │
+│  Clients / Merchants                                                  │
+│  Users initiating transactions · POS · Online Stores                  │
+└──────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## Platform Architecture
+## 2. Event Streaming & Crypto Flow
 
-The platform is structured around five distinct layers, each with independent scaling characteristics.
-
-### API Gateway Layer
-
-All traffic enters through a hardened API gateway responsible for:
-
-- **JWT authentication** with short-lived token rotation
-- **Rate limiting** via a Redis-backed sliding-window algorithm (per-client and global)
-- **Request routing** to downstream microservices
-- **Idempotency enforcement** — duplicate requests are deduplicated at the gateway before reaching core services
-
-The gateway is stateless and horizontally scalable behind an AWS ALB, with circuit breakers preventing cascade failures during provider outages.
-
-### Core Service Layer
-
-The **Core Service** is the transaction ledger and orchestration hub. On receiving a validated request it:
-
-1. Validates the request payload and account state
-2. Creates a ledger entry atomically (CockroachDB, serializable isolation)
-3. Performs idempotency checks against the request reference
-4. Publishes a `ramp.initiated` event to Kafka
-5. Returns a `transaction_id` and `status: initiated` to the caller within 100ms
-
-The Core Service deliberately owns **no provider-side logic** — it delegates execution entirely via Kafka events. This decoupling means provider failures never block ledger writes.
-
-### Event Streaming Layer (Kafka)
-
-Apache Kafka is the backbone of all asynchronous coordination. Key topics:
-
-| Topic | Producer | Consumers |
-|---|---|---|
-| `ramp.initiated` | Core Service | AML Service, Provider Orchestrator |
-| `compliance.checked` | AML Service | Provider Orchestrator |
-| `payment.received` | Payout Service | Core Service, Acceptance Service |
-| `stablecoins.minted` | Payout Service | Core Service, Acceptance Service |
-| `stablecoins.burned` | Payout Service | Core Service |
-| `transfer.completed` | Payout Service | Core Service, Acceptance Service |
-| `transaction.status_changed` | Core Service | Acceptance Service (webhooks) |
-
-Each topic is partitioned by `account_id` to preserve per-account ordering while enabling horizontal consumer scaling.
-
-### Payout Service
-
-The **Payout Service** owns all external execution — it integrates with both fiat payment rails and crypto providers. Its responsibilities are split into two sub-concerns:
-
-**Fiat execution:** ACH, SEPA, PIX, UPI, M-Pesa, SWIFT rails via bank integrations (JPM, DBS, Citibank, HDFC, Standard Chartered). Each bank integration is wrapped in a common provider interface, enabling the orchestrator to swap providers without changing business logic.
-
-**Crypto execution:** Mint/burn operations against stablecoin issuers (Circle USDC, Tether USDT) and settlement across blockchain networks (Ethereum, Polygon, BSC). All crypto custody is delegated to an MPC custody provider (Fireblocks) — private keys never exist in application memory.
-
-### Acceptance Service
-
-The **Acceptance Service** translates internal Kafka events into outbound webhooks for merchants and clients. It handles:
-
-- Webhook fan-out with at-least-once delivery guarantees
-- Per-client retry policies with exponential backoff
-- Signature verification payloads (HMAC-SHA256) for webhook authenticity
-- Dead-letter handling for consistently failing endpoints
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                     EVENT STREAMING LAYER                            │
+│                                                                      │
+│  ┌─────────────┐    ┌─────────────┐    ┌──────────────────────────┐ │
+│  │ API GATEWAY │    │CORE SERVICE │    │     APACHE KAFKA         │ │
+│  │             │───►│             │───►│                          │ │
+│  │ API Gateway │    │ · Request   │    │ · Event Coordination     │ │
+│  │ Request     │    │   Validation│    │ · Status Updates         │ │
+│  │ Routing     │    │ · Ledger    │    │                          │ │
+│  │ Rate        │    │   Creation  │    └─────────────┬────────────┘ │
+│  │ Limiting    │    │ · Idempotency│                 │              │
+│  └─────────────┘    └─────────────┘                 │              │
+│                                                      │              │
+│  ┌─────────────────────────────────────────────────▼────────────┐  │
+│  │                   PAYOUT SERVICES                             │  │
+│  │  ┌────────────────┐          ┌──────────────────────────┐    │  │
+│  │  │  AML SERVICE   │          │   PROVIDER ORCHESTRATOR  │    │  │
+│  │  │                │          │                          │    │  │
+│  │  │ · Compliance   │          │ · Provider Selection     │    │  │
+│  │  │   Checks       │          │ · Route Optimization     │    │  │
+│  │  │ · Risk         │          │ · Status Management      │    │  │
+│  │  │   Assessment   │          └────────────┬─────────────┘    │  │
+│  │  └────────────────┘                       │                  │  │
+│  └───────────────────────────────────────────┼──────────────────┘  │
+│                                              │                      │
+│  ┌───────────────────────────────────────────▼──────────────────┐  │
+│  │                    CRYPTO PROVIDERS                           │  │
+│  │  Crypto Exchanges     Blockchain Networks   Stablecoin        │  │
+│  │  Binance, Coinbase    Ethereum, Polygon,    Issuers           │  │
+│  │                       BSC                  Circle USDC        │  │
+│  │                                            Tether USDT        │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                                                                      │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │                    FIAT PROVIDERS                             │  │
+│  │  Payout Service         Acceptance Service                    │  │
+│  │  · Bank Integration     · Provider Notifications              │  │
+│  │  · Payment Rails        · Status Updates                      │  │
+│  │  · Blockchain Integ.                                          │  │
+│  │                                                               │  │
+│  │  Payment Rails          Card Networks    Traditional Banks    │  │
+│  │  ACH, SEPA, PIX, UPI    Visa, Mastercard DBS, JPM, HSBC      │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                                                                      │
+│  Client Types                                                        │
+│  · Crypto Client — Wallet, Exchange                                  │
+│  · Fiat Client  — Bank Transfer, Card, ACH                           │
+└──────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## Payment Flows
+## 3. Payment Flows
 
-### On-Ramp: Fiat → Stablecoin
-
-A user initiates an ACH transfer of $1,000 USD to receive USDT on Ethereum.
+### 3.1 On-Ramp Flow (Fiat → Crypto)
 
 ```
-Client → POST /v1/api/transactions  {direction: "OnRamp", source: USD, target: USDT}
-
-1. API Gateway    — authenticate, rate-limit, route
-2. Core Service   — validate, create ledger entry, publish ramp.initiated
-3. AML Service    — risk assessment; publish compliance.checked
-   ├─ [Rejected]  → Core Service marks REJECTED; webhook fired
-   └─ [Approved]  → Provider Orchestrator selects fiat rail
-4. Payout Service — initiate ACH collection; await bank confirmation
-5. Payout Service — on payment.received: mint USDC/USDT via Circle/Tether
-6. Core Service   — update status to SUCCESS
-7. Acceptance Svc — fire webhook: {status: "success", tx_hash: "0x..."}
+User Initiates Transaction
+         │
+         ▼
+   ┌─────────────┐       ┌──────────────────┐
+   │  Validate   │──────►│ Reject Transaction│ (if invalid)
+   │  Request    │       └──────────────────┘
+   └──────┬──────┘
+          │ (valid)
+          ▼
+   ┌──────────────────┐      ┌──────────────────┐
+   │  AML Compliance  │─────►│ Reject Transaction│ (if failed)
+   │  Check           │      └──────────────────┘
+   └──────┬───────────┘
+          │ Compliance Passed
+          ▼
+   ┌──────────────┐
+   │ Select       │
+   │ Provider     │
+   └──────┬───────┘
+          ▼
+   ┌──────────────┐
+   │ Execute      │
+   │ Transaction  │
+   └──────┬───────┘
+          ▼
+   ┌──────────────┐
+   │ Update       │
+   │ Status       │
+   └──────┬───────┘
+          ▼
+   ┌──────────────┐
+   │ Notify User  │
+   └──────────────┘
+          │
+         End
 ```
 
-**Key design decisions:**
-- Ledger entry is created synchronously before any external call — prevents state loss if downstream services fail
-- Stablecoin mint only executes after confirmed fiat receipt — eliminates settlement risk
-- AML check is asynchronous but blocks execution; clients poll or receive webhooks
+### 3.2 Off-Ramp Flow (Crypto → Fiat)
 
-### Off-Ramp: Stablecoin → Fiat
+Same flow as On-Ramp — Validate → AML Compliance Check → Select Provider → Execute Transaction → Update Status → Notify User.
 
-A user redeems 500 USDT for USD via ACH bank transfer.
+### 3.3 Card Funding — On-Ramp
 
 ```
-Client → POST /v1/api/transactions  {direction: "OffRamp", source: USDT, target: USD}
-
-1. API Gateway    — authenticate, rate-limit, route
-2. Core Service   — validate, check stablecoin balance, create ledger entry
-3. AML Service    — risk assessment; publish compliance.checked
-   ├─ [Rejected]  → marks REJECTED; webhook fired
-   └─ [Approved]  → Provider Orchestrator selects crypto provider
-4. Payout Service — burn stablecoins; await on-chain confirmation
-5. Payout Service — on stablecoins.burned: initiate fiat transfer via bank rail
-6. Core Service   — update status to SUCCESS on transfer.completed
-7. Acceptance Svc — fire webhook: {status: "success", fiat_reference: "ACH-..."}
+User Initiates Card Transaction
+         │
+         ▼
+   ┌─────────────┐       ┌──────────────────┐
+   │  Validate   │──────►│ Reject Transaction│ (if invalid)
+   │  Card Details│      └──────────────────┘
+   └──────┬──────┘
+          │
+          ▼
+   ┌──────────────────┐
+   │ Check Card       │
+   │ Network          │
+   └──────┬───────────┘
+          │
+          ▼
+   ┌──────────────────────┐
+   │ Visa/Mastercard      │
+   │ Processing           │
+   └──────┬───────────────┘
+          │
+          ▼
+   ┌──────────────────────┐
+   │ Core Service         │
+   │ Processing           │
+   └──────┬───────────────┘
+          │
+          ▼
+   ┌──────────────────┐       ┌──────────────────┐
+   │  AML Compliance  │──────►│ Reject Transaction│ (if failed)
+   │  Check           │       └──────────────────┘
+   └──────┬───────────┘
+          │ Compliance Passed
+          ▼
+   ┌──────────────────────┐
+   │ Provider Orchestrator│
+   └──────┬───────────────┘
+          ▼
+   ┌──────────────────────┐
+   │ Card Network         │
+   │ Integration          │
+   └──────┬───────────────┘
+          ▼
+   ┌──────────────────────┐
+   │ Execute Transaction  │
+   └──────┬───────────────┘
+          ▼
+   ┌──────────────────────┐
+   │ Update Account       │
+   │ Balance              │
+   └──────┬───────────────┘
+          ▼
+   ┌──────────────┐
+   │ Notify User  │
+   └──────────────┘
+          │
+         End
 ```
 
-**Key design decisions:**
-- Stablecoin burn and fiat payout are decoupled via Kafka — a fiat payout failure does not trigger a re-mint
-- The off-ramp ledger reserves the stablecoin balance at creation time, preventing double-spend across concurrent requests
-- Gas fee estimation is pre-calculated at booking time to avoid slippage on execution
+### 3.4 Card Payout — Off-Ramp
 
-### Card On-Ramp: Card Charge → Stablecoin
-
-A user funds a stablecoin wallet via Visa/Mastercard.
-
-```
-Client → POST /v1/api/transactions  {direction: "OnRamp", payment_rail: "CARD"}
-
-1. Card Connector  — card authorization request to Visa/MC network
-   ├─ [Declined]   → immediate rejection; no ledger entry persisted
-   └─ [Authorized] → Core Service creates ledger entry
-2. AML Service     — risk assessment (card transactions carry higher fraud risk)
-   ├─ [Rejected]   → void card authorization; mark REJECTED
-   └─ [Approved]   → Provider Orchestrator selects crypto provider
-3. Payout Service  — mint stablecoins
-4. Card Connector  — capture authorization
-5. Acceptance Svc  — webhook: {status: "success"}
-```
-
-**Key design decision:** Card authorization is held (not captured) until AML clearance and mint completion. This eliminates the scenario of charging a card but failing to deliver the stablecoin.
+Same actors as Card On-Ramp with reversed direction — validates card details, checks card network, processes via Visa/Mastercard, AML check, Provider Orchestrator executes, updates balance, notifies user.
 
 ---
 
-## Data Architecture
+## 4. Sequence Diagrams
 
-### Core Schema Design
+### 4.1 On-Ramp Sequence
 
-The schema is built around a clear separation between the **canonical ledger** (TRANSACTIONS) and **provider execution records** (PROVIDER_TRANSACTIONS). This separation is critical — a single user-facing transaction may require multiple provider attempts before success.
-
-**TRANSACTIONS** (primary ledger)
-- One record per user-initiated operation
-- `direction`: `onramp | offramp | transfer | fx_settlement | card_payment`
-- `status`: `initiated → pending → success | failed | rejected`
-- Immutable after `success` or `failed`
-
-**PROVIDER_TRANSACTIONS** (execution records)
-- One record per external provider call
-- Linked to TRANSACTIONS via FK
-- Stores raw `provider_request` / `provider_response` JSON for audit
-- Enables retry tracking without mutating the ledger
-
-**QUOTES → BOOKINGS → TRANSACTIONS** (rate-lock flow)
-
-FX rates are volatile. The platform implements a two-step rate-lock:
-
-1. `POST /v1/api/rates` — returns a rate valid for 60 seconds
-2. `POST /v1/api/booking` — locks the rate into a BOOKING record (expires in 60s)
-3. `POST /v1/api/transactions` — executes against a booking_id, inheriting the locked rate
-
-This design prevents users from being exposed to rate slippage between quote and execution.
-
-### Key Entity Relationships
-
-```
-ACCOUNTS ──< CARDS
-    │
-    ├──< TRANSACTIONS ──< PROVIDER_TRANSACTIONS
-    │         │
-    │         └──< COMPLIANCE_CHECKS
-    │         └──< TRANSACTION_SESSION_LOGS
-    │
-    ├──< QUOTES ──< BOOKINGS
-    │
-    └──< RECIPIENTS ──< TRANSACTIONS (target)
-```
-
-### Compliance Tables
-
-**COMPLIANCE_CHECKS** tracks every AML/KYC check against a transaction:
-- `check_type`: `aml | kyc | travel_rule | sanctions`
-- `risk_score`: float, used for manual review routing
-- `compliance_officer_id`: populated on manual review
-- Full audit trail via `AUDIT_LOGS` (immutable, append-only)
-
-**TRANSACTION_SESSION_LOGS** provides a debug/tracing trail per transaction:
-- Every internal state transition is logged as an event
-- Enables support teams to reconstruct the exact sequence of events for any transaction without querying Kafka
-
----
-
-## API Platform
-
-The API follows REST conventions with a few key platform-wide guarantees:
-
-| Behaviour | Implementation |
+| Actor | Step |
 |---|---|
-| Idempotency | `Idempotency-Key` header; duplicates return the original response |
-| Rate limiting | Per-client sliding window; `X-RateLimit-*` headers on every response |
-| Authentication | Bearer JWT; short-lived (15min) with refresh token rotation |
-| Versioning | URI prefix `/v1/api/` — breaking changes get a new version |
-| Error schema | `{code, message, details, request_id, timestamp}` — machine-parseable |
+| **Client** | `POST /v1/api/transactions (direction: "OnRamp")` |
+| **API Gateway** | Forward request |
+| **Core Service** | Validate request & create ledger entry |
+| **Core Service → Kafka** | Publish `ramp.initiated` event |
+| **Core Service → Client** | Return `transaction_id` & `status: "initiated"` |
+| **AML Service** | Trigger AML compliance check |
+| **AML Service** | Perform risk assessment |
+| **AML Service → Kafka** | Publish `compliance.checked` event |
+| **[AML Passed]** | AML status: `"approved"` |
+| **Provider Orchestrator** | Select optimal provider |
+| **Payout Service** | Execute fiat collection |
+| **Bank/Payment Rail** | Initiate payment collection |
+| **Bank/Payment Rail → Payout** | Payment received notification |
+| **Payout Service → Kafka** | Publish `payment.received` event |
+| **Core Service** | Process payment received |
+| **Crypto Provider** | Mint stablecoins |
+| **Crypto Provider → Payout** | Stablecoins minted notification |
+| **Payout Service → Kafka** | Publish `stablecoins.minted` event |
+| **Core Service** | Update transaction status |
+| **Acceptance Service → Client** | Webhook: `status: "success"` |
+| **[AML Failed]** | AML status: `"rejected"` |
+| **Acceptance Service → Client** | Webhook: `status: "rejected"` |
 
-### Core Endpoints
+### 4.2 Off-Ramp Sequence
 
-**Rate & Booking**
+| Actor | Step |
+|---|---|
+| **Client** | `POST /v1/api/transactions (direction: "OffRamp")` |
+| **API Gateway** | Forward request |
+| **Core Service** | Validate request & check balance |
+| **Core Service → Kafka** | Publish `ramp.initiated` event |
+| **Core Service → Client** | Return `transaction_id` & `status: "initiated"` |
+| **AML Service** | Trigger AML compliance check |
+| **AML Service** | Perform risk assessment |
+| **AML Service → Kafka** | Publish `compliance.checked` event |
+| **[AML Passed]** | AML status: `"approved"` |
+| **Provider Orchestrator** | Select optimal provider |
+| **Payout Service** | Execute fiat payout |
+| **Crypto Provider** | Burn stablecoins |
+| **Crypto Provider → Payout** | Stablecoins burned notification |
+| **Payout Service → Kafka** | Publish `stablecoins.burned` event |
+| **Payout Service** | Process stablecoins burned |
+| **Bank/Payment Rail** | Initiate fiat transfer |
+| **Bank/Payment Rail** | Execute bank transfer |
+| **Bank/Payment Rail → Payout** | Transfer completed notification |
+| **Payout Service → Kafka** | Publish `transfer.completed` event |
+| **Core Service** | Update transaction status |
+| **Acceptance Service → Client** | Webhook: `status: "success"` |
+| **[AML Failed]** | AML status: `"rejected"` |
+| **Acceptance Service → Client** | Webhook: `status: "rejected"` |
+
+### 4.3 Card On-Ramp Sequence
+
+| Actor | Step |
+|---|---|
+| **Client** | `POST /v1/api/transactions (direction: "OnRamp", payment_rail: "CARD")` |
+| **API Gateway** | Forward request |
+| **Core Service** | Validate request & create ledger entry |
+| **Core Service → Kafka** | Publish `ramp.initiated` event |
+| **Core Service → Client** | Return `transaction_id` & `status: "initiated"` |
+| **Card Connector** | Process card transaction |
+| **Card Network (Visa/MC)** | Authorize card payment |
+| **Card Network → Connector** | Authorization response |
+| **[Authorization Approved]** | |
+| **AML Service** | Trigger AML compliance check |
+| **AML Service** | Perform risk assessment |
+| **AML Service → Kafka** | Publish `compliance.checked` event |
+| **[AML Passed]** | AML status: `"approved"` |
+| **Provider Orchestrator** | Select crypto provider |
+| **Crypto Provider** | Mint stablecoins |
+| **Crypto Provider → Payout** | Stablecoins minted notification |
+| **Payout Service → Kafka** | Publish `stablecoins.minted` event |
+| **Core Service** | Update transaction status |
+| **Card Connector** | Capture authorization |
+| **Card Network → Connector** | Payment captured notification |
+| **Payout Service → Kafka** | Publish `payment.captured` event |
+| **Core Service** | Finalize transaction |
+| **Acceptance Service → Client** | Webhook: `status: "success"` |
+| **[AML Failed]** | AML status: `"rejected"` |
+| **Card Connector** | Void authorization |
+| **Acceptance Service → Client** | Webhook: `status: "rejected"` |
+| **[Authorization Declined]** | Authorization declined |
+| **Acceptance Service → Client** | Webhook: `status: "declined"` |
+
+### 4.4 Card Off-Ramp Sequence
+
+| Actor | Step |
+|---|---|
+| **Client** | `POST /v1/api/transactions (direction: "OffRamp", payment_rail: "CARD")` |
+| **API Gateway** | Forward request |
+| **Core Service** | Validate request & check balance |
+| **Core Service → Kafka** | Publish `ramp.initiated` event |
+| **Core Service → Client** | Return `transaction_id` & `status: "initiated"` |
+| **AML Service** | Trigger AML compliance check |
+| **AML Service** | Perform risk assessment |
+| **AML Service → Kafka** | Publish `compliance.checked` event |
+| **[AML Passed]** | AML status: `"approved"` |
+| **Provider Orchestrator** | Select crypto provider |
+| **Crypto Provider** | Burn stablecoins |
+| **Crypto Provider → Payout** | Stablecoins burned notification |
+| **Payout Service → Kafka** | Publish `stablecoins.burned` event |
+| **Card Connector** | Process stablecoins burned |
+| **Card Network (Visa/MC)** | Process card credit |
+| **Card Network** | Credit card account |
+| **Card Network → Connector** | Credit processed notification |
+| **Payout Service → Kafka** | Publish `credit.processed` event |
+| **Core Service** | Update transaction status |
+| **Acceptance Service → Client** | Webhook: `status: "success"` |
+| **[AML Failed]** | AML status: `"rejected"` |
+| **Acceptance Service → Client** | Webhook: `status: "rejected"` |
+
+---
+
+## 5. Database Schema
+
+### 5.1 Core Tables
+
+#### ACCOUNTS
+
+| Column | Type | Constraint |
+|---|---|---|
+| account_id | uuid | PK |
+| email | string | UK |
+| first_name | string | |
+| last_name | string | |
+| phone | string | |
+| country_code | string | |
+| kyc_status | string | |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+#### AUDIT_LOGS
+
+| Column | Type | Constraint |
+|---|---|---|
+| log_id | uuid | PK |
+| entity_type | string | |
+| entity_id | uuid | |
+| action | string | |
+| old_values | jsonb | |
+| new_values | jsonb | |
+| user_id | string | |
+| ip_address | string | |
+| created_at | timestamp | |
+
+#### CARDS
+
+| Column | Type | Constraint |
+|---|---|---|
+| card_id | uuid | PK |
+| account_id | uuid | FK |
+| card_number | string | |
+| masked_number | string | |
+| expiry_month | int | |
+| expiry_year | int | |
+| cardholder_name | string | |
+| card_type | string | |
+| funding_currency | string | |
+| card_details | jsonb | |
+| limits | jsonb | |
+| restrictions | jsonb | |
+| status | string | |
+| is_active | boolean | |
+| activated_at | timestamp | |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+| deleted_at | timestamp | |
+
+#### RECIPIENTS
+
+| Column | Type | Constraint |
+|---|---|---|
+| recipient_id | uuid | PK |
+| account_id | uuid | FK |
+| recipient_type | string | |
+| name | string | |
+| email | string | |
+| phone | string | |
+| country_code | string | |
+| currency | string | |
+| bank_details | jsonb | |
+| crypto_details | jsonb | |
+| status | string | |
+| is_verified | boolean | |
+| is_active | boolean | |
+| metadata | jsonb | |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+| deleted_at | timestamp | |
+
+#### INTEGRATIONS
+
+| Column | Type | Constraint |
+|---|---|---|
+| integration_id | uuid | PK |
+| integration_type | string | |
+| provider_name | string | |
+| provider_code | string | |
+| environment | string | |
+| currency | string | |
+| name | string | |
+| symbol | string | |
+| configuration | jsonb | |
+| credentials | jsonb | |
+| endpoints | jsonb | |
+| capabilities | jsonb | |
+| is_active | boolean | |
+| rate_limit | decimal | |
+| timeout_seconds | int | |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+#### CURRENCIES
+
+| Column | Type |
+|---|---|
+| source_currency | string |
+| target_currency | string |
+| decimal_places | int |
+
+### 5.2 Quote & Booking Tables
+
+#### QUOTES
+
+| Column | Type | Constraint |
+|---|---|---|
+| quote_id | uuid | PK, UK |
+| account_id | uuid | FK |
+| recipient_id | uuid | FK |
+| source_amount | decimal | |
+| source_currency | string | |
+| target_amount | decimal | |
+| target_currency | string | |
+| exchange_rate | decimal | |
+| mid_market_rate | decimal | |
+| quote_type | string | |
+| external_service | string | |
+| total_fee_amount | decimal | |
+| fee_type | string | |
+| external_estimated_delivery_at | datetime | |
+| is_quarantine_needed | boolean | |
+| external_service_id | string | |
+| payment_option | string | |
+| direction | string | |
+| is_booked | boolean | |
+| should_refresh | boolean | |
+| payload | jsonb | |
+| expired_at | datetime | |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+| deleted_at | timestamp | |
+
+#### BOOKINGS
+
+| Column | Type | Constraint |
+|---|---|---|
+| booking_id | uuid | PK |
+| quote_id | uuid | FK |
+| account_id | uuid | FK |
+| recipient_id | uuid | FK |
+| source_currency | string | FK |
+| target_currency | string | FK |
+| source_amount | decimal | |
+| target_amount | decimal | |
+| exchange_rate | decimal | |
+| external_service | string | |
+| total_fee_amount | decimal | |
+| fee_type | string | |
+| direction | string | |
+| payment_option | string | |
+| expired_at | datetime | |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+| deleted_at | timestamp | |
+
+### 5.3 Transaction Tables
+
+#### TRANSACTIONS
+
+| Column | Type | Constraint |
+|---|---|---|
+| transaction_id | uuid | PK |
+| account_id | uuid | FK |
+| recipient_id | uuid | FK |
+| transaction_type | string | |
+| direction | string | |
+| source_amount | decimal | |
+| source_currency | string | |
+| target_amount | decimal | |
+| target_currency | string | |
+| exchange_rate | decimal | |
+| status | string | |
+| reference | string | |
+| metadata | jsonb | |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+#### CARD_TRANSACTIONS
+
+| Column | Type | Constraint |
+|---|---|---|
+| card_transaction_id | uuid | PK |
+| card_id | uuid | FK |
+| source_amount | decimal | |
+| source_currency | string | |
+| merchant_name | string | |
+| merchant_category | string | |
+| merchant_country | string | |
+| transaction_type | string | |
+| status | string | |
+| authorization_code | string | |
+| reference | string | |
+| fees | jsonb | |
+| created_at | timestamp | |
+| settled_at | timestamp | |
+
+#### PROVIDER_TRANSACTIONS
+
+| Column | Type | Constraint |
+|---|---|---|
+| provider_transaction_id | uuid | PK |
+| transaction_id | uuid | FK |
+| provider_type | string | |
+| provider_id | string | |
+| external_id | string | |
+| external_reference | string | |
+| status | string | |
+| provider_request | jsonb | |
+| provider_response | jsonb | |
+| error_message | string | |
+| retry_count | int | |
+| external_estimated_delivery_at | datetime | |
+| is_quarantine_needed | boolean | |
+| payload | jsonb | |
+| expired_at | datetime | |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+| completed_at | timestamp | |
+
+#### COMPLIANCE_CHECKS
+
+| Column | Type | Constraint |
+|---|---|---|
+| check_id | uuid | PK |
+| account_id | uuid | FK |
+| transaction_id | uuid | FK |
+| check_type | string | |
+| status | string | |
+| risk_score | decimal | |
+| compliance_officer_id | string | |
+| review_notes | text | |
+| collected_fields | jsonb | |
+| next_review_date | date | |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+#### TRANSACTION_SESSION_LOGS
+
+| Column | Type | Constraint |
+|---|---|---|
+| log_id | uuid | PK |
+| transaction_id | uuid | FK |
+| session_id | string | |
+| event_type | string | |
+| status | string | |
+| event_data | jsonb | |
+| error_message | string | |
+| created_at | timestamp | |
+
+### 5.4 Schema Relationships
+
 ```
-POST /v1/api/requirements          Get KYC/AML requirements for a corridor
-POST /v1/api/rates                 Get FX rate quote (60s validity)
-POST /v1/api/booking               Lock a rate into a 60s booking
-GET  /v1/api/booking/{id}          Check booking status
+ACCOUNTS ──owns──► CARDS
+ACCOUNTS ──owns──► RECIPIENTS
+ACCOUNTS ──has───► QUOTES ──books──► BOOKINGS
+ACCOUNTS ──has───► TRANSACTIONS
+TRANSACTIONS ──ledger_entry──► PROVIDER_TRANSACTIONS
+TRANSACTIONS ──triggers──────► COMPLIANCE_CHECKS
+TRANSACTIONS ──session_logs──► TRANSACTION_SESSION_LOGS
+CARD_TRANSACTIONS ──targets──► TRANSACTIONS
 ```
 
-**Transactions**
+### 5.5 Key Design Notes
+
 ```
-POST /v1/api/transactions          Initiate on-ramp or off-ramp
-GET  /v1/api/transactions/{id}     Fetch transaction state
-GET  /v1/api/transactions          List transactions (paginated)
-POST /v1/api/transactions/batch    Submit up to 100 transactions atomically
+TRANSACTIONS (Primary Ledger)
+├── transaction_id (PK)
+├── sender_id, receiver_id
+├── amount, currency
+├── transaction_type
+└── status, created_at
+
+PROVIDER_TRANSACTIONS (Provider Executions)
+├── provider_transaction_id (PK)
+├── transaction_id (FK → TRANSACTIONS)
+├── provider_type, provider_id
+├── external_reference
+└── provider_request/response data
 ```
 
-**Compliance**
+**Transaction types:** `onramp` · `offramp` · `transfer` · `fx_settlement` · `card_payment`
+
+**Payment rails:** `debit` · `bank` · `credit` · `crypto` · `card`
+
+**Kafka topics:** `transaction.events` · `compliance.events` · `payout.events` · `webhook.events`
+
+---
+
+## 6. API Reference
+
+### 6.1 Endpoints
+
+#### Requirements & Rates
+
+```
+POST /v1/api/requirements
+POST /v1/api/rates
+POST /v1/api/booking
+GET  /v1/api/booking/{booking_id}
+```
+
+#### Transactions
+
+```
+POST /v1/api/transactions
+GET  /v1/api/transactions
+GET  /v1/api/transactions/{transaction_id}
+GET  /v1/api/transactions/{transaction_id}/status
+POST /v1/api/transactions/optimized
+POST /v1/api/transactions/batch
+```
+
+#### Payment Rails & Integrations
+
+```
+GET  /v1/api/payment-rails
+GET  /v1/api/integrations
+GET  /v1/api/integrations/{integration_id}
+POST /v1/api/integrations/{integration_id}/test
+```
+
+#### Compliance
+
 ```
 GET  /v1/api/compliance/kyc/{account_id}
-GET  /v1/api/compliance/aml/transaction/{tx_id}
-POST /v1/api/compliance/travel-rule          Submit Travel Rule data for FATF
-GET  /v1/api/compliance/travel-rule/{tx_id}  Check Travel Rule status
+GET  /v1/api/compliance/aml/{account_id}
+GET  /v1/api/compliance/aml/transaction/{transaction_id}
+POST /v1/api/compliance/aml/transaction/{transaction_id}
+GET  /v1/api/compliance/travel-rule/{transaction_id}
+POST /v1/api/compliance/travel-rule
 ```
 
-**Provider Management**
+#### Treasury
+
 ```
-GET  /v1/api/integrations                        List all active integrations
-GET  /v1/api/integrations/{id}                   Get integration config
-POST /v1/api/integrations/{id}/test              Health-check a provider
-GET  /v1/api/payment-rails                       List supported corridors
+GET  /v1/api/treasury/liquidity
+POST /v1/api/treasury/rebalance
+GET  /v1/api/treasury/yield
+GET  /v1/api/treasury/risk
+POST /v1/api/treasury/emergency
 ```
 
-**Treasury**
+#### Health
+
 ```
-GET  /v1/api/treasury/liquidity     Current pool balances & yield
-POST /v1/api/treasury/rebalance     Trigger manual rebalance
-GET  /v1/api/treasury/risk          Exposure & counterparty risk metrics
-POST /v1/api/treasury/emergency     Emergency drain / halt
+GET /v1/api/health
+GET /v1/api/metrics
 ```
 
-### Example: On-Ramp Transaction Request
+### 6.2 Authentication
+
+```
+Authorization: Bearer <your_jwt_token>
+Content-Type: application/json
+```
+
+### 6.3 Rate Limiting
+
+```
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1642248000
+```
+
+---
+
+## 7. API Examples
+
+### 7.1 Get Rate Quote
+
+**Request**
+
+```bash
+curl -X POST https://api.example.com/v1/api/rates \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "account_id": 12345,
+    "source_currency": "USD",
+    "source_amount": 1000,
+    "target_currency": "USDT",
+    "direction": "OnRamp",
+    "payment_rail": {
+      "type": "ACH",
+      "country": "US",
+      "currency": "USD"
+    },
+    "bank_account": {
+      "account_number": "1234567890",
+      "routing_number": "021000021",
+      "account_holder_name": "John Doe",
+      "bank_name": "Chase Bank",
+      "swift_code": "CHASUS33",
+      "is_verified": true
+    },
+    "compliance_requirements": {
+      "kyc_required": true,
+      "aml_required": true,
+      "travel_rule_required": false,
+      "regulatory_jurisdiction": "US"
+    },
+    "reference": "rate-quote-001"
+  }'
+```
+
+**Response**
 
 ```json
-POST /v1/api/transactions
-Authorization: Bearer <jwt>
-Idempotency-Key: <uuid>
-
 {
-  "account_id": "acc_1a2b3c",
+  "id": 987654321,
+  "account_id": 12345,
+  "source": "USD",
+  "source_amount": 1000,
+  "target": "USDT",
+  "target_amount": 999.50,
+  "rate": 0.9995,
   "direction": "OnRamp",
-  "source_currency": "USD",
-  "source_amount": 1000.00,
-  "target_currency": "USDT",
-  "booking_id": "bkg_9x8y7z",
-  "payment_rail": { "type": "ACH", "country": "US" },
-  "bank_account": {
-    "account_number": "••••7890",
-    "routing_number": "021000021",
-    "account_holder_name": "John Doe",
-    "bank_name": "Chase Bank"
+  "payment_rail": {
+    "type": "ACH",
+    "country": "US",
+    "currency": "USD",
+    "estimated_processing_time": "1-3 business days"
   },
-  "compliance": {
-    "kyc_required": true,
-    "aml_required": true,
-    "travel_rule_required": false,
-    "jurisdiction": "US"
-  }
+  "fees": {
+    "total": 0.50,
+    "breakdown": {
+      "processing": 0.30,
+      "network": 0.20
+    }
+  },
+  "compliance_status": {
+    "kyc_verified": true,
+    "aml_verified": true,
+    "travel_rule_verified": true,
+    "regulatory_jurisdiction": "US"
+  },
+  "created_at": "2025-01-15T10:30:00Z",
+  "validity": 60,
+  "expires_at": "2025-01-15T10:31:00Z"
 }
 ```
 
+### 7.2 Create Booking
+
+**Request**
+
+```bash
+curl -X POST https://api.example.com/v1/api/booking \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "account_id": 12345,
+    "source_currency": "USD",
+    "source_amount": 1000,
+    "target_currency": "USDT",
+    "target_amount": 999.50,
+    "direction": "OnRamp",
+    "payment_rail": {
+      "type": "ACH",
+      "country": "US",
+      "currency": "USD"
+    },
+    "bank_account": {
+      "account_number": "1234567890",
+      "routing_number": "021000021",
+      "account_holder_name": "John Doe",
+      "bank_name": "Chase Bank",
+      "swift_code": "CHASUS33",
+      "is_verified": true
+    },
+    "compliance_requirements": {
+      "kyc_required": true,
+      "aml_required": true,
+      "travel_rule_required": false,
+      "regulatory_jurisdiction": "US"
+    },
+    "reference": "booking-001"
+  }'
+```
+
+**Response**
+
 ```json
 {
-  "id": "tx_001a2b3c",
-  "status": "initiated",
+  "id": 555001,
+  "account_id": 12345,
+  "source_currency": "USD",
+  "source_amount": 1000,
+  "target_currency": "USDT",
+  "target_amount": 999.50,
   "direction": "OnRamp",
+  "status": "booked",
+  "payment_rail": {
+    "type": "ACH",
+    "country": "US",
+    "currency": "USD",
+    "estimated_processing_time": "1-3 business days"
+  },
+  "fees": {
+    "total": 0.50,
+    "breakdown": {
+      "processing": 0.30,
+      "network": 0.20
+    }
+  },
+  "compliance_status": {
+    "kyc_verified": true,
+    "aml_verified": true,
+    "travel_rule_verified": true,
+    "regulatory_jurisdiction": "US"
+  },
+  "created_at": "2025-01-15T10:30:00Z",
+  "expires_at": "2025-01-15T10:31:00Z",
+  "reference": "booking-001"
+}
+```
+
+### 7.3 Create Transaction — On-Ramp
+
+**Request**
+
+```bash
+curl -X POST https://api.example.com/v1/api/transactions \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: unique-request-id" \
+  -d '{
+    "account_id": 12345,
+    "direction": "OnRamp",
+    "source_currency": "USD",
+    "source_amount": 1000.00,
+    "target_currency": "USDT",
+    "booking_id": 555001,
+    "payment_rail": {
+      "type": "ACH",
+      "country": "US",
+      "currency": "USD"
+    },
+    "bank_account": {
+      "account_number": "1234567890",
+      "routing_number": "021000021",
+      "account_holder_name": "John Doe",
+      "bank_name": "Chase Bank",
+      "swift_code": "CHASUS33",
+      "is_verified": true
+    },
+    "compliance_requirements": {
+      "kyc_required": true,
+      "aml_required": true,
+      "travel_rule_required": false,
+      "regulatory_jurisdiction": "US"
+    },
+    "transaction_metadata": {
+      "customer_reference": "CUST-001",
+      "order_id": "ORDER-12345",
+      "invoice_number": "INV-67890",
+      "description": "On-ramp transaction for stablecoin purchase"
+    },
+    "reference": "onramp-001"
+  }'
+```
+
+**Response**
+
+```json
+{
+  "id": 1001,
+  "account_id": 12345,
+  "direction": "OnRamp",
+  "status": "pending",
   "source_currency": "USD",
   "source_amount": 1000.00,
   "target_currency": "USDT",
   "target_amount": 999.50,
   "exchange_rate": 0.9995,
-  "fees": { "total": 0.50, "processing": 0.30, "network": 0.20 },
-  "payment_rail": { "type": "ACH", "estimated_settlement": "1-3 business days" },
-  "compliance_status": { "kyc": "verified", "aml": "approved", "travel_rule": "n/a" },
-  "created_at": "2025-05-01T10:30:00Z",
-  "expires_at": "2025-05-01T22:30:00Z"
+  "booking_id": 555001,
+  "payment_rail": {
+    "type": "ACH",
+    "country": "US",
+    "currency": "USD",
+    "estimated_processing_time": "1-3 business days"
+  },
+  "bank_account": {
+    "account_number": "****7890",
+    "routing_number": "021000021",
+    "account_holder_name": "John Doe",
+    "bank_name": "Chase Bank",
+    "swift_code": "CHASUS33",
+    "is_verified": true
+  },
+  "fees": {
+    "total": 0.50,
+    "breakdown": {
+      "processing": 0.30,
+      "network": 0.20
+    }
+  },
+  "compliance_status": {
+    "kyc_verified": true,
+    "aml_verified": true,
+    "travel_rule_verified": true,
+    "regulatory_jurisdiction": "US"
+  },
+  "transaction_metadata": {
+    "customer_reference": "CUST-001",
+    "order_id": "ORDER-12345",
+    "invoice_number": "INV-67890",
+    "description": "On-ramp transaction for stablecoin purchase"
+  },
+  "transaction_hash": null,
+  "created_at": "2025-01-15T10:30:00Z",
+  "updated_at": "2025-01-15T10:30:00Z",
+  "expires_at": "2025-01-15T22:30:00Z",
+  "reference": "onramp-001"
 }
 ```
 
-### Webhook Events
+### 7.4 Create Transaction — Off-Ramp
 
-Webhooks are delivered via the Acceptance Service with HMAC-SHA256 signatures. Clients verify using `X-Signature-256: sha256=<hex>`.
+```bash
+curl -X POST https://api.example.com/v1/api/transactions \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: unique-request-id" \
+  -d '{
+    "account_id": 12345,
+    "direction": "OffRamp",
+    "source_currency": "USDT",
+    "source_amount": 500.00,
+    "target_currency": "USD",
+    "booking_id": 555002,
+    "payment_rail": {
+      "type": "ACH",
+      "country": "US",
+      "currency": "USD"
+    },
+    "bank_account": {
+      "account_number": "1234567890",
+      "routing_number": "021000021",
+      "account_holder_name": "John Doe",
+      "bank_name": "Chase Bank",
+      "swift_code": "CHASUS33",
+      "is_verified": true
+    },
+    "compliance_requirements": {
+      "kyc_required": true,
+      "aml_required": true,
+      "travel_rule_required": false,
+      "regulatory_jurisdiction": "US"
+    },
+    "transaction_metadata": {
+      "customer_reference": "CUST-001",
+      "order_id": "ORDER-12346",
+      "description": "Off-ramp transaction for fiat withdrawal"
+    },
+    "reference": "offramp-001"
+  }'
+```
 
-| Event | Trigger |
-|---|---|
-| `transaction.status_changed` | Any status transition |
-| `compliance.review_required` | Transaction routed to manual AML review |
-| `booking.created` | Rate successfully locked |
-| `booking.expired` | Booking window elapsed without execution |
-| `rate.expired` | Quote validity window elapsed |
+### 7.5 Error Response
 
----
-
-## Compliance & Risk Framework
-
-### AML (Anti-Money Laundering)
-
-Every transaction triggers an AML check before provider execution. The AML Service:
-
-- Screens against OFAC, EU, UN, and local sanctions lists in real-time
-- Computes a `risk_score` (0.0–1.0) using a rule-based engine
-- Routes high-risk transactions (`score > 0.7`) to manual compliance review
-- Publishes `compliance.checked` with `approved | rejected | review_required`
-
-Hard limits enforce that no provider execution begins before an `approved` status is confirmed.
-
-### KYC (Know Your Customer)
-
-KYC status is stored at the account level (`kyc_status` on ACCOUNTS) and checked at transaction initiation — not on each transaction. The platform supports tiered KYC:
-
-- **Tier 1** (basic identity): up to $1,000/day
-- **Tier 2** (enhanced due diligence): up to $50,000/day
-- **Tier 3** (institutional): negotiated limits, full document verification
-
-### Travel Rule (FATF)
-
-For transactions above the FATF threshold ($3,000 USD equivalent), the platform automatically collects and transmits Travel Rule data:
-
-- Originator: name, account number, address, DOB, national ID
-- Beneficiary: same set of fields
-- Submitted to counterparty VASPs via the `/v1/api/compliance/travel-rule` endpoint before fund movement
-- All Travel Rule exchanges are logged in COMPLIANCE_CHECKS for regulatory audit
-
-### Regulatory Coverage
-
-| Jurisdiction | Standard | Implementation |
-|---|---|---|
-| Singapore | MAS Notice PSN02 | AML screening + CDD + transaction monitoring |
-| Hong Kong | HKMA AML Guideline | Enhanced due diligence, STR filing hooks |
-| EU | 6AMLD / MiCA | Travel Rule, VASP registration checks |
-| US | FinCEN / BSA | CTR auto-filing trigger at $10k threshold |
-
----
-
-## Provider Integration Architecture
-
-### Bank Integration Pattern
-
-All bank integrations implement a common `PaymentProvider` interface:
-
-```go
-type PaymentProvider interface {
-    Initiate(ctx context.Context, req PayoutRequest) (ProviderRef, error)
-    GetStatus(ctx context.Context, ref ProviderRef) (PaymentStatus, error)
-    Cancel(ctx context.Context, ref ProviderRef) error
-    Healthcheck(ctx context.Context) error
+```json
+{
+  "error": {
+    "code": "INVALID_AMOUNT",
+    "message": "Amount must be greater than 0.01",
+    "details": {
+      "field": "source_amount",
+      "value": 0.005,
+      "constraint": "minimum: 0.01"
+    },
+    "request_id": "req_123456789",
+    "timestamp": "2025-01-15T10:30:00Z"
+  }
 }
 ```
 
-This abstraction means the Provider Orchestrator selects among DBS, JPM, Wise, or HDFC purely based on corridor availability, cost, and SLA — the routing logic is decoupled from any individual bank's API specifics.
+---
 
-Each integration wraps:
-- **Authentication** (OAuth2, API Key, mTLS) — handled per-provider, hidden from core logic
-- **Retry logic** — exponential backoff with jitter, max 3 attempts
-- **Timeout handling** — 30s hard timeout; slow provider triggers fallback routing
-- **Credential rotation** — API keys stored in AWS Secrets Manager, rotated quarterly
+## 8. Webhooks
 
-### Crypto Provider Integration
-
-Stablecoin operations (mint/burn) are executed against Circle (USDC) and Tether (USDT) APIs. Both are wrapped in the same provider interface as banks — the Payout Service sees a unified `CryptoProvider` abstraction.
-
-**Custody:** All wallets are managed through Fireblocks MPC. No raw private key ever exists in application memory. Transaction signing uses threshold signature schemes distributed across geographically separated hardware security modules.
-
-**Supported networks:** Ethereum mainnet, Polygon, Binance Smart Chain. Network selection is driven by current gas costs and settlement speed requirements.
-
-### Provider Selection Logic
-
-The Provider Orchestrator scores available providers on each transaction using:
+### 8.1 Event Types
 
 ```
-score = (1 - normalized_cost) × 0.4
-      + availability_rate      × 0.35
-      + (1 - p95_latency_norm) × 0.25
+rate.expired
+booking.created
+booking.expired
+transaction.status_changed
+compliance.review_required
+webhook.test
 ```
 
-Providers below 99.5% availability or with open incidents are automatically excluded from routing until health is restored.
+### 8.2 Webhook Payload — transaction.status_changed
+
+```json
+{
+  "event": "transaction.status_changed",
+  "data": {
+    "id": 1001,
+    "account_id": 12345,
+    "direction": "OnRamp",
+    "status": "success",
+    "previous_status": "pending"
+  },
+  "timestamp": "2025-01-15T10:30:00Z",
+  "webhook_id": "wh_123456789"
+}
+```
+
+### 8.3 Travel Rule Data
+
+```json
+{
+  "travel_rule_data": {
+    "transaction_id": "tx_123456789",
+    "originator": {
+      "name": "John Doe",
+      "account_number": "1234567890",
+      "address": "123 Main St, New York, NY 10001",
+      "date_of_birth": "1990-01-01",
+      "national_id": "SSN123456789"
+    },
+    "beneficiary": {
+      "name": "Jane Smith",
+      "account_number": "0987654321",
+      "address": "456 Oak Ave, London, UK",
+      "date_of_birth": "1985-05-15",
+      "national_id": "UK123456789"
+    },
+    "transaction_details": {
+      "amount": 5000.00,
+      "currency": "USDT",
+      "purpose": "Business payment",
+      "reference": "Invoice #12345"
+    },
+    "compliance_status": "approved",
+    "regulatory_jurisdiction": "US",
+    "threshold_exceeded": true,
+    "reporting_required": true
+  }
+}
+```
 
 ---
 
-## Treasury & Liquidity Management
+## 9. Provider Integrations
 
-The platform maintains pre-funded stablecoin liquidity pools to enable instant off-ramp execution without waiting for external mint operations.
+### 9.1 DBS Bank Singapore
 
-### Liquidity Pool Design
+```json
+{
+  "integration_id": "dbs_bank_sg",
+  "provider_name": "DBS Bank Singapore",
+  "type": "bank",
+  "metadata": {
+    "country": "SG",
+    "bank_code": "7171",
+    "supported_rails": ["SEPA", "SWIFT", "FAST"],
+    "supported_currencies": ["USD", "SGD", "EUR"],
+    "payout_limits": {
+      "min_amount": 1.00,
+      "max_amount": 1000000.00,
+      "daily_limit": 5000000.00,
+      "monthly_limit": 50000000.00
+    }
+  },
+  "configurations": {
+    "api_endpoint": "https://api.dbs.com",
+    "api_version": "v2",
+    "authentication_type": "oauth2",
+    "webhook_url": "https://api.example.com/webhooks/dbs",
+    "timeout_seconds": 30,
+    "retry_attempts": 3
+  },
+  "capabilities": ["transfer", "balance_check", "transaction_status"],
+  "is_active": true,
+  "rate_limits": {
+    "requests_per_minute": 100,
+    "requests_per_hour": 1000,
+    "requests_per_day": 10000
+  },
+  "created_at": "2025-01-01T00:00:00Z",
+  "updated_at": "2025-01-15T10:00:00Z"
+}
+```
 
-| Pool | Target Balance | Yield Strategy | Auto-Rebalance |
-|---|---|---|---|
-| USDC | $10M | Circle Yield (4.5% APY) | Yes — triggers at ±10% drift |
-| USDT | $5M | Tether Reserve yield | Yes — triggers at ±10% drift |
+### 9.2 Circle USDC
 
-Pools are distributed across multiple custodians (Circle, Coinbase, Binance) with a maximum 40% concentration per custodian to manage counterparty risk.
+```json
+{
+  "integration_id": "circle_usdc",
+  "provider_name": "Circle USDC",
+  "type": "crypto",
+  "metadata": {
+    "provider_type": "stablecoin_issuer",
+    "supported_networks": [
+      {
+        "network": "ethereum",
+        "chain_id": 1,
+        "rpc_url": "https://mainnet.infura.io/v3/...",
+        "explorer_url": "https://etherscan.io"
+      }
+    ],
+    "supported_tokens": [
+      {
+        "symbol": "USDC",
+        "contract_address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "decimals": 6,
+        "network": "ethereum"
+      }
+    ],
+    "fees": {
+      "mint_fee": 0.0,
+      "burn_fee": 0.0,
+      "transfer_fee": 0.0,
+      "gas_fee_multiplier": 1.0
+    }
+  },
+  "configurations": {
+    "api_endpoint": "https://api.circle.com",
+    "api_version": "v1",
+    "authentication_type": "api_key",
+    "webhook_url": "https://api.example.com/webhooks/circle",
+    "timeout_seconds": 30,
+    "retry_attempts": 3,
+    "gas_limit": 21000,
+    "gas_price": "20"
+  },
+  "capabilities": ["mint", "burn", "transfer", "balance_check", "transaction_status"],
+  "is_active": true,
+  "rate_limits": {
+    "requests_per_minute": 100,
+    "requests_per_hour": 1000,
+    "requests_per_day": 10000
+  },
+  "created_at": "2025-01-01T00:00:00Z",
+  "updated_at": "2025-01-15T10:00:00Z"
+}
+```
 
-### Rebalancing
+### 9.3 Tether USDT
 
-The auto-rebalance algorithm fires when a pool drifts beyond 10% of its target. A rebalance:
-1. Calculates the delta needed to return to target
-2. Identifies the cheapest on-chain transfer path
-3. Executes the transfer and logs to `PROVIDER_TRANSACTIONS`
-4. Alerts the treasury team via PagerDuty if manual override is needed
+```json
+{
+  "integration_id": "tether_usdt",
+  "provider_name": "Tether USDT",
+  "type": "crypto",
+  "metadata": {
+    "provider_type": "stablecoin_issuer",
+    "supported_networks": [
+      {
+        "network": "ethereum",
+        "chain_id": 1,
+        "rpc_url": "https://mainnet.infura.io/v3/...",
+        "explorer_url": "https://etherscan.io"
+      }
+    ],
+    "supported_tokens": [
+      {
+        "symbol": "USDT",
+        "contract_address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        "decimals": 6,
+        "network": "ethereum"
+      }
+    ],
+    "fees": {
+      "mint_fee": 0.0,
+      "burn_fee": 0.0,
+      "transfer_fee": 0.0,
+      "gas_fee_multiplier": 1.0
+    }
+  },
+  "configurations": {
+    "api_endpoint": "https://api.tether.to",
+    "api_version": "v1",
+    "authentication_type": "api_key",
+    "webhook_url": "https://api.example.com/webhooks/tether",
+    "timeout_seconds": 30,
+    "retry_attempts": 3,
+    "gas_limit": 21000,
+    "gas_price": "20"
+  },
+  "capabilities": ["mint", "burn", "transfer", "balance_check", "transaction_status"],
+  "is_active": true,
+  "rate_limits": {
+    "requests_per_minute": 100,
+    "requests_per_hour": 1000,
+    "requests_per_day": 10000
+  },
+  "created_at": "2025-01-01T00:00:00Z",
+  "updated_at": "2025-01-15T10:00:00Z"
+}
+```
 
-An emergency drain endpoint (`POST /v1/api/treasury/emergency`) halts all new transactions and initiates an orderly wind-down of open positions — tested quarterly as part of business continuity drills.
+### 9.4 Fireblocks MPC Custody
+
+```json
+{
+  "custody_provider": {
+    "provider_id": "fireblocks_mpc",
+    "name": "Fireblocks MPC",
+    "custody_type": "MPC",
+    "api_endpoint": "https://api.fireblocks.io",
+    "supported_networks": [
+      "ethereum",
+      "polygon",
+      "binance_smart_chain"
+    ],
+    "security_features": [
+      "threshold_signatures",
+      "hardware_security_modules",
+      "geographic_distribution",
+      "key_rotation"
+    ],
+    "compliance_features": [
+      "travel_rule_support",
+      "regulatory_reporting",
+      "audit_trails",
+      "risk_monitoring"
+    ]
+  }
+}
+```
 
 ---
 
-## Non-Functional Architecture
+## 10. Treasury Management
 
-### Performance
+```json
+{
+  "treasury_management": {
+    "liquidity_pools": {
+      "usdc_pool": {
+        "total_balance": 10000000.00,
+        "available_balance": 8000000.00,
+        "reserved_balance": 2000000.00,
+        "yield_rate": 0.045,
+        "provider_distribution": {
+          "circle": 0.6,
+          "coinbase": 0.3,
+          "binance": 0.1
+        }
+      },
+      "usdt_pool": {
+        "total_balance": 5000000.00,
+        "available_balance": 4000000.00,
+        "reserved_balance": 1000000.00,
+        "yield_rate": 0.038,
+        "provider_distribution": {
+          "tether": 0.7,
+          "binance": 0.3
+        }
+      }
+    },
+    "risk_metrics": {
+      "total_exposure": 15000000.00,
+      "counterparty_risk": 0.15,
+      "market_risk": 0.08,
+      "liquidity_ratio": 0.85,
+      "stress_test_score": 0.92
+    },
+    "rebalancing_strategy": {
+      "auto_rebalance": true,
+      "rebalance_threshold": 0.1,
+      "max_single_provider": 0.4,
+      "emergency_reserve_ratio": 0.2
+    }
+  }
+}
+```
 
-- **API acknowledgement:** < 100ms (p95) — Core Service commits ledger and returns before any external call
-- **AML screening:** < 2s (p95) — parallel list screening with local cache for hot entities
-- **Full settlement:** payment-rail dependent (ACH: 1-3 days; SEPA: same day; FAST/PromptPay: seconds)
-- **Stablecoin mint/burn:** 30-90s depending on network congestion
+### Treasury Endpoints
 
-### Availability
-
-- Core Service and API Gateway: 99.99% SLA (multi-AZ ECS, auto-scaling)
-- Kafka: 3-broker cluster with replication factor 3; no data loss on single-node failure
-- Database: CockroachDB multi-region cluster; automatic failover < 30s
-
-### Security
-
-- All data in transit: TLS 1.3
-- All data at rest: AES-256 (AWS KMS-managed keys)
-- PAN/account numbers: tokenised at ingest; raw values never written to logs
-- Penetration testing: quarterly, with findings tracked to closure
-- PCI DSS compliance: SAQ-D scope management, quarterly ASV scans
-
-### Observability
-
-- **Metrics:** Datadog with custom dashboards per payment corridor (success rate, latency, volume, error rate)
-- **Distributed tracing:** OpenTelemetry traces spanning API → Core Service → Payout Service → Provider
-- **Alerting:** P1 pages within 30s of success rate dropping below 99%; P2 on latency p95 exceeding 1s
-- **Audit logging:** every state transition written to an immutable append-only `AUDIT_LOGS` table and replicated to S3 for 7-year retention (regulatory requirement)
-
----
-
-## About the Author
-
-**Tony Aizize** is a Software Engineering Manager and de-facto Payments Architect with 10+ years building production payment infrastructure across APAC, EMEA, and the US.
-
-- **Current:** Software Engineering Manager, Payments & FX Infra at Aspire Financial Technologies (Singapore)
-- **Past:** Senior SDE (Payments) at Thunes — integrated GrabPay, TikTok Pay, Alipay and 40+ APAC providers; migrated legacy Perl systems to Go, handling 2M+ daily transactions
-- **Integrations delivered:** 50+ banks and payment providers (JPM, DBS, Wise, PayPal, Stripe, RippleNet, Circle, and more)
-- **Volume handled:** $50M+ monthly transaction volume; 500+ TPS at peak
-- **Education:** M.Tech Software Engineering (NUS, 2023) · Graduate Diploma Systems Science (NUS, 2016) · B.Sc Management Science & Engineering (CUFE Beijing, 2015)
-- **Certifications:** AWS Certified Solutions Architect (Associate)
-
-The architecture documented in this portfolio reflects patterns developed and battle-tested across multiple production deployments. The open-source reference implementation, **Taymas-Bank**, containing annotated bank integration samples in Go, is planned for public release in late 2025.
-
----
-
-*tony.aizize@you.co · linkedin.com/in/tony007 · github.com/Aibier*
+```
+GET  /v1/api/treasury/liquidity
+POST /v1/api/treasury/rebalance
+GET  /v1/api/treasury/yield
+GET  /v1/api/treasury/risk
+POST /v1/api/treasury/emergency
+```
