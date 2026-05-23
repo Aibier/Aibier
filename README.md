@@ -17,7 +17,7 @@ Currently leading **20+ engineers** at **[YouTrip](https://www.you.co)** 🇸�
 
 ✅ 🇸🇬 **YouTrip**: Leading MCA and YouBiz engineering teams, owning core card capabilities including 3DS, top-ups, and business accounts.  
 ✅ 🇸🇬 **Aspire**: Architected payment infrastructure (building multi-currency business accounts) across Singapore 🇸🇬, Hong Kong 🇭🇰, and Australia 🇦🇺; designed microservices-based payment service architecture integrating with business virtual account, payout and FX providers.  
-✅ 🌐 **Thunes**: Integrated 15+ payment partners including Alipay 🟦, DBS 🏦, Grab 🟢, RippleNet 🔵, MoneyGram 💸.  
+✅ 🌐 **Thunes**: Integrated 15+ payment partners including Alipay, DBS, Grab, RippleNet, MoneyGram.  
 
 ### 🔹 Architecture Expertise
 
@@ -25,7 +25,7 @@ Currently leading **20+ engineers** at **[YouTrip](https://www.you.co)** 🇸�
 
 ### 🔹 Tech Stack
 
-🐹 **Golang** | 🐍 Python | ☕ Java | 📨 Kafka | 🐘 PostgreSQL | 🔴 Redis | 🐳 Docker | ☁️ AWS | ☸️ Kubernetes
+🐹 **Golang** | Python | Java | Kafka | PostgreSQL | Redis | Docker | AWS | ☸️ Kubernetes
 
 ---
 
@@ -35,10 +35,10 @@ Always open to connecting with fellow fintech builders and payment enthusiasts �
 
 - 📫 **Reach Me**: [LinkedIn](https://www.linkedin.com/in/tony007/)  
 - 🎓 **Education**:
-  - 🏫 Management Essentials by HBS Online (2025)
-  - 🎓 Bachelor’s in Management Science and Engineering, Central University of Finance & Economics (2011), Beijing 🇨🇳
-  - 🎓 Master’s in Computer Science, National University of Singapore (2015) 🇸🇬
+  - 🏫 Management Essentials by Harvard Business School (2025)
   - 🎓 Master of Technology in Software Engineering (including big data engineering and scalable system design), National University of Singapore (2021) 🇸🇬
+  - 🎓 Master’s in Computer Science, National University of Singapore (2015) 🇸🇬
+  - 🎓 Bachelor’s in Management Science and Engineering, Central University of Finance & Economics (2011), Beijing 🇨🇳
 
 ---
 
@@ -71,18 +71,18 @@ Always open to connecting with fellow fintech builders and payment enthusiasts �
 
 ## 🚀 Impactful Projects & Bank Integrations  
 
-Over the last **7 years**, I’ve successfully integrated with **50+ banks and payment providers** across APAC 🌏, EMEA 🌍, and the US 🌎, enabling multi‑currency, real‑time, and cross‑border money movement.  
+Over the last **7 years**, I’ve successfully integrated with **50+ banks and payment providers** across APAC, EMEA, and the US, enabling multi‑currency, real‑time, and cross‑border money movement.  
 
 **Key Integrations:**  
-- 🌐 **Global Payment Networks**: Alipay 🟦, WeChat Pay 🟢, PayPal 🔵, Stripe 🟣, MoneyGram 💸, RippleNet 🔵  
-- 💱 **FX & Cross‑Border Providers**: Wise 🟢, CurrencyCloud, Thunes  
-- 🏦 **Major Banks**: J.P. Morgan 🇺🇸, DBS Bank 🇸🇬🇭🇰, Citibank 🇺🇸, Standard Chartered 🇬🇧, CZBank 🇨🇳, HDFC Bank 🇮🇳, SeaBank 🇸🇬, 9Pay 🇻🇳  
+- 🌐 **Global Payment Networks**: Alipay, WeChat Pay, PayPal, Stripe, MoneyGram, RippleNet  
+- 💱 **FX & Cross‑Border Providers**: Wise, CurrencyCloud, Thunes  
+- 🏦 **Major Banks**: J.P. Morgan, DBS Bank 🇸🇬🇭🇰, Citibank, Standard Chartered, CZBank 🇨🇳, HDFC Bank 🇮🇳, SeaBank 🇸🇬, 9Pay 🇻🇳, Bank Alfalah, Siam Commercial bank, KBank, MayBank (MY)
 - 🏧 **Others**: Regional clearing systems and direct debit platforms  
 
 **Highlight Projects:**  
-- 🌍 **Cross‑Border Payment Platform** → Unified FX and payout microservices handling $50M+ monthly volume  
+- 🌍 **Cross‑Border Payment Platform** → Unified FX and payout microservices handling $1B+ monthly volume  
 - 🏦 **Core Banking System** → Architected high‑availability modules for account management & reconciliation  
-- 🔓 **Taymas‑Bank** → *(Planned open‑source release by end of 2025 — contains all major bank integration samples, stay tuned 👀)*  
+- 🔓 **Taymas‑Bank** → *(Planned open‑source release by end of 2026 — contains all major bank integration samples, stay tuned 👀)*  
 
 ---
 
@@ -90,19 +90,19 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
 
 - 💸 **Payout Service (Payment Integration Microservice)**  
   - **Led engineering team** to design and build a system handling **multi‑currency global payouts** with high throughput and reliability.  
-  - **Managed integration projects** with **JPM 🇺🇸, DBS 🇸🇬, Wise 🟢, HDFC 🇮🇳, PayPal 🔵, Stripe 🟣, RippleNet 🔵, and 40+ other providers**.  
+  - **Managed integration projects** with **JPM 🇺🇸, DBS 🇸🇬, Wise, HDFC 🇮🇳, PayPal, Stripe, RippleNet 🔵, and 40+ other providers**.  
   - **Architected event‑driven flows** via Kafka for near real‑time processing, ensuring team alignment on technical decisions.  
 
 - 🔔 **Acceptance Service (Payment Webhook Service)**  
   - **Led cross-functional team** to architect a **real‑time payment acceptance platform** handling webhook‑driven transaction updates for merchants across multiple regions.  
   - **Managed SLA commitments** ensuring **real‑time 100% availability and acknowledgement to providers**.  
   - **Coordinated compliance initiatives** integrating **fraud detection workflows** in alignment with **MAS** 🇸🇬 and **HKMA** 🇭🇰 regulatory standards.  
-  - **Directed technical architecture** for **horizontal scalability** and **high availability** using AWS ☁️, Kafka 📨, and Redis 🔴, ensuring resilience during traffic spikes.  
+  - **Directed technical architecture** for **horizontal scalability** and **high availability** using AWS ☁️, Kafka 📨, and Redis, ensuring resilience during traffic spikes.  
   - **Implemented monitoring strategies** improving transaction success rates and lowering fraud risk through **event‑driven monitoring and alerting** with Datadog 📊.  
 
 - 🟢 **Grab and TikTok Payment Processor (Thunes)**  
-  - **Led technical team** as **Tech Lead** overseeing the integration of **GrabPay** 🟢 and **TikTok Influencer Pay** 🎵 into Thunes’ global cross‑border payment platform.  
-  - **Managed high-volume operations** supporting **2M+ daily transactions** ⚡, ensuring low‑latency processing and high availability across APAC 🌏 markets.  
+  - **Led technical team** as **Tech Lead** overseeing the integration of **GrabPay** and **TikTok Influencer Pay** 🎵 into Thunes’ global cross‑border payment platform.  
+  - **Managed high-volume operations** supporting **2M+ daily transactions** ⚡, ensuring low‑latency processing and high availability across APAC markets.  
   - **Directed engineering efforts** for custom API bridges and routing logic to handle **regional settlement and compliance requirements**, reducing integration timelines by **50%**.  
   - **Delivered business impact** enabling merchants to process **millions of transactions monthly** with reduced latency and improved reliability.  
 
@@ -112,7 +112,7 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
 - 🏦 **Core Banking System**  
   - **Managed architecture design** for high‑availability modules handling **account management and reconciliation**.  
 
-- 🔓 **Taymas‑Bank** *(Open‑sourcing planned by end of 2025 — stay tuned 👀)*  
+- 🔓 **Taymas‑Bank** *(Open‑sourcing planned by end of 2026 — stay tuned 👀)*  
 
 ---
 
