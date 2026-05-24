@@ -142,7 +142,7 @@ I’m looking to connect with professionals who have **solid expertise in buildi
 
 - 📋 **[Resume/CV](https://github.com/Aibier/Aibier/blob/main/resume.pdf)** - Download my latest resume
 - 📖 **[Technical Portfolio](https://github.com/Aibier/Aibier/blob/main/portfolio.pdf)** - Detailed technical projects and achievements
-- 🏦 **[Bank Integration Guide](https://github.com/Aibier/bank-integrations.pdf)** - Comprehensive guide to payment system integrations
+- 🏦 **[Bank Integration Guide](https://drive.google.com/file/d/19g5SY3wFXJeZKx0nm6leUdoQecCtkABr/view?usp=sharing)** - Comprehensive guide to payment system integrations
 
 ---
 
