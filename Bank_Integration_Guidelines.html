@@ -1,0 +1,2695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Integration Guidelines — Engineering Leader's Playbook</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f172a;
+            --secondary: #1e293b;
+            --accent: #3b82f6;
+            --accent-dark: #1e40af;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --neutral: #64748b;
+            --light: #f8fafc;
+            --border: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.15);
+        }
+
+        header h1 {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .author-info {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.95em;
+            opacity: 0.85;
+        }
+
+        .author-info a {
+            color: #60a5fa;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .author-info a:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        nav a {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--light);
+            color: var(--accent);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 1px solid var(--border);
+        }
+
+        nav a:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Sections */
+        section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: var(--primary);
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        h4 {
+            font-size: 1.1em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Checklist Styles */
+        .checklist {
+            margin: 20px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .checklist-group {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, rgba(59, 130, 246, 0.02) 100%);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .checklist-group-title {
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 12px;
+            font-size: 1.05em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checklist li {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 6px;
+            border-left: 3px solid var(--border);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .checklist li:hover {
+            border-left-color: var(--accent);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.02) 100%);
+        }
+
+        .checkbox {
+            min-width: 24px;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            transition: all 0.3s ease;
+            margin-top: 2px;
+        }
+
+        .checkbox:hover {
+            border-color: var(--accent);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .checklist li.checked .checkbox {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .checklist-text {
+            flex: 1;
+        }
+
+        .checklist-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .checklist-detail {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+
+        table thead {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            color: white;
+        }
+
+        table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border: none;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        table tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+        table tbody tr:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, rgba(59, 130, 246, 0.02) 100%);
+        }
+
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Badge & Status Styles */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-required {
+            background: rgba(239, 68, 68, 0.15);
+            color: #b91c1c;
+        }
+
+        .badge-recommended {
+            background: rgba(245, 158, 11, 0.15);
+            color: #b45309;
+        }
+
+        .badge-optional {
+            background: rgba(100, 116, 139, 0.15);
+            color: #334155;
+        }
+
+        .badge-live {
+            background: rgba(16, 185, 129, 0.15);
+            color: #047857;
+        }
+
+        .badge-beta {
+            background: rgba(59, 130, 246, 0.15);
+            color: #1e40af;
+        }
+
+        /* Call-out boxes */
+        .callout {
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid;
+            background-color: rgba(0,0,0,0.02);
+        }
+
+        .callout-important {
+            border-left-color: var(--danger);
+            background-color: rgba(239, 68, 68, 0.05);
+        }
+
+        .callout-tip {
+            border-left-color: var(--success);
+            background-color: rgba(16, 185, 129, 0.05);
+        }
+
+        .callout-warning {
+            border-left-color: var(--warning);
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .callout-important .callout-title {
+            color: #b91c1c;
+        }
+
+        .callout-tip .callout-title {
+            color: #047857;
+        }
+
+        .callout-warning .callout-title {
+            color: #b45309;
+        }
+
+        /* Grid layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, rgba(59, 130, 246, 0.02) 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .card h4 {
+            margin-top: 0;
+            color: var(--accent);
+        }
+
+        /* Code blocks */
+        code {
+            background: var(--light);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--secondary);
+        }
+
+        pre {
+            background: var(--primary);
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 10px 0;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        footer a:hover {
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 40px 20px;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav a {
+                display: block;
+                text-align: center;
+            }
+        }
+
+        /* Interactive elements */
+        .expand-section {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .expand-section:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-intro {
+            font-size: 1.05em;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Bank Integration Guidelines</h1>
+            <p>A comprehensive playbook for engineering teams integrating with banking and payment infrastructure worldwide</p>
+            <div class="author-info">
+                <p><strong>Author:</strong> <a href="https://www.linkedin.com/in/tony007/" target="_blank">Tony Aizize</a>, Payment Infrastructure Architect</p>
+                <p>✅ 10+ years building mission-critical payment platforms | ✅ Leading 20+ engineers | ✅ 50+ banks & providers globally | ✅ Processing billions of dollars annually</p>
+                <p><strong>Experience:</strong> Card Issuing · FX/Cross-Border · Ledger Design · Microservices · Multi-Currency Wallets · Business Accounts · APAC Market Expansion</p>
+                <p style="margin-top: 12px;">
+                    <strong>Connect:</strong> 
+                    <a href="https://github.com/Aibier" target="_blank">GitHub: github.com/Aibier</a> · 
+                    <a href="https://www.linkedin.com/in/tony007/" target="_blank">LinkedIn: tony007</a>
+                </p>
+            </div>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#discovery">Discovery Checklist</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#security">Security</a></li>
+                <li><a href="#protocols">Core Protocols</a></li>
+                <li><a href="#sandbox">Sandbox Stability</a></li>
+                <li><a href="#fx-rates">FX Rates & Locking</a></li>
+                <li><a href="#stablecoin-currency">Stablecoins</a></li>
+                <li><a href="#challenges">Challenges & Mitigations</a></li>
+                <li><a href="#compliance">Compliance</a></li>
+                <li><a href="#readiness">Production Readiness</a></li>
+            </ul>
+        </nav>
+
+        <!-- DISCOVERY SECTION -->
+        <section id="discovery">
+            <h2>Pre-Integration Discovery Checklist</h2>
+            <p class="section-intro">
+                Complete this checklist <strong>before writing a single line of code</strong>. Incomplete discovery is the #1 cause of integration delays. 
+                Every provider implements standards differently—don't assume standard behavior.
+            </p>
+
+            <div class="callout callout-important">
+                <div class="callout-title">⚠️ Critical Warning</div>
+                Skipping discovery items results in costly rework, missed go-live deadlines, and production incidents. All items must be resolved and documented before sandbox access is granted.
+            </div>
+
+            <h3>1️⃣ Discovery & Requirement Gathering</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Core Services & Coverage</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Supported Payment Services</span>
+                            <span class="checklist-detail">Confirm support for: payouts, collections, FX conversion, balance inquiry, virtual accounts, statement inquiry <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Geographic & Currency Coverage</span>
+                            <span class="checklist-detail">Obtain complete list of supported countries, currencies, and transaction types per market <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Volume & Settlement SLAs</span>
+                            <span class="checklist-detail">Document expected daily/monthly transaction volumes and settlement time-to-finality (T+0, T+1, T+3, etc.) <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Provider Onboarding Timeline</span>
+                            <span class="checklist-detail">Confirm provider's onboarding duration, certification requirements, and support SLAs <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Technical Documentation</span>
+                            <span class="checklist-detail">Collect API specs, OpenAPI/Swagger files, integration guides, test card numbers, and error code mappings <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Rate Limit Configuration</span>
+                            <span class="checklist-detail">Clarify TPS limits, burst allowances, per-endpoint caps, and hard vs. soft limits <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>2️⃣ Authentication & Authorization</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Auth Model & Credentials</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Authentication Method</span>
+                            <span class="checklist-detail">Identify auth type: Client ID/Secret, OAuth2, mTLS, API Key, JWT, or custom. Get detailed flow documentation. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">OAuth Flows & Token Expiry</span>
+                            <span class="checklist-detail">Confirm refresh token duration, authorization code grant requirements, and token rotation policies <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Certificates & Key Exchange</span>
+                            <span class="checklist-detail">Obtain mTLS certificates, RSA keys, webhook signing secrets, and certificate expiry schedules <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Callback & Redirect URIs</span>
+                            <span class="checklist-detail">Register all OAuth redirect URIs and webhook callback endpoints (including sandbox and production) <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Token-Endpoint Rate Limits</span>
+                            <span class="checklist-detail">Clarify any separate rate limits on authentication endpoints to prevent auth storms <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Encryption & Payload Signing</span>
+                            <span class="checklist-detail">Confirm if request/response encryption or signing is required; obtain algorithm specs and test samples <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>3️⃣ Connectivity & Network Setup</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Infrastructure & Environment Configuration</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Static IP Requirements</span>
+                            <span class="checklist-detail">Confirm if static IPs are needed for outbound requests; document IP ranges for both sandbox and production <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">VPN / VPC Peering Setup</span>
+                            <span class="checklist-detail">Request and validate VPN or VPC peering for sandbox and production; test connectivity before go-live <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Ports & Protocols</span>
+                            <span class="checklist-detail">Document all required ports (443 for HTTPS, custom ports for SFTP, etc.) and protocol requirements <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">IP Allowlisting</span>
+                            <span class="checklist-detail">Determine if inbound/outbound IP allowlisting is required; document provider IP ranges for whitelisting <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Sandbox Connectivity Validation</span>
+                            <span class="checklist-detail">Perform end-to-end connectivity test in sandbox before requesting production credentials <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Test Credentials & Static IDs</span>
+                            <span class="checklist-detail">Obtain test API keys, merchant IDs, application IDs, OrgID, and all static identifiers <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>4️⃣ API & Webhook Behavior</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Integration Patterns & Event Handling</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Sync vs. Async API Behavior</span>
+                            <span class="checklist-detail">Clarify API response patterns: synchronous (instant response), asynchronous (eventual consistency), or hybrid <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Webhook Documentation</span>
+                            <span class="checklist-detail">Obtain webhook event types, payload schemas, delivery guarantees, and signature algorithm details <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Idempotency Strategy</span>
+                            <span class="checklist-detail">Align on idempotency key usage for outbound requests AND inbound webhook deduplication <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Reconciliation Files</span>
+                            <span class="checklist-detail">Obtain reconciliation file formats (CSV, XML), delivery mechanism (SFTP, API), and frequency (daily, hourly) <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Technical Kickoff Session</span>
+                            <span class="checklist-detail">Schedule and attend provider technical onboarding workshop with API team and DevOps <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>5️⃣ Testing & Certification</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">UAT & Production Readiness</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Provider Test Scenarios</span>
+                            <span class="checklist-detail">Obtain happy-path, failure, and edge-case test scenarios; document all decline codes and error states <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Sandbox Availability & Longevity</span>
+                            <span class="checklist-detail">Confirm sandbox is permanent or time-limited (some providers deactivate after 90 days); plan accordingly <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Certification Checklist</span>
+                            <span class="checklist-detail">Confirm if provider requires sign-off on specific test cases or certification process before production <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Production Lead Time</span>
+                            <span class="checklist-detail">Document required lead time from UAT sign-off to production enablement (typically 5-10 business days) <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>6️⃣ Operations & Support</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Ongoing Maintenance & Escalation</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Communication Channels</span>
+                            <span class="checklist-detail">Document primary, secondary, and emergency contact channels; confirm response SLAs <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Maintenance Windows</span>
+                            <span class="checklist-detail">Clarify how maintenance notifications are communicated; document typical outage windows <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Escalation Contacts</span>
+                            <span class="checklist-detail">Obtain technical, commercial, and executive escalation contacts with availability info <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">SLA Terms</span>
+                            <span class="checklist-detail">Document uptime SLAs, incident response times, and support hours (24x7, business hours, etc.) <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="callout callout-tip">
+                <div class="callout-title">✅ Discovery Completion Indicator</div>
+                All connectivity items must be green before moving to sandbox. Incomplete network setup (VPN, IP allowlisting, certificate exchange) is the #1 cause of integration delays. Schedule a 30-minute kickoff call with your internal DevOps/Security team AND the provider's technical team to work through this together.
+            </div>
+        </section>
+
+        <!-- ARCHITECTURE SECTION -->
+        <section id="architecture">
+            <h2>Payment Integration Architecture</h2>
+            <p class="section-intro">
+                A proven four-layer architecture for designing scalable, maintainable, and secure payment integrations.
+            </p>
+
+            <h3>Four-Layer Integration Stack</h3>
+            <div class="grid-2">
+                <div class="card">
+                    <h4>Layer 1: Presentation</h4>
+                    <p><strong>Responsibility:</strong> User-facing payment collection</p>
+                    <p><strong>Components:</strong> Client SDKs, hosted payment pages, 3DS iframes, mobile payment sheets</p>
+                    <p><strong>Ownership:</strong> Frontend & Mobile teams</p>
+                </div>
+                <div class="card">
+                    <h4>Layer 2: API Gateway</h4>
+                    <p><strong>Responsibility:</strong> Request validation & routing</p>
+                    <p><strong>Components:</strong> Rate limiting, auth validation, idempotency enforcement, request transformation</p>
+                    <p><strong>Ownership:</strong> Platform/Infrastructure team</p>
+                </div>
+                <div class="card">
+                    <h4>Layer 3: Processing Core</h4>
+                    <p><strong>Responsibility:</strong> Transaction logic & business rules</p>
+                    <p><strong>Components:</strong> Fraud scoring (Sardine, Seon), rule engine, currency conversion, fee calculation</p>
+                    <p><strong>Ownership:</strong> Payment Engineering team</p>
+                </div>
+                <div class="card">
+                    <h4>Layer 4: Settlement Layer</h4>
+                    <p><strong>Responsibility:</strong> Banking rails integration</p>
+                    <p><strong>Components:</strong> Bank connectors, ledger, reconciliation, reporting, payout scheduling</p>
+                    <p><strong>Ownership:</strong> Payments Operations & Finance</p>
+                </div>
+            </div>
+
+            <h3>Request Lifecycle</h3>
+            <p>Every payment request follows this standardized flow:</p>
+            <ol style="margin-left: 20px; line-height: 2;">
+                <li><strong>Client Initiation:</strong> Client submits payment via SDK or API with payment method details</li>
+                <li><strong>Gateway Validation:</strong> API Gateway validates JWT token, checks rate limits, enforces idempotency</li>
+                <li><strong>Fraud Scoring:</strong> Request routed to Processing Core for fraud detection and rule evaluation</li>
+                <li><strong>Network Routing:</strong> If fraud score passes threshold, transaction sent to appropriate bank connector</li>
+                <li><strong>Synchronous Response:</strong> Bank response mapped to canonical status and returned immediately to client</li>
+                <li><strong>Asynchronous Confirmation:</strong> Webhook fires for final settlement status (T+0 to T+3 depending on network)</li>
+            </ol>
+
+            <div class="callout callout-tip">
+                <div class="callout-title">💡 Best Practice: Canonical Status Mapping</div>
+                Always map provider-specific status codes to an internal canonical enum. This abstraction prevents vendor lock-in, simplifies multi-provider support, and makes status transitions explicit and testable.
+            </div>
+        </section>
+
+        <!-- SECURITY SECTION -->
+        <section id="security">
+            <h2>API Authentication & Security</h2>
+            <p class="section-intro">
+                Security is the foundation of every payment integration. This section covers authentication patterns, request signing, and mandatory controls.
+            </p>
+
+            <h3>OAuth 2.0 & JWT Authentication</h3>
+            <p>Most modern payment APIs require a signed JWT in the Authorization header. Tokens expire after a short period (typically 15 minutes). Refresh tokens are long-lived (typically 30 days).</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Control</th>
+                        <th>Requirement</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Token Storage</td>
+                        <td>Never in localStorage. Use secure server-side vaults (HashiCorp Vault, AWS Secrets Manager, Azure Key Vault)</td>
+                        <td><span class="badge badge-required">Required</span></td>
+                    </tr>
+                    <tr>
+                        <td>Token Expiry</td>
+                        <td>Assume 15-minute access token TTL. Implement proactive refresh before expiry.</td>
+                        <td><span class="badge badge-required">Required</span></td>
+                    </tr>
+                    <tr>
+                        <td>Client Secret Rotation</td>
+                        <td>Rotate every 90 days AND immediately upon suspected compromise</td>
+                        <td><span class="badge badge-required">Required</span></td>
+                    </tr>
+                    <tr>
+                        <td>Scope Restriction</td>
+                        <td>Request minimum necessary scopes. Avoid wildcard permissions.</td>
+                        <td><span class="badge badge-recommended">Recommended</span></td>
+                    </tr>
+                    <tr>
+                        <td>Token Logging</td>
+                        <td>Never log access/refresh tokens or secrets in application logs or monitoring systems</td>
+                        <td><span class="badge badge-required">Required</span></td>
+                    </tr>
+                    <tr>
+                        <td>Separate Token Rate Limits</td>
+                        <td>Clarify if auth endpoint has separate rate limits to prevent auth storms</td>
+                        <td><span class="badge badge-recommended">Recommended</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Request Signing (HMAC-SHA256)</h3>
+            <p>High-value transactions (typically >$10,000) require an additional signature over the canonical request string to prevent tampering and replay attacks.</p>
+
+            <h4>Canonical Request Format</h4>
+            <pre>METHOD\nPATH\nTIMESTAMP\nBODY_SHA256</pre>
+
+            <h4>Signature Computation</h4>
+            <pre>HMAC-SHA256(signing_secret, canonical_string)</pre>
+
+            <h4>Key Security Considerations</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Timestamp Validation:</strong> Reject requests with timestamps older than 5 minutes to prevent replay attacks</li>
+                <li><strong>Body Canonicalization:</strong> JSON bodies must be serialized consistently (sorted keys, no extra whitespace)</li>
+                <li><strong>Secret Rotation:</strong> Rotate signing secrets on the same 90-day schedule as client secrets</li>
+                <li><strong>Idempotency Integration:</strong> Include idempotency key in signed payload to prevent replay with different keys</li>
+            </ul>
+
+            <h3>Mandatory Security Controls</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Control</th>
+                        <th>Implementation</th>
+                        <th>Standard</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>TLS Version</td>
+                        <td>TLS 1.2 or higher enforced on ALL endpoints</td>
+                        <td>PCI-DSS</td>
+                    </tr>
+                    <tr>
+                        <td>Certificate Pinning</td>
+                        <td>Recommended for mobile SDKs to prevent MITM attacks</td>
+                        <td>Best Practice</td>
+                    </tr>
+                    <tr>
+                        <td>PII Encryption at Rest</td>
+                        <td>All PII fields encrypted using AES-256</td>
+                        <td>GDPR/CCPA</td>
+                    </tr>
+                    <tr>
+                        <td>Audit Logs</td>
+                        <td>Retained for 7 years, immutable, with tamper detection</td>
+                        <td>SOX/PCI</td>
+                    </tr>
+                    <tr>
+                        <td>Webhook Timeout</td>
+                        <td>Endpoints must respond within 5 seconds</td>
+                        <td>Operational</td>
+                    </tr>
+                    <tr>
+                        <td>Webhook HTTPS Only</td>
+                        <td>All webhook endpoints MUST use HTTPS, including sandbox</td>
+                        <td>Security</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout callout-important">
+                <div class="callout-title">🔒 Token Management Best Practice</div>
+                Implement a token refresh loop that proactively refreshes tokens before expiry. Store tokens in a in-memory cache with automatic refresh on 401 errors. Never trust token TTL claims from clients—always validate server-side.
+            </div>
+        </section>
+
+        <!-- CORE PROTOCOLS SECTION -->
+        <section id="protocols">
+            <h2>Core Integration Protocols</h2>
+            <p class="section-intro">
+                Universal API patterns for payment processing: payment intents, idempotency, and refunds.
+            </p>
+
+            <h3>Payment Intent Pattern</h3>
+            <p>A <code>PaymentIntent</code> represents the complete lifecycle of a charge attempt. Always create server-side to prevent tampering.</p>
+
+            <h4>PaymentIntent Status State Machine</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Meaning</th>
+                        <th>Next States</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>requires_payment_method</code></td>
+                        <td>Awaiting payment method attachment</td>
+                        <td>→ requires_confirmation</td>
+                    </tr>
+                    <tr>
+                        <td><code>requires_confirmation</code></td>
+                        <td>Payment method attached, awaiting confirmation</td>
+                        <td>→ processing, canceled</td>
+                    </tr>
+                    <tr>
+                        <td><code>processing</code></td>
+                        <td>Authorization in-flight with network</td>
+                        <td>→ succeeded, failed</td>
+                    </tr>
+                    <tr>
+                        <td><code>succeeded</code></td>
+                        <td>Funds captured (terminal)</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><code>failed</code></td>
+                        <td>Declined or errored (terminal)</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><code>canceled</code></td>
+                        <td>Voided before capture (terminal)</td>
+                        <td>—</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout callout-tip">
+                <div class="callout-title">💡 State Machine Implementation</div>
+                Implement explicit state machine logic for PaymentIntent statuses. Handle terminal states as irreversible. Never assume linear progression. Use webhooks for asynchronous transitions rather than polling.
+            </div>
+
+            <h3>Refunds & Reversals</h3>
+            <h4>Key Considerations</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Partial Refunds:</strong> Supported by most providers. Specify the exact refund amount.</li>
+                <li><strong>Refund Reasons:</strong> Use standardized codes: <code>requested_by_customer</code>, <code>duplicate</code>, <code>fraudulent</code></li>
+                <li><strong>Settlement Timing:</strong> Full refunds take 5-10 business days to appear on customer statements</li>
+                <li><strong>Idempotency:</strong> ALWAYS use idempotency key to prevent accidental duplicate refunds</li>
+                <li><strong>Metadata:</strong> Attach support ticket references for reconciliation tracking</li>
+            </ul>
+
+            <h3>Idempotency Key Strategy</h3>
+            <p><strong>Rule:</strong> Retain idempotency keys for at least 24 hours after request completes. Most providers cache responses for 24 hours.</p>
+            <p><strong>Format:</strong> Use UUID v4 or <code>merchant_id:request_id:attempt</code> pattern for easy tracking</p>
+            <p><strong>Scope:</strong> Must be unique per (merchant, endpoint, request_body) tuple to prevent unintended deduplication</p>
+        </section>
+
+        <!-- SANDBOX STABILITY SECTION -->
+        <section id="sandbox">
+            <h2>Sandbox Stability for Continuous Integration</h2>
+            <p class="section-intro">
+                The sandbox environment is your foundation for long-term development. Unlike production, sandbox must be <strong>stable, predictable, and permanently available</strong> as you build and iterate continuously. This section covers strategies for maintaining sandbox integrity and scaling your integration sustainably.
+            </p>
+
+            <div class="callout callout-important">
+                <div class="callout-title">🚨 Critical: Sandbox as Long-Term Foundation</div>
+                Sandbox instability will compound integration pain as your system scales. Many teams discover sandbox issues only after weeks of integration work. Plan for sandbox to be your permanent testing environment, not a throwaway.
+            </div>
+
+            <h3>1️⃣ Sandbox Longevity & Availability</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Confirming Sandbox Will Remain Available</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Confirm Sandbox Permanence</span>
+                            <span class="checklist-detail"><strong>Critical:</strong> Ask provider explicitly: "Is sandbox available indefinitely, or only during integration phase?" Some providers deactivate sandbox 90 days after go-live. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Sandbox Data Purge Policy</span>
+                            <span class="checklist-detail">Document if/when sandbox data is purged (daily, weekly, monthly, never). Plan test data setup accordingly. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Maintenance Windows & Notifications</span>
+                            <span class="checklist-detail">Get schedule for sandbox maintenance. Understand how provider notifies of planned downtime. Document SLA expectations. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Sandbox Feature Parity with Production</span>
+                            <span class="checklist-detail">Confirm all production features are available in sandbox. Identify any limitations or differences. Document them. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Sandbox Credential Rotation</span>
+                            <span class="checklist-detail">Understand sandbox credential lifecycle. Are sandbox API keys permanent, or do they expire? Plan credential management accordingly. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>2️⃣ Test Data Management for Continuous Integration</h3>
+            <p class="section-intro">
+                Stable test data is essential for reproducible testing across sprints and quarters. Build a test data strategy that survives purges and scales with your test suite.
+            </p>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Test Data Setup & Maintenance</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Idempotent Test Data Setup Scripts</span>
+                            <span class="checklist-detail">Create scripts that can re-create test data (merchants, accounts, payment methods) from scratch. Run on every major test cycle. Commit to Git. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Test Merchant IDs & Virtual Accounts</span>
+                            <span class="checklist-detail">Create stable test merchant accounts that survive sandbox purges. Use clear naming: <code>test-merchant-payments-team-001</code>, <code>test-merchant-qa-regression-001</code> <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Test Payment Method Library</span>
+                            <span class="checklist-detail">Maintain a catalog of test cards/methods for all scenarios: success, insufficient funds, 3DS, network timeout, etc. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Sandbox FX Rates & Pricing</span>
+                            <span class="checklist-detail">Confirm if FX rates in sandbox match production or differ. If sandbox uses fixed rates, use them for testing stability. Document any differences. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Documentation of All Test Scenarios</span>
+                            <span class="checklist-detail">Keep a README in your test data repo listing all test cards, merchants, and what each tests. Update whenever you add new scenarios. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>3️⃣ Sandbox Scenario Simulation & Determinism</h3>
+            <p class="section-intro">
+                Sandbox must behave deterministically. You need to be able to reproduce issues reliably without random variation or provider-side randomness interfering with your tests.
+            </p>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Deterministic Scenario Control</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Provider Scenario Headers (if supported)</span>
+                            <span class="checklist-detail">Some providers allow headers like <code>X-Sandbox-Scenario: decline_insufficient_funds</code> to trigger specific outcomes. Document all available scenarios. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Settlement Delay Simulation</span>
+                            <span class="checklist-detail">If provider supports <code>X-Sandbox-Settlement-Delay: 3d</code>, use it to test async settlement flows without waiting. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Webhook Delivery Testing</span>
+                            <span class="checklist-detail">Test webhook delivery in sandbox: success, delayed delivery, duplicate delivery. Some providers have webhook simulation tools. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">3DS Challenge Simulation</span>
+                            <span class="checklist-detail">Use sandbox 3DS test cards to reliably trigger 3DS challenges without human intervention. Test both success and failure paths. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Network Latency/Timeout Simulation</span>
+                            <span class="checklist-detail">If provider supports, simulate timeouts and degraded network. Test your retry logic at scale without affecting production. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>4️⃣ Continuous Integration & Automated Sandbox Testing</h3>
+            <p class="section-intro">
+                As your system evolves, sandbox testing must be automated in your CI/CD pipeline. This catches integration regressions early and ensures sandbox stability is validated on every merge.
+            </p>
+            <div class="checklist-group">
+                <div class="checklist-group-title">CI/CD Sandbox Integration</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Automated Sandbox Smoke Tests</span>
+                            <span class="checklist-detail">Run minimal happy-path tests on every PR: create payment intent, confirm transaction, verify webhook. Should complete in <1 minute. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Regression Test Suite</span>
+                            <span class="checklist-detail">Build comprehensive test suite covering all API operations. Run nightly or on-demand. Document test coverage per endpoint. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Idempotency Key Validation</span>
+                            <span class="checklist-detail">Automated test: send same request twice with same idempotency key, verify identical response returned. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Webhook Delivery Verification</span>
+                            <span class="checklist-detail">Automated webhook listener: trigger transaction, verify webhook arrives within expected time window. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Token Refresh Testing</span>
+                            <span class="checklist-detail">Automated test: verify token refresh works, expired tokens are rejected, new tokens work. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Rate Limit Handling Validation</span>
+                            <span class="checklist-detail">Automated load test: hit sandbox at 110% expected TPS, verify rate limiting doesn't drop transactions. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>5️⃣ Monitoring & Health Checks for Sandbox</h3>
+            <p class="section-intro">
+                Sandbox uptime issues should be detected immediately, not discovered when your team starts testing. Monitor sandbox like you monitor production.
+            </p>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Sandbox Observability</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Synthetic Health Check Every 5 Minutes</span>
+                            <span class="checklist-detail">Ping sandbox auth endpoint every 5 minutes. Alert if health check fails for 2+ consecutive checks. Logs to monitoring system. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">API Latency Tracking</span>
+                            <span class="checklist-detail">Log p50, p95, p99 latencies for each endpoint. Alert if p99 latency exceeds baseline by >50%. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Webhook Delivery Monitoring</span>
+                            <span class="checklist-detail">Track webhook delivery success rate, average delivery time. Alert if delivery time exceeds 10 seconds. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Sandbox Availability Dashboard</span>
+                            <span class="checklist-detail">Public dashboard (internal) showing sandbox uptime, recent incidents, maintenance windows. Share with team. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Incident Log for Sandbox Issues</span>
+                            <span class="checklist-detail">Document any sandbox outages, data corruption, or provider bugs. Share post-mortems with provider. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>6️⃣ Scaling: From Single Team to Enterprise</h3>
+            <p class="section-intro">
+                As multiple teams use sandbox (payments, mobile, web, operations), sandbox must support concurrent testing without interference.
+            </p>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Multi-Team Sandbox Usage</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Isolated Test Merchant Accounts</span>
+                            <span class="checklist-detail">Create separate test merchants per team: <code>test-mobile-team</code>, <code>test-web-team</code>, <code>test-api-team</code>. Prevent cross-contamination. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">TPS Quota Per Team</span>
+                            <span class="checklist-detail">If sandbox has fixed TPS limits, allocate quota: 5 TPS per team for smoke tests, central load test pool with 10 TPS. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Sandbox Reservation System</span>
+                            <span class="checklist-detail">For load tests (110% TPS), require booking 48 hours in advance. Prevents chaos from concurrent load tests. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Shared Runbook & FAQ</span>
+                            <span class="checklist-detail">Document sandbox quirks, common issues, and solutions. Update as teams encounter issues. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>7️⃣ Sandbox-Specific Testing Strategy</h3>
+            <p class="section-intro">
+                Sandbox tests differ from production tests. Your test strategy must account for sandbox's eventual-consistency and async nature.
+            </p>
+
+            <h4>Test Categories</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Type</th>
+                        <th>Frequency</th>
+                        <th>Responsibility</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Smoke Tests</strong></td>
+                        <td>Every PR commit</td>
+                        <td>CI/CD pipeline</td>
+                        <td>Basic happy path: auth → create payment → confirm. <2 min runtime.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Regression Suite</strong></td>
+                        <td>Nightly + before release</td>
+                        <td>QA team</td>
+                        <td>All API operations, decline codes, webhooks. ~30 min runtime.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Load Tests</strong></td>
+                        <td>Monthly or before scaling</td>
+                        <td>Performance team</td>
+                        <td>110% peak TPS for 30 minutes. Measure latency distribution.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chaos Tests</strong></td>
+                        <td>Quarterly</td>
+                        <td>Infrastructure team</td>
+                        <td>Provider outage simulation, network failures, webhook delays.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security Tests</strong></td>
+                        <td>Before major release</td>
+                        <td>Security team</td>
+                        <td>Auth edge cases, token theft scenarios, encryption validation.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout callout-tip">
+                <div class="callout-title">💡 Best Practice: Sandbox as Truth</div>
+                Treat sandbox as your "source of truth" for integration behavior. If behavior differs between sandbox and production, investigate immediately. This often uncovers configuration or environment setup issues before they hit production.
+            </div>
+
+            <h3>8️⃣ Troubleshooting Sandbox Issues</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Common Sandbox Problems & Solutions</div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Problem</th>
+                        <th>Likely Cause</th>
+                        <th>Debug Steps</th>
+                        <th>Resolution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Webhook not delivering</td>
+                        <td>Endpoint timeout, signature mismatch, or 5xx response</td>
+                        <td>Check logs for 5xx, verify signature verification code, test endpoint availability</td>
+                        <td>Ensure endpoint responds <5s, implement async processing, fix signature validation</td>
+                    </tr>
+                    <tr>
+                        <td>Sandbox credentials stopped working</td>
+                        <td>Token expired, secret rotated, or credentials purged with data</td>
+                        <td>Request fresh credentials from provider, check token expiry handling</td>
+                        <td>Store credentials in .env, implement token refresh before expiry</td>
+                    </tr>
+                    <tr>
+                        <td>Idempotency key not being respected</td>
+                        <td>Key not unique, or provider cache expired (>24h)</td>
+                        <td>Verify key format, check request timestamps, retry within 24h window</td>
+                        <td>Use UUID v4 keys, retain cache for 24h minimum</td>
+                    </tr>
+                    <tr>
+                        <td>3DS challenge not triggering</td>
+                        <td>Using wrong test card or return URL not HTTPS</td>
+                        <td>Use card 4000 0025 0000 3155, verify return_url is HTTPS</td>
+                        <td>Update test card list, ensure HTTPS even in sandbox</td>
+                    </tr>
+                    <tr>
+                        <td>Rate limit errors (429) in sandbox</td>
+                        <td>Exceeding sandbox TPS cap (typically 10-20 TPS)</td>
+                        <td>Check request rate, implement client-side throttling, spread requests over time</td>
+                        <td>Reduce test concurrency, use token bucket rate limiter, stagger requests</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout callout-tip">
+                <div class="callout-title">📝 Sandbox Testing Mindset</div>
+                Sandbox instability early is a gift—it forces you to build resilient code before production. Issues you catch in sandbox won't surprise you at 2 AM in production.
+            </div>
+        </section>
+
+        <!-- ERROR HANDLING SECTION -->
+        <section id="errors">
+            <h2>Error Handling & Retry Logic</h2>
+            <p class="section-intro">
+                Robust error handling separates production-grade integrations from fragile ones. Follow RFC 7807 Problem Details format. Never expose stack traces in production.
+            </p>
+
+            <h3>HTTP Status Code Reference & Retry Strategy</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Meaning</th>
+                        <th>Action</th>
+                        <th>Retry?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>200</td>
+                        <td>Success</td>
+                        <td>Process response</td>
+                        <td>✗</td>
+                    </tr>
+                    <tr>
+                        <td>400</td>
+                        <td>Bad request / validation error</td>
+                        <td>Fix payload, don't retry</td>
+                        <td>✗</td>
+                    </tr>
+                    <tr>
+                        <td>401</td>
+                        <td>Unauthenticated (token expired)</td>
+                        <td>Refresh token, retry once</td>
+                        <td>✓ (once)</td>
+                    </tr>
+                    <tr>
+                        <td>402</td>
+                        <td>Card declined</td>
+                        <td>Retry only for soft declines</td>
+                        <td>✓ (conditional)</td>
+                    </tr>
+                    <tr>
+                        <td>403</td>
+                        <td>Forbidden (insufficient scope)</td>
+                        <td>Don't retry, escalate</td>
+                        <td>✗</td>
+                    </tr>
+                    <tr>
+                        <td>409</td>
+                        <td>Idempotency key conflict</td>
+                        <td>Reuse existing response</td>
+                        <td>✗</td>
+                    </tr>
+                    <tr>
+                        <td>422</td>
+                        <td>Unprocessable entity</td>
+                        <td>Fix request, don't retry</td>
+                        <td>✗</td>
+                    </tr>
+                    <tr>
+                        <td>429</td>
+                        <td>Rate limited</td>
+                        <td>Read Retry-After, wait, re-enqueue</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>500</td>
+                        <td>Internal server error</td>
+                        <td>Exponential back-off with jitter</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>503</td>
+                        <td>Service unavailable</td>
+                        <td>Exponential back-off, circuit breaker</td>
+                        <td>✓</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Exponential Back-off Formula</h3>
+            <pre>delay = base_delay × (2^attempt) + jitter
+
+where:
+  base_delay = 1 second
+  max_attempts = 5
+  jitter = random(0, delay × 0.25)</pre>
+
+            <div class="callout callout-important">
+                <div class="callout-title">⚠️ Never Retry These Errors</div>
+                Do NOT retry on HTTP 400, 403, 409, or 422. These are client-side errors that won't resolve with repetition. Retrying wastes resources and may trigger rate limits.
+            </div>
+        </section>
+
+        <!-- FX RATE LOCKING SECTION -->
+        <section id="fx-rates">
+            <h2>FX Rate Locking & Currency Management</h2>
+            <p class="section-intro">
+                FX rate fluctuations can cause disputes, reconciliation headaches, and regulatory issues if not managed carefully. This section covers rate locking strategies, validity windows, and handling currency conversions at scale.
+            </p>
+
+            <div class="callout callout-important">
+                <div class="callout-title">🚨 Critical: Rate Locking Prevents Customer Disputes</div>
+                A customer expects to pay exactly $100 USD, not $100.50 due to FX slippage between quote and payment. Without explicit rate locking, you'll face chargebacks and disputes. Document your rate policy clearly.
+            </div>
+
+            <h3>1️⃣ FX Rate Locking Strategy</h3>
+            <p class="section-intro">
+                FX rates must be locked at a clear, documented point in the transaction lifecycle. Ambiguity here causes customer disputes and reconciliation failures.
+            </p>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Rate Locking Decision Points</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Define Rate Locking Point Explicitly</span>
+                            <span class="checklist-detail"><strong>Critical decision:</strong> Rate locked at quote time, payment intent creation, or confirmation? Document in customer-facing UI. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Rate Validity Window</span>
+                            <span class="checklist-detail">How long is a quoted rate valid? Typical: 30s for instant payments, 5 minutes for checkout, 1 hour for quote sheets. Document in API. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Rate Spread / Margin</span>
+                            <span class="checklist-detail">Do you apply a markup (e.g., mid-market rate + 0.5%)? Document spread in terms of service and UI. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Rate Refresh Strategy</span>
+                            <span class="checklist-detail">If rate quote expires, do you re-quote or fail the transaction? Define fallback behavior. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Provider Rate Refresh Frequency</span>
+                            <span class="checklist-detail">Confirm provider FX rate sheet refresh schedule (typically every 10-60 seconds). Align with your rate locking window. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>2️⃣ FX Rate Fluctuation Management</h3>
+            <p class="section-intro">
+                FX rates move constantly. You must decide: absorb the loss, pass to customer, or reject transactions outside a tolerance band?
+            </p>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Fluctuation Handling Strategies</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Tolerance Band Definition</span>
+                            <span class="checklist-detail">Define acceptable rate fluctuation: ±0.1%, ±0.5%, ±1%? Use mid-market as baseline. Communicate to customers. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Out-of-Band Fluctuation Handling</span>
+                            <span class="checklist-detail"><strong>Decision:</strong> If rate moves >tolerance: (A) auto-reject & ask for re-quote, (B) absorb delta, (C) pass to customer? Choose one, document it. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Slippage Logging & Monitoring</span>
+                            <span class="checklist-detail">Log every transaction: quoted rate, locked rate, actual settlement rate. Track slippage distribution. Alert if >1% slippage occurs. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Volatility Hedging (Enterprise)</span>
+                            <span class="checklist-detail">For high-volume corridors, consider FX forward contracts to hedge volatility exposure. Coordinate with finance team. <span class="badge badge-optional">Optional</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Weekend / Holiday Rate Gaps</span>
+                            <span class="checklist-detail">FX markets close on weekends. Use Friday EOD rates for weekend transactions, or disable cross-border payments during gaps. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>3️⃣ Rate Locking Implementation Patterns</h3>
+            <h4>Pattern 1: Quote-Time Locking (Recommended for B2C)</h4>
+            <p><strong>Flow:</strong> Customer enters amount → System fetches live rate → Lock rate for 30 seconds → Customer confirms → Payment uses locked rate</p>
+            <p><strong>Pros:</strong> Transparent to customer, prevents surprises, simple implementation</p>
+            <p><strong>Cons:</strong> Must handle quote expiry, requires fast checkout</p>
+
+            <h4>Pattern 2: Payment Intent Locking (Recommended for B2B)</h4>
+            <p><strong>Flow:</strong> Create PaymentIntent → Rate locked at this moment → Customer can pay within 1 hour at locked rate → Settlement uses locked rate</p>
+            <p><strong>Pros:</strong> Longer validity window, reduces customer re-quote spam, clearer audit trail</p>
+            <p><strong>Cons:</strong> Rate locked before payment confirmed (market risk)</p>
+
+            <h4>Pattern 3: Confirmation-Time Locking (Riskiest)</h4>
+            <p><strong>Flow:</strong> Payment confirmed → Rate fetched at confirmation moment → Immediate settlement</p>
+            <p><strong>Pros:</strong> Always latest rate</p>
+            <p><strong>Cons:</strong> Customer doesn't know final amount until confirmation—causes friction & disputes. <strong>Avoid unless you have very low-latency execution.</strong></p>
+
+            <h3>4️⃣ Stablecoin Integration for FX Mitigation</h3>
+            <p class="section-intro">
+                Stablecoins (USDC, USDT, stablecoin-backed currencies) can reduce FX volatility for cross-border payments. Consider them as settlement currency for select corridors.
+            </p>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Stablecoin Considerations</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Stablecoin Selection</span>
+                            <span class="checklist-detail"><strong>Decision:</strong> Which stablecoins to support? (USDC, USDT, EUROC, SGDC?) Evaluate liquidity, regulatory status, issuer trustworthiness. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Stablecoin Corridors & Use Cases</span>
+                            <span class="checklist-detail">Where do stablecoins make sense? Cross-border B2B transfers (low latency, instant settlement). Consumer P2P (emerging markets with high inflation). <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Stablecoin ↔ Fiat Conversion Rates</span>
+                            <span class="checklist-detail">Stablecoins aren't perfectly pegged. Monitor USDC/USD spread on exchanges. Lock spread when quoting conversion from/to fiat. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Blockchain Settlement Risk</span>
+                            <span class="checklist-detail">Stablecoins settle on-chain (Ethereum, Polygon, Solana, etc.). Account for network congestion, variable gas fees, finality delays. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Regulatory Compliance</span>
+                            <span class="checklist-detail">Stablecoin regulations vary by jurisdiction (EU MiCA, Singapore MAS, US state licenses). Consult compliance before launch. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Custody & Private Keys</span>
+                            <span class="checklist-detail">Who holds private keys for stablecoin wallets? (Your company, custodian, user's self-custody?) This affects security, compliance, and liability. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Fallback to Fiat Rails</span>
+                            <span class="checklist-detail">Stablecoins fail (network outage, issuer event). Always have fiat settlement fallback. Design dual-settlement architecture. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>5️⃣ FX Rate Data & Real-Time Updates</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Rate Data Strategy</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Rate Source Redundancy</span>
+                            <span class="checklist-detail">Never rely on single provider for rates. Use primary + fallback sources (Bloomberg, Xe.com, provider API, internal model). <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Rate Update Frequency</span>
+                            <span class="checklist-detail">How often do you refresh rates? Every 10s, 30s, 60s? Faster = better customer experience but higher data costs. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Rate Staleness Detection</span>
+                            <span class="checklist-detail">Alert if rate data becomes stale (older than 2x update frequency). Disable payments rather than quote stale rates. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Rate Caching & TTL</span>
+                            <span class="checklist-detail">Cache rates in-memory with explicit TTL (e.g., 30 seconds). Expire cache aggressively to prevent stale quotes. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Rate Outlier Detection</span>
+                            <span class="checklist-detail">Detect suspicious rate movements (e.g., 10% jump from previous rate). Alert ops. Consider rate as potentially erroneous. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>6️⃣ FX Rate Reconciliation & Audit Trail</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Description</th>
+                        <th>Required?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>quoted_rate</code></td>
+                        <td>Rate shown to customer at quote time</td>
+                        <td><span class="badge badge-required">Required</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>quoted_at</code></td>
+                        <td>Timestamp when rate was quoted (ISO 8601)</td>
+                        <td><span class="badge badge-required">Required</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>rate_validity_seconds</code></td>
+                        <td>How long quoted rate is valid (e.g., 30, 300, 3600)</td>
+                        <td><span class="badge badge-required">Required</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>locked_rate</code></td>
+                        <td>Rate used for final settlement</td>
+                        <td><span class="badge badge-required">Required</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>locked_at</code></td>
+                        <td>Timestamp when rate was locked</td>
+                        <td><span class="badge badge-required">Required</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>settlement_rate</code></td>
+                        <td>Actual rate applied at settlement from provider</td>
+                        <td><span class="badge badge-required">Required</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>slippage_percentage</code></td>
+                        <td>Absolute difference between locked & settlement (for analytics)</td>
+                        <td><span class="badge badge-recommended">Recommended</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>rate_source</code></td>
+                        <td>Where rate came from (provider, internal model, fallback source)</td>
+                        <td><span class="badge badge-recommended">Recommended</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout callout-tip">
+                <div class="callout-title">💡 FX Rate Best Practice: The "Quote → Lock → Settle" Pattern</div>
+                Always store three distinct rates: (1) quoted_rate shown to customer, (2) locked_rate committed to customer, (3) settlement_rate applied by provider. This triple audit trail resolves 99% of FX disputes and makes reconciliation bulletproof.
+            </div>
+        </section>
+
+        <!-- STABLECOIN CURRENCY SECTION -->
+        <section id="stablecoin-currency">
+            <h2>Stablecoin & Alternative Currency Strategies</h2>
+            <p class="section-intro">
+                Beyond traditional fiat currencies, stablecoins and emerging currencies (CBDCs, regional digital currencies) offer settlement alternatives with different tradeoffs. This section covers architecture patterns, regulatory considerations, and when to use them.
+            </p>
+
+            <h3>1️⃣ Stablecoin vs. Fiat Settlement Comparison</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dimension</th>
+                        <th>Traditional Fiat (USD, EUR, SGD)</th>
+                        <th>Stablecoins (USDC, EUROC)</th>
+                        <th>CBDCs (e-SGD, e-EUR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Settlement Speed</strong></td>
+                        <td>1-3 business days (SWIFT) or T+1 (ACH)</td>
+                        <td>15-60 seconds on-chain</td>
+                        <td>Instant (programmatic)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost</strong></td>
+                        <td>$0.50-$25 per payment (bank fees)</td>
+                        <td>$0.01-$5 (variable gas fees)</td>
+                        <td>$0 (government-subsidized)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Regulatory Maturity</strong></td>
+                        <td>Fully established globally</td>
+                        <td>Emerging (MiCA in EU, evolving in US/APAC)</td>
+                        <td>Pilot phase (limited jurisdictions)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Counterparty Risk</strong></td>
+                        <td>Bank/central bank risk</td>
+                        <td>Issuer risk (Circle, Tether, PayPal)</td>
+                        <td>Central bank (very low)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Liquidity</strong></td>
+                        <td>Unlimited (interbank markets)</td>
+                        <td>Good for major pairs (USDC), emerging for regional</td>
+                        <td>Limited (new market)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Network Dependency</strong></td>
+                        <td>None (traditional banking network)</td>
+                        <td>Blockchain network (Ethereum, Polygon, etc.)</td>
+                        <td>Central ledger (government-run)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Volatility Risk</strong></td>
+                        <td>FX volatility (between fiat pairs)</td>
+                        <td>Stablecoin peg risk + underlying FX volatility</td>
+                        <td>None (government-backed peg)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Use Case Fit</strong></td>
+                        <td>All use cases (incumbent standard)</td>
+                        <td>Cross-border B2B, emerging markets, crypto-native</td>
+                        <td>Domestic payments, government interop</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>2️⃣ Multi-Currency Architecture for Stablecoins</h3>
+            <p class="section-intro">
+                If you support both fiat and stablecoins, your architecture must handle conversion, routing, and fallback seamlessly.
+            </p>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Stablecoin Integration Architecture</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Dual Settlement Layer</span>
+                            <span class="checklist-detail">Layer 4 (Settlement) must support multiple rails: fiat (SWIFT/ACH), stablecoins (blockchain), CBDCs (when available). Route based on user preference. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Currency Conversion Engine</span>
+                            <span class="checklist-detail">Fiat ↔ Stablecoin conversion needs its own logic: check stablecoin peg, apply spread, handle slippage separately from FX. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Atomic Swap / Bridge Architecture</span>
+                            <span class="checklist-detail">User sends USD, system converts to USDC, settles on-chain, converts back to SGD at destination. Coordinate with liquidity partners. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Failover from Stablecoin to Fiat</span>
+                            <span class="checklist-detail">If blockchain network is congested or stablecoin peg breaks, automatically failover to fiat settlement. Must be seamless to user. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Wallet Infrastructure for Stablecoins</span>
+                            <span class="checklist-detail">Do users have wallets? (Self-custody, managed wallets, sub-accounts?) Define custody model before launch. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>3️⃣ Stablecoin Liquidity & Corridor Selection</h3>
+            <p class="section-intro">
+                Stablecoins work best for specific corridors where liquidity is deep. Don't launch support for all currency pairs simultaneously.
+            </p>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Corridor Launch Strategy</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Liquidity Analysis by Corridor</span>
+                            <span class="checklist-detail">Research stablecoin liquidity for target corridors: USDC/USDT/USDC.e on Ethereum, Polygon, Solana? Check 24h volume. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Blockchain Network Selection</span>
+                            <span class="checklist-detail">Which blockchain(s) for stablecoins? Ethereum (high fees, high liquidity), Polygon (lower fees, growing), Solana (fast, but less mature)? <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">On-Ramp / Off-Ramp Partners</span>
+                            <span class="checklist-detail">Need liquidity partners to convert fiat ↔ stablecoin at scale: Kraken, Fireblocks, Airtm, MoonPay, etc. Evaluate rates & speed. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Pilot Corridors</span>
+                            <span class="checklist-detail">Start with 1-2 high-liquidity corridors (e.g., USDC SGD→PHP or USD→USDC stablecoin in emerging markets). Expand after proving model. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Spread vs. Liquidity Tradeoff</span>
+                            <span class="checklist-detail">Stablecoin routes have lower spread but higher operational complexity. Quantify: is 0.1% spread saving worth the 10% higher engineering cost? <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>4️⃣ Blockchain & Crypto-Specific Risks</h3>
+            <p class="section-intro">
+                Stablecoins live on blockchains. You inherit blockchain risks: network congestion, failed transactions, network forks, smart contract bugs.
+            </p>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Blockchain Risk Mitigation</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Gas Fee Volatility</span>
+                            <span class="checklist-detail">On Ethereum, gas fees can spike 10x during network congestion. Build dynamically adjustable fee calculation. Set cap: refuse transaction if gas > X% of payment. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Transaction Finality Monitoring</span>
+                            <span class="checklist-detail">Track transaction status: pending → confirmed (1 block) → final (12+ blocks). Don't assume finality until >12 blocks on Ethereum. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Failed/Reverted Transaction Handling</span>
+                            <span class="checklist-detail">Transactions can fail after gas is spent (contract revert, out-of-liquidity). Detect & retry with higher gas, or escalate. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Network Fork / Reorganization Risk</span>
+                            <span class="checklist-detail">Blockchains can reorganize (reorg). After 12 blocks, risk is negligible, but policy: how many blocks = settled? <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Smart Contract Audit</span>
+                            <span class="checklist-detail">Any custom contracts? Get external audit from reputable firm (OpenZeppelin, Trail of Bits, Certik). <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Bridge Risk (If Using Cross-Chain)</span>
+                            <span class="checklist-detail">Bridges (Polygon to Ethereum, etc.) have ~1-10% annual loss risk. Mitigate by using reputable bridges (Aave Portal, Stargate). <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>5️⃣ Regulatory & Compliance for Stablecoins</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jurisdiction</th>
+                        <th>Regulatory Status</th>
+                        <th>Key Requirements</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>EU (MiCA)</strong></td>
+                        <td>Regulated (MiCA effective 2024)</td>
+                        <td>Crypto service provider license required. USDC/stablecoins must be E-Money Tokens or Asset Referenced Tokens. Full KYC/AML.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Singapore</strong></td>
+                        <td>Regulated (MAS Payment Services Act)</td>
+                        <td>Money Services License required for stablecoin issuance or provision. USDC generally allowed. KYC/AML mandatory.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>US</strong></td>
+                        <td>Fragmented (federal + state)</td>
+                        <td>State Money Transmitter License (varies per state). Federal reporting for >$10k. SEC monitoring for issuers.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hong Kong</strong></td>
+                        <td>Emerging (SFC oversight)</td>
+                        <td>Stablecoin trading platforms require SFC license. USDC trading allowed. Clear KYC/AML policies.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Philippines</strong></td>
+                        <td>Emerging (BSP guidance)</td>
+                        <td>No explicit stablecoin ban. KYC/AML required. Operating through regulated exchanges recommended.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout callout-important">
+                <div class="callout-title">⚠️ Regulatory Risk: Stablecoin regulations change rapidly</div>
+                What's allowed today may be prohibited tomorrow. Have legal counsel monitor regulatory developments. Build architecture to quickly disable stablecoin routes if regulations shift. Never commit >3-6 months ahead on stablecoin roadmap without legal sign-off.
+            </div>
+        </section>
+
+        <!-- INTEGRATION CHALLENGES SECTION -->
+        <section id="challenges">
+            <h2>Common Integration Challenges & Mitigation</h2>
+            <p class="section-intro">
+                Bank integrations are rarely frictionless. This section documents real-world challenges your team will face and proven strategies to overcome them.
+            </p>
+
+            <h3>1️⃣ Authentication & Credential Issues</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Challenge: OAuth Token Expiry & Refresh Token Complications</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Refresh token expires without notice</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> Integration works for days, then sudden 401 Unauthorized on all requests. <strong>Root cause:</strong> Refresh token silently expired (many providers have 30-90 day TTL). <strong>Mitigation:</strong> Track token and refresh token expiry separately. Implement alerting when refresh token has <7 days until expiry. Have process to re-authenticate before expiry. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Provider rotates API keys without notification</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> Valid requests suddenly fail with 401. <strong>Root cause:</strong> Provider rotated client secret (typically every 90 days), and you didn't know. <strong>Mitigation:</strong> Ask provider for explicit rotation schedule. Rotate YOUR client secret proactively (don't wait for provider). Have fallback to secondary credentials during rotation window. Build monitoring to detect auth failures <1 minute after secret rotation. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Sandbox vs. Production credentials get confused</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> Tests pass in sandbox, but production environment uses old/wrong API key. <strong>Root cause:</strong> Credentials stored in wrong place or not rotated together. <strong>Mitigation:</strong> Use environment-specific credential vaults (AWS Secrets Manager per env). NEVER check API keys into Git. Implement credential rotation script that updates ALL environments atomically. Test credential validity in health check before processing first transaction. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>2️⃣ API & Protocol Mismatch Issues</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Challenge: API Documentation Mismatches Implementation</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: API spec says field is required, but provider doesn't actually enforce it</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> You include <code>customer_id</code> (supposedly required), but provider ignores it silently. Later, reconciliation shows transactions with <code>null</code> customer_id. <strong>Mitigation:</strong> Test every required field with it missing. Document observed behavior vs. spec. Ask provider to clarify. Build defensive code: make fields optional in parser, but strict in business logic. Log warnings when required fields are missing. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: API returns different response schema than documented</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> You parse <code>transaction.status</code> as string, but it's sometimes an object with <code>code</code> and <code>reason</code> fields. <strong>Mitigation:</strong> Use explicit JSON schema validation (json-schema library). Log and alert on schema mismatches. Never assume response structure—always validate before parsing. Keep detailed logs of all response variations you encounter. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Undocumented rate limits cause cascading failures</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> Provider says 500 req/min limit, but actual limit is 100 req/min per merchant. You hit limit on one merchant and cascade to others. <strong>Mitigation:</strong> Load test extensively in sandbox before production. Use exponential backoff with jitter from day 1 (not as afterthought). Implement per-merchant and global rate limit tracking. Alert when approaching 80% of limit. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>3️⃣ Webhook Delivery & Timing Issues</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Challenge: Webhooks Arrive Out-of-Order or Never Arrive</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Webhook for settlement arrives BEFORE synchronous response confirms payment</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> Your system calls <code>POST /confirm-payment</code>, gets a timeout/503, then 5 seconds later receives webhook saying payment succeeded. Did it succeed or fail? <strong>Mitigation:</strong> Never rely solely on sync response or webhook—require BOTH for settlement. Treat timeout as "unknown" state. Implement idempotency strictly: if you receive webhook for payment you didn't initiate, investigate. Build reconciliation to compare API state vs. webhook state daily. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Webhooks arrive out of order</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> You receive <code>payment_intent.succeeded</code> before <code>payment_intent.processing</code>. Your state machine breaks. <strong>Mitigation:</strong> NEVER assume webhook order. Store event timestamps. Process by timestamp, not by arrival order. Build state machine to handle events arriving in any order. Log out-of-order events. Alert if order is severely jumbled (may indicate provider bug). <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Webhooks never arrive (total black hole)</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> Payment settles on provider side, but webhook never fires. Your system waits forever. <strong>Mitigation:</strong> Implement timeout: if webhook hasn't arrived within SLA window (e.g., 5 minutes for instant payments), query provider API to check status. Reconciliation cron job: every hour, compare received webhooks vs. actual transactions in provider API. Log discrepancies. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>4️⃣ FX & Multi-Currency Challenges</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Challenge: FX Rate Movements Cause Unexpected Losses or Disputes</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Rate expires but you don't detect it</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> You quote customer USD/SGD rate valid for 60 seconds. Customer takes 90 seconds to confirm. You submit payment at old rate, but provider applies current rate (worse for you). <strong>Mitigation:</strong> Always check rate validity window BEFORE submitting payment. If expired, reject and ask for new quote. Log rate expiries. Alert if customer exceeds typical checkout time (may indicate UX friction). <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Stablecoin peg breaks unexpectedly</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> USDC drops to $0.95, causing your stablecoin conversion math to break. You quoted at 1:1, but get $95 instead of $100. <strong>Mitigation:</strong> Monitor stablecoin spot price on exchanges. If peg deviates >0.5%, disable stablecoin routes temporarily. Implement fallback to fiat immediately. Alert ops. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Weekend / holiday FX market closures</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> You send cross-border payment Friday 6 PM, rate freezes, settlement doesn't happen until Monday, rate has moved 1%. <strong>Mitigation:</strong> Disable cross-border payments 2 hours before FX market close on Friday. Use Friday EOD rate for weekend transactions (lock it). Communicate to customers: "Cross-border payments submitted after X will settle Monday at Friday's rate." <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>5️⃣ Sandbox & Production Environment Discrepancies</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Challenge: Code Works in Sandbox But Fails in Production</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Sandbox has different error messages than production</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> Sandbox returns <code>"error": "card_declined"</code>, but production returns <code>"decline_code": "insufficient_funds"</code>. Your error handler breaks. <strong>Mitigation:</strong> Normalize all provider error responses to canonical format immediately after receiving. Don't parse provider errors directly—map them through a translator layer. Test error handling with actual production decline codes (ask provider for test scenarios). <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Production rate limits are much stricter than sandbox</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> Sandbox caps at 50 TPS but production is 200 TPS per merchant (not global). You hit limit on merchant 1 thinking it's global. <strong>Mitigation:</strong> Ask provider for explicit rate limit structure and per-merchant vs. global caps. Load test production tier early (at least with staging credentials). Monitor 429 errors closely in production first week. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Webhook delivery behavior differs between sandbox and production</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> Sandbox delivers webhooks within 1 second. Production takes 30+ seconds. You implement timeout of 10 seconds based on sandbox behavior. <strong>Mitigation:</strong> Set conservative timeouts (5-10 min) for webhook processing, not based on sandbox. Test webhook delivery latency in production staging for a week before main launch. Document observed SLAs. <span class="badge badge-recommended">Recommended</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>6️⃣ Operational & Support Challenges</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Challenge: Provider Support Is Slow, Unresponsive, or Unhelpful</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Critical issue (payment failures) takes 24+ hours to resolve via support</span>
+                            <span class="checklist-detail"><strong>Mitigation:</strong> NEVER rely on email support for critical issues. Require escalation phone line in contract. Have named technical escalation contacts (not just generic support queue). Schedule regular syncs (weekly or bi-weekly) with provider's technical team once in production. Keep relationship warm—they'll prioritize you. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Provider makes breaking API changes without warning</span>
+                            <span class="checklist-detail"><strong>Mitigation:</strong> Monitor provider's API changelog/status page religiously. Join their Slack/Discord community to hear about changes early. Version your API calls explicitly (use <code>/v2/</code> not <code>/</code>). Subscribe to all deprecation notices. Have 6-month notice requirement in contract for breaking changes. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: You don't understand provider's error, and they're not helpful in debugging</span>
+                            <span class="checklist-detail"><strong>Mitigation:</strong> Build comprehensive logging from day 1. Log EVERY request (sanitized) and response. When you hit error, you have full context to debug locally. Don't wait for provider support. Share logs with provider when escalating—makes their job easier and speeds resolution. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>7️⃣ Reconciliation & Settlement Challenges</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Challenge: API Says Payment Succeeded, But Settlement Never Arrives</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Transaction marked "succeeded" but funds never appear in bank account</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> API says <code>payment_intent.succeeded</code>, customer sees charge, but bank doesn't show deposit for days (or ever). <strong>Mitigation:</strong> Reconciliation is NON-NEGOTIABLE. Run daily: compare all "succeeded" API transactions vs. bank settlement file. Flag missing transactions immediately. Escalate >$1000 discrepancies within 1 hour. Have process to refund + investigate missing settlements. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Settlement amount differs from API amount</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> You initiated payment for $1000, received webhook saying succeeded for $1000, but bank deposits $985. $15 missing (provider's fee?). <strong>Mitigation:</strong> Clearly document all fee structures upfront. Ask provider: where are fees deducted? (From amount or charged separately?) Log fee information in payment metadata. Reconciliation should account for fees. If fee differs from expected, investigate immediately. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>8️⃣ Scaling & Performance Challenges</h3>
+            <div class="checklist-group">
+                <div class="checklist-group-title">Challenge: Integration Breaks When Load Increases</div>
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Sudden traffic spike triggers provider's rate limiting</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> You launch marketing campaign, get 10x traffic, payment API returns 429 (rate limited). <strong>Mitigation:</strong> Negotiate higher TPS tiers BEFORE launching growth initiatives. Implement client-side throttling (token bucket) to stay under limit. Queue requests when approaching limit. Alert ops when hitting 80% of limit. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Webhook delivery becomes unreliable under load</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> Under normal load, webhooks arrive 99.9% of time. During peak traffic, 5% are lost. <strong>Mitigation:</strong> Implement webhook queue (not inline processing). Store incoming webhooks to database before processing. Process async from queue. This prevents timeouts and ensures all webhooks are logged. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Problem: Provider's infrastructure can't handle your volume</span>
+                            <span class="checklist-detail"><strong>Symptom:</strong> You reach 50 TPS (well under your 200 TPS tier), but provider's API becomes very slow or times out. <strong>Mitigation:</strong> Stress test provider in sandbox at >100% expected peak. Document observed degradation curve. If provider degrades at your expected volume, escalate immediately. May need to use different provider or negotiate special handling. <span class="badge badge-required">Required</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="callout callout-tip">
+                <div class="callout-title">💡 Universal Challenge Mitigation Strategy</div>
+                For EVERY integration challenge: (1) Implement comprehensive logging, (2) Build monitoring/alerting early, (3) Design degradation paths (when feature fails, what's the fallback?), (4) Automate recovery where possible, (5) Document incident response procedures. Prevention + quick recovery beats trying to prevent all issues.
+            </div>
+        </section>
+
+        <!-- COMPLIANCE SECTION -->
+        <section id="compliance">
+            <h2>Compliance & Regulatory Requirements</h2>
+            <p class="section-intro">
+                Payment integrations operate in a heavily regulated environment. Engage qualified legal and compliance professionals before launching in new markets.
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Regulation</th>
+                        <th>Scope</th>
+                        <th>Key Requirements</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PCI-DSS Level 1</strong></td>
+                        <td>Card data handling</td>
+                        <td>Never store raw card data. Use tokenization or hosted fields. Annual QSA audit required for >6M transactions/year.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PSD2 / SCA</strong></td>
+                        <td>EU/EEA payments</td>
+                        <td>Strong Customer Authentication (2FA) required. Exemptions for low-value (<€30) and trusted beneficiaries.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AML / KYC</strong></td>
+                        <td>Global (amount-dependent)</td>
+                        <td>Customer Due Diligence (CDD) for transactions >$10,000. Suspicious Activity Reports (SARs) within 30 days.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GDPR / CCPA</strong></td>
+                        <td>EU / California</td>
+                        <td>Explicit consent for PII collection, right to erasure, data residency controls. DPA required with processor.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SOX Section 404</strong></td>
+                        <td>US public companies</td>
+                        <td>Financial controls must be documented and attested. Audit logs retained for 7 years.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout callout-important">
+                <div class="callout-title">⚠️ Regulatory Disclaimer</div>
+                Regulations change frequently and vary by jurisdiction. This is a high-level overview only. Always engage qualified legal counsel and compliance specialists before launching in new markets or modifying payment flows.
+            </div>
+        </section>
+
+        <!-- PRODUCTION READINESS SECTION -->
+        <section id="readiness">
+            <h2>Production Readiness Checklist</h2>
+            <p class="section-intro">
+                Before requesting production access, verify every item below is complete. This checklist should be signed off by Engineering Lead, Security Team, and Compliance Team.
+            </p>
+
+            <h3>🔐 Authentication & Security</h3>
+            <div class="checklist-group">
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">OAuth flow tested in sandbox with token refresh</span>
+                            <span class="checklist-detail">Verify token expiry handling, refresh token rotation, and re-authentication flows</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Request signing validated for high-value transactions</span>
+                            <span class="checklist-detail">Test HMAC-SHA256 signing, timestamp validation, and signature verification</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Client secret rotation procedure documented</span>
+                            <span class="checklist-detail">Document 90-day rotation schedule and emergency rotation process</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">IP allowlisting configured for production</span>
+                            <span class="checklist-detail">All static IPs registered with provider, VPN/VPC peering validated</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Webhook signature verification implemented</span>
+                            <span class="checklist-detail">Verify HMAC-SHA256 signatures, reject unverified payloads, test with provider test events</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>🎯 Functionality & API Coverage</h3>
+            <div class="checklist-group">
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Happy path tested for all supported payment methods</span>
+                            <span class="checklist-detail">Cards, bank transfers, digital wallets—test successful completion for each</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">All decline codes handled appropriately</span>
+                            <span class="checklist-detail">Test insufficient funds, expired card, 3DS required, etc. Verify user messaging</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Refund flow tested (full and partial)</span>
+                            <span class="checklist-detail">Test refund initiation, status tracking, and settlement timing</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">3D Secure flow tested end-to-end</span>
+                            <span class="checklist-detail">Test 3DS challenge, OTP verification, and redirect flows</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Multi-currency support validated (if applicable)</span>
+                            <span class="checklist-detail">Test currency conversion, FX rate locking, and settlement in local currency</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>⚡ Reliability & Error Handling</h3>
+            <div class="checklist-group">
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Exponential back-off retry logic implemented</span>
+                            <span class="checklist-detail">Test with simulated delays and failures; verify jitter prevents thundering herd</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Idempotency keys used for all mutating requests</span>
+                            <span class="checklist-detail">Test duplicate request handling; verify same response returned within cache window</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Webhook delivery retry & deduplication logic</span>
+                            <span class="checklist-detail">Store event IDs, discard duplicates, respond within 5 seconds, process async</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Circuit breaker configured for provider outages</span>
+                            <span class="checklist-detail">Fail fast when provider is down; queue requests for retry; monitor health</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Error handling tested for all RFC 7807 error codes</span>
+                            <span class="checklist-detail">Verify user-friendly error messages, no stack traces, proper logging</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>📊 Performance & Scalability</h3>
+            <div class="checklist-group">
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">TPS requirements calculated and tier negotiated</span>
+                            <span class="checklist-detail">Use formula: Peak TPS = (Daily Transactions / Active Hours) × 3.0; document with provider</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Load test passed at 110% of expected peak TPS</span>
+                            <span class="checklist-detail">Run sustained load tests in sandbox; verify no dropped transactions</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">p99 latency < 300ms at peak load</span>
+                            <span class="checklist-detail">Monitor and log latency percentiles; alert if approaching limits</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Rate limit handling tested and monitored</span>
+                            <span class="checklist-detail">Test HTTP 429 responses; implement client-side throttling (token bucket / leaky bucket)</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>🛡️ Compliance & Security</h3>
+            <div class="checklist-group">
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">PCI-DSS scope assessment completed</span>
+                            <span class="checklist-detail">Confirm no card data touches your systems; use tokenization or hosted payment pages</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">GDPR/CCPA data handling review completed</span>
+                            <span class="checklist-detail">Explicit consent for PII; implement right-to-erasure; verify data residency controls</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Audit logging enabled for all payment operations</span>
+                            <span class="checklist-detail">Log all transactions, refunds, webhooks; retain for 7 years; immutable storage</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Security review completed by internal security team</span>
+                            <span class="checklist-detail">Sign-off from security team on auth, encryption, and data handling</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>🚀 Operations & Monitoring</h3>
+            <div class="checklist-group">
+                <ul class="checklist">
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Monitoring and alerting configured for all endpoints</span>
+                            <span class="checklist-detail">Alert on error rate spike, latency degradation, 429 responses, webhook delays</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Runbooks documented for common failure scenarios</span>
+                            <span class="checklist-detail">Token refresh failures, webhook delivery failures, provider outage procedures</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Escalation contacts documented and verified</span>
+                            <span class="checklist-detail">Engineering, security, operations, and provider technical/commercial contacts</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Incident response plan tested</span>
+                            <span class="checklist-detail">Run tabletop exercise for payment system outage; verify communication flow</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="checkbox"></div>
+                        <div class="checklist-text">
+                            <span class="checklist-label">Reconciliation process validated</span>
+                            <span class="checklist-detail">Daily reconciliation of API transactions vs. settlement; document discrepancies</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- REFERENCE SECTION -->
+        <section id="reference">
+            <h2>Quick Reference: Supported Payment Networks</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Network</th>
+                        <th>Type</th>
+                        <th>Settlement Speed</th>
+                        <th>Status</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SWIFT / SEPA</strong></td>
+                        <td>Cross-border wire</td>
+                        <td>1-3 business days</td>
+                        <td><span class="badge badge-live">Live</span></td>
+                        <td>International B2B, high-value transfers</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ACH / NACHA</strong></td>
+                        <td>Domestic batch</td>
+                        <td>Same / next day</td>
+                        <td><span class="badge badge-live">Live</span></td>
+                        <td>US domestic transfers, payroll</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Visa / Mastercard</strong></td>
+                        <td>Card network</td>
+                        <td>T+1</td>
+                        <td><span class="badge badge-live">Live</span></td>
+                        <td>Card payments, global coverage</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RTP / FedNow</strong></td>
+                        <td>Real-time payment</td>
+                        <td>Instant</td>
+                        <td><span class="badge badge-live">Live</span></td>
+                        <td>US real-time transfers, P2P</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Crypto Rails</strong></td>
+                        <td>Stablecoin/USDC</td>
+                        <td>~15 seconds</td>
+                        <td><span class="badge badge-beta">Beta</span></td>
+                        <td>Cross-border, emerging markets</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer>
+            <h3 style="margin-bottom: 20px;">Bank Integration Guidelines</h3>
+            <p><strong>Author:</strong> <a href="https://www.linkedin.com/in/tony007/" target="_blank">Tony Aizize</a>, Payment Infrastructure Architect</p>
+            <p><strong>Last Updated:</strong> May 2026 | <strong>Version:</strong> 1.0</p>
+            <p>Based on 10+ years of experience integrating with 50+ banks and payment providers globally, leading payment infrastructure at scale across APAC</p>
+            <p style="margin-top: 15px;">
+                <strong>Connect:</strong> 
+                <a href="https://github.com/Aibier" target="_blank">GitHub: github.com/Aibier</a> · 
+                <a href="https://www.linkedin.com/in/tony007/" target="_blank">LinkedIn: tony007</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9em;">
+                <strong>Disclaimer:</strong> This guide provides technical guidance only. For regulatory compliance, legal, or financial matters, consult qualified professionals. Always engage your legal and compliance teams before launching in new jurisdictions.
+            </p>
+            <p style="margin-top: 20px; color: #94a3b8;">
+                💡 <strong>Share this guide on LinkedIn</strong> — Payment integration knowledge should be freely accessible to engineering teams building financial products globally.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Interactive checkbox functionality
+        document.querySelectorAll('.checkbox').forEach(checkbox => {
+            checkbox.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.parentElement.parentElement.classList.toggle('checked');
+                this.innerHTML = this.parentElement.parentElement.classList.contains('checked') ? '✓' : '';
+            });
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    window.history.pushState(null, null, this.getAttribute('href'));
+                }
+            });
+        });
+
+        // Persist checkbox state in localStorage
+        const saveState = () => {
+            const state = {};
+            document.querySelectorAll('.checklist li').forEach((item, idx) => {
+                state[idx] = item.classList.contains('checked');
+            });
+            localStorage.setItem('bankIntegrationChecklist', JSON.stringify(state));
+        };
+
+        const loadState = () => {
+            const state = JSON.parse(localStorage.getItem('bankIntegrationChecklist') || '{}');
+            document.querySelectorAll('.checklist li').forEach((item, idx) => {
+                if (state[idx]) {
+                    item.classList.add('checked');
+                    const checkbox = item.querySelector('.checkbox');
+                    checkbox.innerHTML = '✓';
+                }
+            });
+        };
+
+        document.querySelectorAll('.checkbox').forEach(checkbox => {
+            checkbox.addEventListener('click', saveState);
+        });
+
+        // Load saved state on page load
+        window.addEventListener('DOMContentLoaded', loadState);
+    </script>
+</body>
+</html>
