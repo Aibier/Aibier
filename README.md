@@ -1,4 +1,4 @@
-## 👋 Hi there! I’m Tony (aka Aibier)
+## 👋 Hi there! I'm Tony (aka Aibier)
 
 Engineering Leader & hands-on Payment Architect with **10+ years** building mission-critical payment platforms at high-growth fintechs.
 
@@ -31,19 +31,6 @@ Currently **Senior Engineering Manager, Crypto Platform & Infrastructure** at **
 
 ---
 
-I’m passionate about building developer-friendly, resilient payment platforms and driving engineering excellence. I thrive at the intersection of strategy, architecture, and execution, turning complex payments challenges into scalable solutions.
-
-Always open to connecting with fellow fintech builders and payment enthusiasts 🤝
-
-- 📫 **Reach Me**: [LinkedIn](https://www.linkedin.com/in/tony007/)  
-- 🎓 **Education**:
-  - 🏫 Management Essentials by Harvard Business School (2025)
-  - 🎓 Master of Technology in Software Engineering (including big data engineering and scalable system design), National University of Singapore (2021) 🇸🇬
-  - 🎓 Master’s in Computer Science, National University of Singapore (2015) 🇸🇬
-  - 🎓 Bachelor’s in Management Science and Engineering, Central University of Finance & Economics (2011), Beijing 🇨🇳
-
----
-
 ## 🛠️ Technical Skills
 
 **Languages & Frameworks:**
@@ -73,7 +60,7 @@ Always open to connecting with fellow fintech builders and payment enthusiasts �
 
 ## 🚀 Impactful Projects & Bank Integrations  
 
-Over the last **7 years**, I’ve successfully integrated with **50+ banks and payment providers** across APAC, EMEA, and the US, enabling multi‑currency, real‑time, and cross‑border money movement.  
+Over the last **7 years**, I've successfully integrated with **50+ banks and payment providers** across APAC, EMEA, and the US, enabling multi‑currency, real‑time, and cross‑border money movement.  
 
 **Key Integrations:**  
 - 🌐 **Global Payment Networks**: Alipay, WeChat Pay, PayPal, Stripe, MoneyGram, RippleNet  
@@ -103,7 +90,7 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
   - **Implemented monitoring strategies** improving transaction success rates and lowering fraud risk through **event‑driven monitoring and alerting** with Datadog 📊.  
 
 - 🟢 **Grab and TikTok Payment Processor (Thunes)**  
-  - **Led technical team** as **Tech Lead** overseeing the integration of **GrabPay** and **TikTok Influencer Pay** 🎵 into Thunes’ global cross‑border payment platform.  
+  - **Led technical team** as **Tech Lead** overseeing the integration of **GrabPay** and **TikTok Influencer Pay** 🎵 into Thunes' global cross‑border payment platform.  
   - **Managed high-volume operations** supporting **2M+ daily transactions** ⚡, ensuring low‑latency processing and high availability across APAC markets.  
   - **Directed engineering efforts** for custom API bridges and routing logic to handle **regional settlement and compliance requirements**, reducing integration timelines by **50%**.  
   - **Delivered business impact** enabling merchants to process **millions of transactions monthly** with reduced latency and improved reliability.  
@@ -118,9 +105,30 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
 
 ---
 
+## 🏗️ Payment Architecture
+
+<img width="1306" height="720" alt="Screenshot 2025-09-22 at 11 11 12 AM" src="https://github.com/user-attachments/assets/4488e2d0-e5cf-455e-a024-f393776ea4f7" />
+
+---
+
+## 🎓 Background & Education
+
+I'm passionate about building developer-friendly, resilient payment platforms and driving engineering excellence. I thrive at the intersection of strategy, architecture, and execution, turning complex payments challenges into scalable solutions.
+
+Always open to connecting with fellow fintech builders and payment enthusiasts 🤝
+
+- 📫 **Reach Me**: [LinkedIn](https://www.linkedin.com/in/tony007/)  
+- 🎓 **Education**:
+  - 🏫 Management Essentials by Harvard Business School (2025)
+  - 🎓 Master of Technology in Software Engineering (including big data engineering and scalable system design), National University of Singapore (2021) 🇸🇬
+  - 🎓 Master's in Computer Science, National University of Singapore (2015) 🇸🇬
+  - 🎓 Bachelor's in Management Science and Engineering, Central University of Finance & Economics (2011), Beijing 🇨🇳
+
+---
+
 ## 💡 Looking For  
 
-I’m looking to connect with professionals who have **solid expertise in building payment platforms (microservices)** 🏗️ and share a passion for **scalable, resilient architectures** 🚀.  
+I'm looking to connect with professionals who have **solid expertise in building payment platforms (microservices)** 🏗️ and share a passion for **scalable, resilient architectures** 🚀.  
 
 ---
 
@@ -146,24 +154,6 @@ I’m looking to connect with professionals who have **solid expertise in buildi
 - 📖 **[Technical Portfolio](https://github.com/Aibier/Aibier/blob/main/portfolio.pdf)** - Detailed technical projects and achievements
 - 🏦 **[Bank Integration Guide](https://drive.google.com/file/d/19g5SY3wFXJeZKx0nm6leUdoQecCtkABr/view?usp=sharing)** - Comprehensive guide to payment system integrations
 
----
-
-## 📊 GitHub Stats
-
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Aibier&show_icons=true&theme=dark&hide_border=true&count_private=true" alt="GitHub Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Aibier&layout=compact&theme=dark&hide_border=true" alt="Top Languages" />
-</div>
-
-<div align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=Aibier&theme=dark&hide_border=true" alt="GitHub Streak" />
-</div>
-
----
-
-## 🏗️ Payment Architecture
-
-<img width="1306" height="720" alt="Screenshot 2025-09-22 at 11 11 12 AM" src="https://github.com/user-attachments/assets/4488e2d0-e5cf-455e-a024-f393776ea4f7" />
 ---
 
 <div align="center">
