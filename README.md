@@ -2,20 +2,22 @@
 
 Engineering Leader & hands-on Payment Architect with **10+ years** building mission-critical payment platforms at high-growth fintechs.
 
-Currently leading **20+ engineers** at **[YouTrip](https://www.you.co)** 🇸🇬, delivering multi-currency wallets and card payment platforms processing **Billions of Dollars annually**, serving millions of users across APAC.
+Currently **Senior Engineering Manager, Crypto Platform & Infrastructure** at **[Triple A](https://triple-a.io)** 🇸🇬, leading engineering teams building crypto payment infrastructure and platforms.
 
 ---
 
 ### 🔹 What I Do
 
 ✅ Architect and scale payment infrastructure (card issuing 💳, FX 💱, cross-border payments 🌏, ledger design 📒)  
-✅ Lead engineering teams delivering multi-currency wallets and business account platforms  
+✅ Build stablecoin and crypto payout infrastructure 🪙, enabling programmable money movement across fiat and crypto rails  
+✅ Lead engineering teams delivering multi-currency wallets, crypto platforms, and business account platforms  
 ✅ Design microservices architectures enabling seamless market expansion  
 ✅ Manage all major payment integrations and third-party technical communications with **50+ banks and payment providers** globally 🏦  
 
 ### 🔹 Track Record
 
-✅ 🇸🇬 **YouTrip**: Leading MCA and YouBiz engineering teams, owning core card capabilities including 3DS, top-ups, and business accounts.  
+✅ 🇸🇬 **Triple A**: Senior Engineering Manager, Crypto Platform & Infrastructure, leading engineering teams building crypto payment infrastructure and platforms.  
+✅ 🇸🇬 **YouTrip**: Led 20+ engineers across MCA and YouBiz; launched Family Card, owned core card capabilities (3DS, top-ups, business accounts), designed the Engineering Career Ladder, and delivered multi-currency wallets and card platforms processing Billions of Dollars annually.  
 ✅ 🇸🇬 **Aspire**: Architected payment infrastructure (building multi-currency business accounts) across Singapore 🇸🇬, Hong Kong 🇭🇰, and Australia 🇦🇺; designed microservices-based payment service architecture integrating with business virtual account, payout and FX providers.  
 ✅ 🌐 **Thunes**: Integrated 15+ payment partners including Alipay, DBS, Grab, RippleNet, MoneyGram.  
 
@@ -29,7 +31,7 @@ Currently leading **20+ engineers** at **[YouTrip](https://www.you.co)** 🇸�
 
 ---
 
-I’m passionate about building developer-friendly, resilient payment platforms and driving engineering excellence. I thrive at the intersection of strategy, architecture, and execution — turning complex payments challenges into scalable solutions.
+I’m passionate about building developer-friendly, resilient payment platforms and driving engineering excellence. I thrive at the intersection of strategy, architecture, and execution, turning complex payments challenges into scalable solutions.
 
 Always open to connecting with fellow fintech builders and payment enthusiasts 🤝
 
@@ -82,7 +84,7 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
 **Highlight Projects:**  
 - 🌍 **Cross‑Border Payment Platform** → Unified FX and payout microservices handling $1B+ monthly volume  
 - 🏦 **Core Banking System** → Architected high‑availability modules for account management & reconciliation  
-- 🔓 **Taymas‑Bank** → *(Planned open‑source release by end of 2026 — contains all major bank integration samples, stay tuned 👀)*  
+- 🔓 **Taymas‑Bank** → *(Planned open‑source release by end of 2026, contains all major bank integration samples, stay tuned 👀)*  
 
 ---
 
@@ -112,7 +114,7 @@ Over the last **7 years**, I’ve successfully integrated with **50+ banks and p
 - 🏦 **Core Banking System**  
   - **Managed architecture design** for high‑availability modules handling **account management and reconciliation**.  
 
-- 🔓 **Taymas‑Bank** *(Open‑sourcing planned by end of 2026 — stay tuned 👀)*  
+- 🔓 **Taymas‑Bank** *(Open‑sourcing planned by end of 2026, stay tuned 👀)*  
 
 ---
 

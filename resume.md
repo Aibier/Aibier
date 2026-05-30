@@ -5,9 +5,11 @@ Singapore • aibiertony@gmail.com • +65 ****-8060 • [linkedin.com/in/tony00
 
 ---
 
-Results-driven **Software Engineering Manager & de facto Software Architect** with 10+ years of experience building scalable payment infrastructure, crypto integrations, and fintech innovation. Led 50+ bank, PSP, and stablecoin integrations, delivering resilient money-movement systems that power cross-border transactions across APAC, EMEA, and the US.
+Results-driven **Engineering Manager & hands-on Payment Architect** with 10+ years building mission-critical payment and crypto infrastructure at high-growth fintechs. Led 50+ bank, PSP, and stablecoin integrations delivering resilient money-movement systems across APAC, EMEA, and the US.
 
-With proven expertise in **event-driven microservices, secure wallet integrations, and cloud-native scaling**, I bridge deep technical architecture with business strategy — enabling high-performance platforms for the next wave of financial innovation. Passionate about mentoring engineering teams, shaping technical culture, and driving adoption of blockchain and stablecoin-powered solutions.
+Deep expertise in **stablecoin and crypto payout/payin infrastructure**, designing and operating systems that bridge fiat and crypto rails, enabling programmable settlement, crypto-to-fiat conversion, and blockchain-powered payment flows at scale. Proven track record architecting **event-driven microservices**, card issuing platforms, multi-currency wallets, and cross-border FX infrastructure handling billions of dollars annually.
+
+Passionate about building high-performance engineering teams, shaping technical culture, and driving the next wave of crypto-native financial infrastructure.
 
 ---
 
@@ -47,22 +49,38 @@ Central University of Finance and Economics, Beijing, China
 
 ## Work Experience
 
-### Senior Engineering Manager | Dec 2025 – Present
+### Senior Engineering Manager, Crypto Platform & Infrastructure | Jun 2026 – Present
+**Triple A** · Singapore
+
+**Crypto Platform & Infrastructure**
+- Lead engineering teams designing and scaling crypto payment infrastructure, enabling crypto-to-fiat settlement and high-availability blockchain-powered payment processing.
+- Define technical roadmap and architecture strategy for the Crypto Platform, aligning engineering execution with business growth and compliance requirements.
+
+**Leadership & Team Development**
+- Drive hiring, team scaling, and engineering culture across crypto infrastructure teams.
+- Mentor and develop engineers through structured career frameworks, performance management, and hands-on technical leadership.
+- Partner with Product, Compliance, and Business stakeholders to deliver secure, compliant crypto payment solutions at global scale.
+- Translate complex crypto infrastructure architecture into clear business impact for executive and cross-functional stakeholders.
+
+---
+
+### Senior Engineering Manager | Dec 2025 – Jun 2026
 **YouTrip** · Singapore
 
 **Singapore Engineering (YouTrip)**
-- Lead Singapore Engineering Teams delivering multi-currency wallets (MCA) and scalable card payment platforms.
-- Build and operate payment infrastructure supporting multi-currency wallets and card payment ecosystems.
-- Own core card capabilities including card issuing, top-ups, 3DS authentication flows, and exception handling.
+- Led Singapore Engineering teams delivering multi-currency wallets (MCA) and scalable card payment platforms processing billions of dollars annually.
+- Owned core card capabilities including card issuing, top-ups, 3DS authentication flows, and exception handling.
+- Launched Family Card end-to-end (a shared card product with per-member spend controls), driving cross-functional alignment across engineering, product, compliance, and operations.
 
 **YouBiz (Business Accounts)**
-- Lead YouBiz Engineering Teams building and operating business accounts and financial infrastructure for SMEs.
+- Led YouBiz Engineering teams building and operating business accounts and financial infrastructure for SMEs.
 
 **Platform & Leadership**
-- Lead multiple teams of 20+ engineers across YouTrip and YouBiz product lines.
-- Drive strategic initiatives to enhance platform scalability, resilience, and cross-border payment capabilities.
-- Improve system scalability and resiliency through microservice evolution, asynchronous processing, idempotency, and retry mechanisms.
-- Partner with Product, Risk, Compliance, and Operations to deliver secure, compliant, and scalable financial features.
+- Led 20+ engineers across YouTrip and YouBiz product lines, driving platform scalability, resilience, and cross-border payment capabilities.
+- Designed and rolled out an Engineering Career Ladder framework, establishing clear growth paths, levelling criteria, and promotion processes across all engineering roles.
+- Introduced engineering-wide sprint burndown visibility with standardized dashboards, improving delivery predictability and execution transparency across all teams.
+- Improved system scalability and resiliency through microservice evolution, asynchronous processing, idempotency, and retry mechanisms.
+- Partnered with Product, Risk, Compliance, and Operations to deliver secure, compliant, and scalable financial features.
 
 ---
 
