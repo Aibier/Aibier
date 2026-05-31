@@ -16,7 +16,7 @@ Currently **Senior Engineering Manager, Crypto Platform & Infrastructure** at **
 
 ### 🔹 Track Record
 
-✅ 🇸🇬 **Triple A**: Senior Engineering Manager, Crypto Platform & Infrastructure, leading engineering teams building crypto payment infrastructure and platforms.  
+✅ 🇸🇬 **Triple A**: Head of Crypto/Stablecoin Platform & Infrastructure, leading engineering teams building crypto payment infrastructure and platforms.  
 ✅ 🇸🇬 **YouTrip**: Led 20+ engineers across MCA and YouBiz; launched Family Card, owned core card capabilities (3DS, top-ups, business accounts), designed the Engineering Career Ladder, and delivered multi-currency wallets and card platforms processing Billions of Dollars annually.  
 ✅ 🇸🇬 **Aspire**: Architected payment infrastructure (building multi-currency business accounts) across Singapore 🇸🇬, Hong Kong 🇭🇰, and Australia 🇦🇺; designed microservices-based payment service architecture integrating with business virtual account, payout and FX providers.  
 ✅ 🌐 **Thunes**: Integrated 15+ payment partners including Alipay, DBS, Grab, RippleNet, MoneyGram.  
