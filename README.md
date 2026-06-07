@@ -60,7 +60,7 @@ Currently **Senior Engineering Manager, Crypto Platform & Infrastructure** at **
 
 ## 🚀 Impactful Projects & Bank Integrations  
 
-Over the last **7 years**, I've successfully integrated with **50+ banks and payment providers** across APAC, EMEA, and the US, enabling multi‑currency, real‑time, and cross‑border money movement.  
+Over the last **9 years**, I've successfully integrated with **50+ banks and payment providers** across APAC, EMEA, and the US, enabling multi‑currency, real‑time, and cross‑border money movement.  
 
 **Key Integrations:**  
 - 🌐 **Global Payment Networks**: Alipay, WeChat Pay, PayPal, Stripe, MoneyGram, RippleNet  
