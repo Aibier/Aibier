@@ -135,7 +135,7 @@ Alipay · WeChat Pay · GrabPay · PayPal · Stripe · MoneyGram · RippleNet
 Wise · CurrencyCloud · Thunes
 
 **Custody & crypto infrastructure**  
-Fireblocks · BitGo · Copper · Circle · Coinbase Prime · QuickNode · Alchemy · Infura · and other chain / stablecoin rails
+Fireblocks · BitGo · Copper · Circle · Coinbase Prime · QuickNode
 
 
 ---
