@@ -127,10 +127,8 @@ flowchart TB
     GW["core-service API<br/>Authentication · Rate Limiting"]
   end
 
-  subgraph CS["Core Services"]
-    CORE["Core Service<br/>Transaction Processing · Ledger"]
-    PAY["Payout Service<br/>Bank · Crypto · FX Integration"]
-  end
+  CORE["Core Service<br/>Transaction Processing · Ledger"]
+  PAY["Payout Service<br/>Bank · Crypto · FX Integration"]
 
   subgraph EXT["External Systems"]
     direction LR
