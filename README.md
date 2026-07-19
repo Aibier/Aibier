@@ -18,7 +18,7 @@
 
 <br/>
 
-I design and lead **payment platforms** that move money safely at scale — **ledgers**, multi-currency accounts, **FX**, card rails, **payouts**, and **crypto / stablecoin** infrastructure.
+I design and lead **payment platforms** that move money safely at scale: **ledgers**, multi-currency accounts, **FX**, card rails, **payouts**, and **crypto / stablecoin** infrastructure.
 
 Most of my career has been inside regulated fintech: building systems that banks, PSPs, and merchants depend on every day, and leading the teams that keep them reliable.
 
@@ -32,28 +32,28 @@ Ledger design · multi-currency wallets · cross-border payouts · card issuing 
 
 ### Where I've been
 
-**[Triple A](https://triple-a.io)** — leading crypto platform and infrastructure engineering for stablecoin payment rails.
+**[Triple A](https://triple-a.io)**: leading crypto platform and infrastructure engineering for stablecoin payment rails.
 
-**YouTrip** — led 20+ engineers across MCA and YouBiz; Family Card, 3DS, top-ups, business accounts; multi-currency wallets and cards processing at large scale; engineering career ladder.
+**YouTrip**: led 20+ engineers across MCA and YouBiz; Family Card, 3DS, top-ups, business accounts; multi-currency wallets and cards processing at large scale; engineering career ladder.
 
-**Aspire** — payment architecture for multi-currency business accounts across Singapore, Hong Kong, and Australia; virtual accounts, payout, and FX provider integrations.
+**Aspire**: payment architecture for multi-currency business accounts across Singapore, Hong Kong, and Australia; virtual accounts, payout, and FX provider integrations.
 
-**Thunes** — tech lead for GrabPay and TikTok influencer pay; high-volume APAC corridors; 15+ partners including Alipay, DBS, RippleNet, and MoneyGram.
+**Thunes**: tech lead for GrabPay and TikTok influencer pay; high-volume APAC corridors; 15+ partners including Alipay, DBS, RippleNet, and MoneyGram.
 
 ---
 
 ### Selected work
 
-**Payout service**  
+**Payout service** 
 Multi-currency global payouts with 40+ providers (JPM, DBS, Wise, HDFC, PayPal, Stripe, RippleNet, and more). Event-driven, high throughput, bank-facing reliability.
 
-**Payment acceptance & webhooks**  
+**Payment acceptance & webhooks** 
 Real-time provider acknowledgement path, fraud workflows under MAS / HKMA expectations, horizontal scale on AWS, Kafka, Redis, and Datadog.
 
-**High-volume processors**  
+**High-volume processors** 
 Grab and TikTok payment integrations supporting millions of daily transactions, with routing and settlement logic tuned for regional rails.
 
-**Cross-border platforms**  
+**Cross-border platforms** 
 Unified FX and payout services, plus core account and reconciliation modules for high-availability money systems.
 
 ---
@@ -79,46 +79,46 @@ Unified FX and payout services, plus core account and reconciliation modules for
 
 ### Architecture I care about
 
-Core owns money truth. Rails stay in a payout service. Fiat and crypto share one account and ledger model. One codebase, multi-region ready — expand markets by configuration, not by forking the platform.
+Core owns money truth. Rails stay in a payout service. Fiat and crypto share one account and ledger model. One codebase, multi-region ready: expand markets by configuration, not by forking the platform.
 
 ```mermaid
 flowchart TB
-  subgraph clients[" "]
-    direction LR
-    A[Web / Checkout]
-    B[Mobile]
-    C[Merchant API]
-  end
+ subgraph clients[" "]
+ direction LR
+ A[Web / Checkout]
+ B[Mobile]
+ C[Merchant API]
+ end
 
-  API[Core API · auth · rate limits]
-  CORE[Core Service · ledger · transactions]
-  PAY[Payout Service · bank · crypto · FX]
+ API[Core API · auth · rate limits]
+ CORE[Core Service · ledger · transactions]
+ PAY[Payout Service · bank · crypto · FX]
 
-  subgraph external[" "]
-    direction LR
-    D[Banks / PSPs]
-    E[Crypto custody]
-    F[AML vendors]
-  end
+ subgraph external[" "]
+ direction LR
+ D[Banks / PSPs]
+ E[Crypto custody]
+ F[AML vendors]
+ end
 
-  subgraph data[" "]
-    direction LR
-    G[(CockroachDB)]
-    H[(MySQL)]
-    I[(Redis)]
-  end
+ subgraph data[" "]
+ direction LR
+ G[(CockroachDB)]
+ H[(MySQL)]
+ I[(Redis)]
+ end
 
-  A --> API
-  B --> API
-  C --> API
-  API --> CORE
-  CORE --> PAY
-  CORE --> F
-  PAY --> D
-  PAY --> E
-  API --> G
-  API --> I
-  PAY --> H
+ A --> API
+ B --> API
+ C --> API
+ API --> CORE
+ CORE --> PAY
+ CORE --> F
+ PAY --> D
+ PAY --> E
+ API --> G
+ API --> I
+ PAY --> H
 ```
 
 ---
@@ -131,10 +131,10 @@ Alipay · WeChat Pay · PayPal · Stripe · MoneyGram · RippleNet · GrabPay ·
 
 ### Education
 
-Management Essentials — Harvard Business School (2025)  
-M.Tech Software Engineering — National University of Singapore (2021)  
-M.Comp Computer Science — National University of Singapore (2015)  
-B.S. Management Science & Engineering — Central University of Finance & Economics (2011)
+Management Essentials: Harvard Business School (2025) 
+M.Tech Software Engineering: National University of Singapore (2021) 
+M.Comp Computer Science: National University of Singapore (2015) 
+B.S. Management Science & Engineering: Central University of Finance & Economics (2011)
 
 ---
 
