@@ -14,12 +14,8 @@
 [![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:tony.aizize@you.co)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Aibier)
 [![Profile views](https://komarev.com/ghpvc/?username=Aibier&label=Profile%20views&color=0e75b6&style=for-the-badge)](https://github.com/Aibier)
-
-<br/>
-
 ![Followers](https://img.shields.io/github/followers/Aibier?style=for-the-badge&logo=github&label=Followers&color=24292f)
 ![Stars](https://img.shields.io/github/stars/Aibier?affiliations=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&style=for-the-badge&logo=github&label=Stars&color=24292f)
-![Repos](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Fusers%2FAibier&query=public_repos&label=Repos&style=for-the-badge&logo=github&color=24292f)
 
 </div>
 
