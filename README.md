@@ -1,270 +1,157 @@
 <div align="center">
-  
-  # Hi, I'm Tony 👋
-  
-  **Engineering Leader · Payment Architect · Crypto Platform**  
-  Singapore 🇸🇬 · Ex-YouTrip · Ex-Aspire · Ex-Thunes
-  
-  [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/tony007/)
-  [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Aibier)
-  [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:tony.aizize@you.co)
-  [![Profile views](https://komarev.com/ghpvc/?username=Aibier&color=0e75b6&style=for-the-badge&label=Profile+views)](https://github.com/Aibier)
-  
-  <br/>
-  
-  **Senior Engineering Manager, Crypto Platform & Infrastructure** at [Triple A](https://triple-a.io)
-  
-  *10+ years building ledgers, multi-currency wallets, cross-border payouts, and crypto payment rails at scale.*
-  
-</div>
 
----
+# Tony
 
-## 🔭 About me
+### Payment Architect · Engineering Leader · Crypto Platform
 
-- 🏗️ Architect **payment platforms** end-to-end: **ledger**, **MCA**, **FX**, **card**, **payout**, **on/off-ramp**
-- 🪙 Build **stablecoin & crypto** infrastructure alongside **fiat** rails
-- 🏦 Shipped integrations with **50+ banks & payment providers** (APAC · EMEA · US)
-- 👥 Led **20+ engineers** (YouTrip); career ladders, delivery, and platform strategy
-- 🌏 Multi-market systems (SG · HK · AU) with expansion and compliance in mind
+**Senior Engineering Manager** · Crypto Platform & Infrastructure · [Triple A](https://triple-a.io) 🇸🇬
 
-```text
-Focus:  payments · crypto · distributed systems · engineering leadership
-Open:   connecting with fintech builders & payment platform peers
-```
+*Ex-YouTrip · Ex-Aspire · Ex-Thunes · 10+ years shipping money systems*
 
----
+<br/>
 
-## 📌 Snapshot
-
-<div align="center">
-
-| | |
-|:--:|:--:|
-| **10+** years payments | **50+** bank / PSP integrations |
-| **20+** engineers led | **SG · HK · AU** multi-market platforms |
-| Go · Kafka · CRDB · AWS | Ledger · MCA · Crypto · FX · Card |
-
-<sub>Most production work lives in private fintech repos — public contribution counters understate day-to-day shipping.</sub>
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/tony007/)
+[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:tony.aizize@you.co)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Aibier)
 
 </div>
 
+<br/>
+
+I design and lead **payment platforms** that move money safely at scale — **ledgers**, multi-currency accounts, **FX**, card rails, **payouts**, and **crypto / stablecoin** infrastructure.
+
+Most of my career has been inside regulated fintech: building systems that banks, PSPs, and merchants depend on every day, and leading the teams that keep them reliable.
+
 ---
 
-## 🛠️ Tech stack
+### What I work on
 
-**Languages**
+Ledger design · multi-currency wallets · cross-border payouts · card issuing · on-ramp / off-ramp · webhooks · reconciliation · AML-aware flows · multi-region expansion
+
+---
+
+### Where I've been
+
+**[Triple A](https://triple-a.io)** — leading crypto platform and infrastructure engineering for stablecoin payment rails.
+
+**YouTrip** — led 20+ engineers across MCA and YouBiz; Family Card, 3DS, top-ups, business accounts; multi-currency wallets and cards processing at large scale; engineering career ladder.
+
+**Aspire** — payment architecture for multi-currency business accounts across Singapore, Hong Kong, and Australia; virtual accounts, payout, and FX provider integrations.
+
+**Thunes** — tech lead for GrabPay and TikTok influencer pay; high-volume APAC corridors; 15+ partners including Alipay, DBS, RippleNet, and MoneyGram.
+
+---
+
+### Selected work
+
+**Payout service**  
+Multi-currency global payouts with 40+ providers (JPM, DBS, Wise, HDFC, PayPal, Stripe, RippleNet, and more). Event-driven, high throughput, bank-facing reliability.
+
+**Payment acceptance & webhooks**  
+Real-time provider acknowledgement path, fraud workflows under MAS / HKMA expectations, horizontal scale on AWS, Kafka, Redis, and Datadog.
+
+**High-volume processors**  
+Grab and TikTok payment integrations supporting millions of daily transactions, with routing and settlement logic tuned for regional rails.
+
+**Cross-border platforms**  
+Unified FX and payout services, plus core account and reconciliation modules for high-availability money systems.
+
+---
+
+### Stack I use most
 
 ![Go](https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
-
-**Data & messaging**
-
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![CockroachDB](https://img.shields.io/badge/CockroachDB-6933FF?style=flat-square&logo=cockroachlabs&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
 ![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
-![Kafka](https://img.shields.io/badge/Apache%20Kafka-231F20?style=flat-square&logo=apachekafka&logoColor=white)
-
-**Cloud & platform**
-
+![Kafka](https://img.shields.io/badge/Kafka-231F20?style=flat-square&logo=apachekafka&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazonwebservices&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
 ![gRPC](https://img.shields.io/badge/gRPC-244c5a?style=flat-square&logo=grpc&logoColor=white)
-
-**Observability**
-
 ![Datadog](https://img.shields.io/badge/Datadog-632CA6?style=flat-square&logo=datadog&logoColor=white)
-![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white)
-![Grafana](https://img.shields.io/badge/Grafana-F46800?style=flat-square&logo=grafana&logoColor=white)
-
-**Domain**
-
-`Ledger` · `Double-entry` · `FX` · `Card issuing` · `Payouts` · `Webhooks` · `AML` · `Reconciliation` · `PCI-DSS`
 
 ---
 
-## 💼 Experience
+### Architecture I care about
 
-| | Role | Focus |
-|:--|:--|:--|
-| **[Triple A](https://triple-a.io)** 🇸🇬 | Senior EM · Crypto Platform & Infra | Stablecoin / crypto payment platform & infrastructure |
-| **YouTrip** 🇸🇬 | Engineering leadership · MCA / YouBiz | Multi-currency wallets & cards · Family Card · 3DS · career ladder · **20+** engineers |
-| **Aspire** 🇸🇬 | Payment architecture | MCA · VA · payout · FX · multi-market **SG / HK / AU** |
-| **Thunes** 🌐 | Tech lead · integrations | GrabPay · TikTok pay · **2M+** daily tx · Alipay · DBS · RippleNet · MoneyGram · **15+** partners |
-
----
-
-## 🏆 Featured work
-
-<table>
-<tr>
-<td width="50%" valign="top">
-
-### Payout Service
-Multi-currency global payouts microservice.  
-**Providers:** JPM · DBS · Wise · HDFC · PayPal · Stripe · RippleNet · **40+** others.  
-Event-driven processing, high throughput, bank-grade reliability.
-
-</td>
-<td width="50%" valign="top">
-
-### Acceptance / Webhooks
-Real-time payment acceptance with **100%** ack path to providers.  
-Fraud workflows aligned with **MAS** / **HKMA**.  
-AWS · Kafka · Redis · Datadog at scale.
-
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
-
-### Grab & TikTok Pay (Thunes)
-Tech lead for high-volume APAC corridors.  
-**2M+** daily transactions · custom routing & settlement.  
-~**50%** faster integration timelines.
-
-</td>
-<td width="50%" valign="top">
-
-### Cross-border & Core Banking
-Unified FX + payout platforms (**$50M+** / mo class systems).  
-HA account management & reconciliation modules.  
-**Taymas-Bank** samples — open source planned **2026**.
-
-</td>
-</tr>
-</table>
-
----
-
-## 🏦 Integrations (sample)
-
-**Networks & wallets**  
-Alipay · WeChat Pay · PayPal · Stripe · MoneyGram · RippleNet · GrabPay
-
-**FX & cross-border**  
-Wise · CurrencyCloud · Thunes
-
-**Banks**  
-J.P. Morgan · DBS · Citi · Standard Chartered · HDFC · SeaBank · CZBank · Maybank · KBank · SCB · 9Pay · Bank Alfalah · …
-
----
-
-## 🏗️ Payment architecture
-
-### Platform shape
+Core owns money truth. Rails stay in a payout service. Fiat and crypto share one account and ledger model. One codebase, multi-region ready — expand markets by configuration, not by forking the platform.
 
 ```mermaid
 flowchart TB
-  subgraph CL["Client Layer"]
+  subgraph clients[" "]
     direction LR
-    WEB["Web / Checkout"]
-    MOB["Mobile App"]
-    API_C["Merchant API Client"]
+    A[Web / Checkout]
+    B[Mobile]
+    C[Merchant API]
   end
 
-  subgraph AL["API Layer"]
-    GW["core-service API<br/>Authentication · Rate Limiting"]
-  end
+  API[Core API · auth · rate limits]
+  CORE[Core Service · ledger · transactions]
+  PAY[Payout Service · bank · crypto · FX]
 
-  CORE["Core Service<br/>Transaction Processing · Ledger"]
-  PAY["Payout Service<br/>Bank · Crypto · FX Integration"]
-
-  subgraph EXT["External Systems"]
+  subgraph external[" "]
     direction LR
-    BANK["Traditional Banks / PSPs"]
-    CRY["Crypto Custody"]
-    AMLV["AML / Chain Analytics"]
+    D[Banks / PSPs]
+    E[Crypto custody]
+    F[AML vendors]
   end
 
-  subgraph DL["Data Layer"]
+  subgraph data[" "]
     direction LR
-    CRDB[("CockroachDB<br/>Core")]
-    MY[("MySQL<br/>Payout")]
-    RD[("Redis<br/>Cache · Idempotency")]
+    G[(CockroachDB)]
+    H[(MySQL)]
+    I[(Redis)]
   end
 
-  WEB --> GW
-  MOB --> GW
-  API_C --> GW
-  GW --> CORE
+  A --> API
+  B --> API
+  C --> API
+  API --> CORE
   CORE --> PAY
-  CORE --> AMLV
-  PAY --> BANK
-  PAY --> CRY
-  GW --> CRDB
-  GW --> RD
-  PAY --> MY
+  CORE --> F
+  PAY --> D
+  PAY --> E
+  API --> G
+  API --> I
+  PAY --> H
 ```
-
-### Core service internals
-
-```mermaid
-flowchart LR
-  subgraph Core["core-service"]
-    API["API"]
-    TXN["Txn engine"]
-    LED["Ledger"]
-    ACC["Account / MCA"]
-    ONB["Onboarding"]
-    CMP["Compliance client"]
-    API --> TXN
-    TXN --> LED
-    TXN --> ACC
-    TXN --> ONB
-    TXN --> CMP
-  end
-  CRDB[("CockroachDB")]
-  PAY["Payout Service<br/>Bank · Crypto · FX Integration"]
-  MY[("MySQL")]
-  API --> CRDB
-  LED --> CRDB
-  TXN --> PAY
-  PAY --> MY
-```
-
-### On-ramp & off-ramp
-
-| | On-ramp (collection) | Off-ramp (payout) |
-|---|---|---|
-| API | `POST /v1/payments` | `POST /v1/payouts` → confirm |
-| Ledger | Pending credit → post after AML + finality | Debit hold first → post / void |
-| AML | Async hold | Sync, fail-closed |
-| Rails | Deposit / VA via payout-service | Dispatch via payout-service |
-| Assets | Fiat **and** crypto MCA | Fiat **and** crypto destinations |
 
 ---
 
-## 🎓 Education
+### Banks & providers I've integrated with
 
-| Year | Credential |
-|:--|:--|
-| 2025 | Management Essentials — **Harvard Business School** |
-| 2021 | M.Tech Software Engineering — **NUS** 🇸🇬 (big data · scalable systems) |
-| 2015 | M.Comp Computer Science — **NUS** 🇸🇬 |
-| 2011 | B.S. Management Science & Engineering — **CUFE** 🇨🇳 |
+Alipay · WeChat Pay · PayPal · Stripe · MoneyGram · RippleNet · GrabPay · Wise · CurrencyCloud · J.P. Morgan · DBS · Citi · Standard Chartered · HDFC · SeaBank · Maybank · KBank · SCB · CZBank · 9Pay · and many more across APAC, EMEA, and the US.
 
 ---
 
-## 📄 Resources
+### Education
 
-- 📋 [Resume / CV](https://github.com/Aibier/Aibier/blob/main/resume.pdf)
-- 📖 [Technical portfolio](https://github.com/Aibier/Aibier/blob/main/portfolio.pdf)
-- 🏦 [Bank integration guide](https://drive.google.com/file/d/19g5SY3wFXJeZKx0nm6leUdoQecCtkABr/view?usp=sharing)
+Management Essentials — Harvard Business School (2025)  
+M.Tech Software Engineering — National University of Singapore (2021)  
+M.Comp Computer Science — National University of Singapore (2015)  
+B.S. Management Science & Engineering — Central University of Finance & Economics (2011)
 
 ---
 
 <div align="center">
-  
-  ### Let's build resilient payment platforms 🤝
-  
-  [LinkedIn](https://www.linkedin.com/in/tony007/) · [Email](mailto:tony.aizize@you.co) · [GitHub](https://github.com/Aibier)
-  
-  <sub>Always open to chat with fintech engineers, payment architects, and platform leaders.</sub>
-  
+
+### Resources
+
+[Resume](https://github.com/Aibier/Aibier/blob/main/resume.pdf)
+&nbsp;·&nbsp;
+[Portfolio](https://github.com/Aibier/Aibier/blob/main/portfolio.pdf)
+&nbsp;·&nbsp;
+[Bank integration guide](https://drive.google.com/file/d/19g5SY3wFXJeZKx0nm6leUdoQecCtkABr/view?usp=sharing)
+
+<br/>
+
+Always happy to connect with people building serious payment systems.
+
+[LinkedIn](https://www.linkedin.com/in/tony007/) · [Email](mailto:tony.aizize@you.co) · [GitHub](https://github.com/Aibier)
+
 </div>
