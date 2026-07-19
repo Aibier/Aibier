@@ -6,7 +6,7 @@
 
 **Senior Engineering Manager** · Crypto Platform & Infrastructure · [Triple A](https://triple-a.io) 🇸🇬
 
-*Ex-YouTrip · Ex-Aspire · Ex-Thunes · 10+ years shipping money systems*
+*Ex-[YouTrip](https://www.you.co) · Ex-[Aspire](https://aspireapp.com) · Ex-[Thunes](https://www.thunes.com) · 10+ years shipping money systems*
 
 <br/>
 
@@ -53,11 +53,11 @@ Ledger design · multi-currency wallets · cross-border payouts · card issuing 
 
 **[Triple A](https://triple-a.io)**: leading crypto platform and infrastructure engineering for stablecoin payment rails.
 
-**YouTrip**: led 20+ engineers across MCA and YouBiz; Family Card, 3DS, top-ups, business accounts; multi-currency wallets and cards processing at large scale; engineering career ladder.
+**[YouTrip](https://www.you.co)**: led 20+ engineers across MCA and YouBiz; Family Card, 3DS, top-ups, business accounts; multi-currency wallets and cards processing at large scale; engineering career ladder.
 
-**Aspire**: payment architecture for multi-currency business accounts across Singapore, Hong Kong, and Australia; core money movement flows (pay-in, payout, transfer), virtual accounts, and FX provider integrations.
+**[Aspire](https://aspireapp.com)**: payment architecture for multi-currency business accounts across Singapore, Hong Kong, and Australia; core money movement flows (pay-in, payout, transfer), virtual accounts, and FX provider integrations.
 
-**Thunes**: tech lead for GrabPay and TikTok influencer pay; high-volume APAC corridors; 15+ partners including Alipay, DBS, RippleNet, and MoneyGram.
+**[Thunes](https://www.thunes.com)**: tech lead for GrabPay and TikTok influencer pay; high-volume APAC corridors; 15+ partners including Alipay, DBS, RippleNet, and MoneyGram.
 
 ---
 
