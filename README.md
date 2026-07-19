@@ -115,48 +115,57 @@ Over the last **9 years**, I've successfully integrated with **50+ banks and pay
 ```mermaid
 flowchart TB
   subgraph Clients["Client layer"]
-    WEB[Web / Hosted checkout]
-    MOB[Mobile]
-    MER[Merchant API]
+    WEB["Web / Hosted checkout"]
+    MOB["Mobile"]
+    MER["Merchant API"]
   end
 
-  subgraph Core["core-service · ONE codebase · modular monolith"]
-    API["API · auth · rate limits<br/>/v1/payments · /v1/payouts · /v1/transfers"]
-    WRK["Worker · outbox · saga · expiry"]
-    ONB[Onboarding · business|person · home_region]
-    ACC[Account · MCA fiat + crypto]
-    TXN[Txn engine · payment | payout | transfer]
-    LED[Ledger · PostJournalEntry only]
-    CMP[Compliance client · AML vendors]
+  subgraph Core["core-service - ONE codebase - modular monolith"]
+    API["API auth + rate limits<br/>payments / payouts / transfers"]
+    WRK["Worker outbox saga expiry"]
+    ONB["Onboarding business or person + home_region"]
+    ACC["Account MCA fiat + crypto"]
+    TXN["Txn engine payment payout transfer"]
+    LED["Ledger PostJournalEntry only"]
+    CMP["Compliance AML client"]
   end
 
-  CRDB[("CockroachDB · home_region · SG first")]
-  RD[(Redis)]
-  DOCS[(Regional doc storage)]
+  CRDB[("CockroachDB home_region SG first")]
+  RD[("Redis")]
+  DOCS[("Regional doc storage")]
 
-  subgraph Payout["payout-service · ONE codebase"]
-    PS[Adapters · Dispatch · FX · deposit ingestion]
-    MY[(MySQL)]
+  subgraph Payout["payout-service - ONE codebase"]
+    PS["Adapters Dispatch FX deposits"]
+    MY[("MySQL")]
   end
 
   subgraph Ext["External"]
-    BANK[Banks / PSPs / rails]
-    CUST[Crypto custody]
-    AMLV[AML / chain analytics]
+    BANK["Banks PSPs rails"]
+    CUST["Crypto custody"]
+    AMLV["AML chain analytics"]
   end
 
-  WEB & MOB & MER --> API
-  API --> ONB & ACC & TXN
-  TXN --> LED & CMP
-  API --> CRDB & RD
+  WEB --> API
+  MOB --> API
+  MER --> API
+  API --> ONB
+  API --> ACC
+  API --> TXN
+  TXN --> LED
+  TXN --> CMP
+  API --> CRDB
+  API --> RD
   WRK --> CRDB
   ONB --> DOCS
-  TXN <-->|gRPC| PS
+  TXN --> PS
+  PS --> TXN
   PS --> MY
-  PS --> BANK & CUST
+  PS --> BANK
+  PS --> CUST
   CMP --> AMLV
-  CUST & BANK -->|webhooks| PS
-  PS -->|status / payin| WRK
+  CUST --> PS
+  BANK --> PS
+  PS --> WRK
 ```
 
 ### On-ramp + off-ramp (same Core)
