@@ -105,14 +105,9 @@ Over the last **9 years**, I've successfully integrated with **50+ banks and pay
 
 ---
 
-## 🏗️ Payment Architecture (current)
-
-> **Source of truth for this diagram:** single-codebase modular Core + Payout rails · multi-region by design (Singapore first) · on-ramp **and** off-ramp on one engine.  
-> Not the old multi-service sketch (no DynamoDB-as-payout-store, no required API Gateway / separate AML service at launch).
+## 🏗️ Payment Architecture
 
 ### Platform shape
-
-*High-level layers (service boundaries + data ownership).*
 
 ```mermaid
 flowchart TB
