@@ -19,7 +19,7 @@
 
 ![Followers](https://img.shields.io/github/followers/Aibier?style=for-the-badge&logo=github&label=Followers&color=24292f)
 ![Stars](https://img.shields.io/github/stars/Aibier?affiliations=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&style=for-the-badge&logo=github&label=Stars&color=24292f)
-![Repos](https://img.shields.io/github/public-repos/Aibier?style=for-the-badge&logo=github&label=Repos&color=24292f)
+![Repos](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Fusers%2FAibier&query=public_repos&label=Repos&style=for-the-badge&logo=github&color=24292f)
 
 </div>
 
