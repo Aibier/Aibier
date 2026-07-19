@@ -112,7 +112,7 @@ Over the last **9 years**, I've successfully integrated with **50+ banks and pay
 
 ### Platform shape
 
-*Layered view (same style as classic payment architecture diagrams): clients → API → Core → rails → external systems + data.*
+*High-level layers (service boundaries + data ownership).*
 
 ```mermaid
 flowchart TB
@@ -124,25 +124,12 @@ flowchart TB
   end
 
   subgraph AL["API Layer"]
-    GW["core-service API<br/>Authentication · Rate Limiting · Public REST"]
+    GW["core-service API<br/>Authentication · Rate Limiting"]
   end
 
-  subgraph CS["Core Service — modular monolith · ONE codebase"]
-    direction TB
-    CORE["Transaction Engine<br/>payments · payouts · transfers"]
-    direction LR
-    ONB["Onboarding<br/>business / person · home_region"]
-    ACC["Account / MCA<br/>fiat + crypto"]
-    LED["Ledger<br/>PostJournalEntry only"]
-    CMP["Compliance<br/>AML client"]
-    CORE --- ONB
-    CORE --- ACC
-    CORE --- LED
-    CORE --- CMP
-  end
-
-  subgraph PS["Payout Service — rails · ONE codebase"]
-    PAY["Bank · Crypto · FX adapters<br/>Dispatch · deposit ingestion"]
+  subgraph CS["Core Services"]
+    CORE["Core Service<br/>Transaction Processing · Ledger"]
+    PAY["Payout Service<br/>Bank · Crypto · FX Integration"]
   end
 
   subgraph EXT["External Systems"]
@@ -154,9 +141,9 @@ flowchart TB
 
   subgraph DL["Data Layer"]
     direction LR
-    CRDB[("CockroachDB<br/>Core · home_region · SG first")]
-    MY[("MySQL<br/>Payout operations")]
-    RD[("Redis<br/>Idempotency · cache")]
+    CRDB[("CockroachDB<br/>Core")]
+    MY[("MySQL<br/>Payout")]
+    RD[("Redis<br/>Cache · Idempotency")]
   end
 
   WEB --> GW
@@ -165,14 +152,40 @@ flowchart TB
   GW --> CORE
   CORE --> PAY
   PAY --> CORE
-  CMP --> AMLV
+  CORE --> AMLV
   PAY --> BANK
   PAY --> CRY
   CRY --> PAY
   BANK --> PAY
   GW --> CRDB
-  PAY --> MY
   GW --> RD
+  PAY --> MY
+```
+
+### Core Service internals (modular monolith)
+
+*Same deployable · ONE codebase · packages as future service seams. Singapore first · multi-region ready.*
+
+```mermaid
+flowchart LR
+  subgraph Core["core-service"]
+    API["API"]
+    TXN["Txn engine"]
+    LED["Ledger"]
+    ACC["Account / MCA"]
+    ONB["Onboarding"]
+    CMP["Compliance client"]
+    API --> TXN
+    TXN --> LED
+    TXN --> ACC
+    TXN --> ONB
+    TXN --> CMP
+  end
+  CRDB[("CockroachDB")]
+  PAY["Payout Service"]
+  API --> CRDB
+  LED --> CRDB
+  TXN --> PAY
 ```
 
 ### On-ramp + off-ramp (same Core)
