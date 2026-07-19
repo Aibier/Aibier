@@ -151,12 +151,9 @@ flowchart TB
   API_C --> GW
   GW --> CORE
   CORE --> PAY
-  PAY --> CORE
   CORE --> AMLV
   PAY --> BANK
   PAY --> CRY
-  CRY --> PAY
-  BANK --> PAY
   GW --> CRDB
   GW --> RD
   PAY --> MY
@@ -182,10 +179,12 @@ flowchart LR
     TXN --> CMP
   end
   CRDB[("CockroachDB")]
-  PAY["Payout Service"]
+  PAY["Payout Service<br/>Bank · Crypto · FX Integration"]
+  MY[("MySQL")]
   API --> CRDB
   LED --> CRDB
   TXN --> PAY
+  PAY --> MY
 ```
 
 ### On-ramp + off-ramp (same Core)
