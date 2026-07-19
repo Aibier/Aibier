@@ -142,10 +142,10 @@ Fireblocks · BitGo · Copper · Circle · Coinbase Prime · QuickNode
 
 ### Education
 
-- **Harvard Business School** - United States · Management Essentials (2025)
-- **National University of Singapore** - Singapore · M.Tech Software Engineering (2021)
-- **National University of Singapore** - Singapore · M.Comp Computer Science (2015)
-- **Central University of Finance & Economics** - China · B.S. Management Science & Engineering (2011)
+- **Harvard Business School**: United States · Management Essentials (2025)
+- **National University of Singapore**: Singapore · M.Tech Software Engineering (2021)
+- **National University of Singapore**: Singapore · M.Comp Computer Science (2015)
+- **Central University of Finance & Economics**: China · B.S. Management Science & Engineering (2011)
 
 ---
 
