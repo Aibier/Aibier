@@ -135,12 +135,10 @@ flowchart TB
     ACC["Account / MCA<br/>fiat + crypto"]
     LED["Ledger<br/>PostJournalEntry only"]
     CMP["Compliance<br/>AML client"]
-    WRK["Worker<br/>outbox · saga · expiry"]
     CORE --- ONB
     CORE --- ACC
     CORE --- LED
     CORE --- CMP
-    CORE --- WRK
   end
 
   subgraph PS["Payout Service — rails · ONE codebase"]
@@ -159,7 +157,6 @@ flowchart TB
     CRDB[("CockroachDB<br/>Core · home_region · SG first")]
     MY[("MySQL<br/>Payout operations")]
     RD[("Redis<br/>Idempotency · cache")]
-    DOCS[("Object storage<br/>PII docs per region")]
   end
 
   WEB --> GW
@@ -173,11 +170,9 @@ flowchart TB
   PAY --> CRY
   CRY --> PAY
   BANK --> PAY
-  CORE --> CRDB
-  WRK --> CRDB
+  GW --> CRDB
   PAY --> MY
   GW --> RD
-  ONB --> DOCS
 ```
 
 ### On-ramp + off-ramp (same Core)
