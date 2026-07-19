@@ -13,6 +13,13 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/tony007/)
 [![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:tony.aizize@you.co)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Aibier)
+[![Profile views](https://komarev.com/ghpvc/?username=Aibier&label=Profile%20views&color=0e75b6&style=for-the-badge)](https://github.com/Aibier)
+
+<br/>
+
+![Followers](https://img.shields.io/github/followers/Aibier?style=for-the-badge&logo=github&label=Followers&color=24292f)
+![Stars](https://img.shields.io/github/stars/Aibier?affiliations=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&style=for-the-badge&logo=github&label=Stars&color=24292f)
+![Repos](https://img.shields.io/github/public-repos/Aibier?style=for-the-badge&logo=github&label=Repos&color=24292f)
 
 </div>
 
@@ -21,6 +28,18 @@
 I design and lead **payment platforms** that move money safely at scale: **ledgers**, multi-currency accounts, **FX**, card rails, **payouts**, and **crypto / stablecoin** infrastructure.
 
 Most of my career has been inside regulated fintech: building systems that banks, PSPs, and merchants depend on every day, and leading the teams that keep them reliable.
+
+
+### GitHub activity
+
+<div align="center">
+
+![GitHub streak](https://streak-stats.demolab.com/?user=Aibier&theme=default&hide_border=true&date_format=M%20j%5B%2C%20Y%5D)
+
+![Activity graph](https://github-readme-activity-graph.vercel.app/graph?username=Aibier&bg_color=ffffff&color=0969da&line=0969da&point=0550ae&area=true&hide_border=true&area_color=ddf4ff)
+
+</div>
+
 
 ---
 
