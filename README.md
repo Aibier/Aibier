@@ -123,9 +123,20 @@ flowchart TB
 
 ---
 
-### Banks & providers I've integrated with
+### Integrations
 
-Alipay · WeChat Pay · PayPal · Stripe · MoneyGram · RippleNet · GrabPay · Wise · CurrencyCloud · J.P. Morgan · DBS · OCBC · SCB (Singapore) · Citi · Standard Chartered · HDFC · SeaBank · Maybank · KBank · CZBank · 9Pay · and many more across APAC, EMEA, and the US.
+**Banks**  
+J.P. Morgan · DBS · OCBC · Standard Chartered · Citi · HDFC · SeaBank · Maybank · KBank · Siam Commercial Bank · CZBank · Bank Alfalah · 9Pay · and other regional banks across APAC, EMEA, and the US
+
+**Mobile wallets & payment networks**  
+Alipay · WeChat Pay · GrabPay · PayPal · Stripe · MoneyGram · RippleNet
+
+**FX & cross-border**  
+Wise · CurrencyCloud · Thunes
+
+**Custody & crypto infrastructure**  
+Fireblocks · BitGo · Copper · Circle · Coinbase Prime · QuickNode · Alchemy · Infura · and other chain / stablecoin rails
+
 
 ---
 
