@@ -112,60 +112,72 @@ Over the last **9 years**, I've successfully integrated with **50+ banks and pay
 
 ### Platform shape
 
+*Layered view (same style as classic payment architecture diagrams): clients → API → Core → rails → external systems + data.*
+
 ```mermaid
 flowchart TB
-  subgraph Clients["Client layer"]
-    WEB["Web / Hosted checkout"]
-    MOB["Mobile"]
-    MER["Merchant API"]
+  subgraph CL["Client Layer"]
+    direction LR
+    WEB["Web / Checkout"]
+    MOB["Mobile App"]
+    API_C["Merchant API Client"]
   end
 
-  subgraph Core["core-service - ONE codebase - modular monolith"]
-    API["API auth + rate limits<br/>payments / payouts / transfers"]
-    WRK["Worker outbox saga expiry"]
-    ONB["Onboarding business or person + home_region"]
-    ACC["Account MCA fiat + crypto"]
-    TXN["Txn engine payment payout transfer"]
-    LED["Ledger PostJournalEntry only"]
-    CMP["Compliance AML client"]
+  subgraph AL["API Layer"]
+    GW["core-service API<br/>Authentication · Rate Limiting · Public REST"]
   end
 
-  CRDB[("CockroachDB home_region SG first")]
-  RD[("Redis")]
-  DOCS[("Regional doc storage")]
-
-  subgraph Payout["payout-service - ONE codebase"]
-    PS["Adapters Dispatch FX deposits"]
-    MY[("MySQL")]
+  subgraph CS["Core Service — modular monolith · ONE codebase"]
+    direction TB
+    CORE["Transaction Engine<br/>payments · payouts · transfers"]
+    direction LR
+    ONB["Onboarding<br/>business / person · home_region"]
+    ACC["Account / MCA<br/>fiat + crypto"]
+    LED["Ledger<br/>PostJournalEntry only"]
+    CMP["Compliance<br/>AML client"]
+    WRK["Worker<br/>outbox · saga · expiry"]
+    CORE --- ONB
+    CORE --- ACC
+    CORE --- LED
+    CORE --- CMP
+    CORE --- WRK
   end
 
-  subgraph Ext["External"]
-    BANK["Banks PSPs rails"]
-    CUST["Crypto custody"]
-    AMLV["AML chain analytics"]
+  subgraph PS["Payout Service — rails · ONE codebase"]
+    PAY["Bank · Crypto · FX adapters<br/>Dispatch · deposit ingestion"]
   end
 
-  WEB --> API
-  MOB --> API
-  MER --> API
-  API --> ONB
-  API --> ACC
-  API --> TXN
-  TXN --> LED
-  TXN --> CMP
-  API --> CRDB
-  API --> RD
-  WRK --> CRDB
-  ONB --> DOCS
-  TXN --> PS
-  PS --> TXN
-  PS --> MY
-  PS --> BANK
-  PS --> CUST
+  subgraph EXT["External Systems"]
+    direction LR
+    BANK["Traditional Banks / PSPs"]
+    CRY["Crypto Custody"]
+    AMLV["AML / Chain Analytics"]
+  end
+
+  subgraph DL["Data Layer"]
+    direction LR
+    CRDB[("CockroachDB<br/>Core · home_region · SG first")]
+    MY[("MySQL<br/>Payout operations")]
+    RD[("Redis<br/>Idempotency · cache")]
+    DOCS[("Object storage<br/>PII docs per region")]
+  end
+
+  WEB --> GW
+  MOB --> GW
+  API_C --> GW
+  GW --> CORE
+  CORE --> PAY
+  PAY --> CORE
   CMP --> AMLV
-  CUST --> PS
-  BANK --> PS
-  PS --> WRK
+  PAY --> BANK
+  PAY --> CRY
+  CRY --> PAY
+  BANK --> PAY
+  CORE --> CRDB
+  WRK --> CRDB
+  PAY --> MY
+  GW --> RD
+  ONB --> DOCS
 ```
 
 ### On-ramp + off-ramp (same Core)
