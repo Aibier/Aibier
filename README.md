@@ -125,7 +125,7 @@ flowchart TB
 
 ### Banks & providers I've integrated with
 
-Alipay · WeChat Pay · PayPal · Stripe · MoneyGram · RippleNet · GrabPay · Wise · CurrencyCloud · J.P. Morgan · DBS · Citi · Standard Chartered · HDFC · SeaBank · Maybank · KBank · SCB · CZBank · 9Pay · and many more across APAC, EMEA, and the US.
+Alipay · WeChat Pay · PayPal · Stripe · MoneyGram · RippleNet · GrabPay · Wise · CurrencyCloud · J.P. Morgan · DBS · OCBC · SCB (Singapore) · Citi · Standard Chartered · HDFC · SeaBank · Maybank · KBank · CZBank · 9Pay · and many more across APAC, EMEA, and the US.
 
 ---
 
