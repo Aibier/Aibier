@@ -35,15 +35,18 @@ Open:   connecting with fintech builders & payment platform peers
 
 ---
 
-## 📊 GitHub stats
+## 📌 Snapshot
 
 <div align="center">
-  <img height="160" src="https://github-readme-stats.vercel.app/api?username=Aibier&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="GitHub stats" />
-  <img height="160" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Aibier&layout=compact&theme=tokyonight&hide_border=true" alt="Top languages" />
-</div>
 
-<div align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=Aibier&theme=tokyonight&hide_border=true" alt="GitHub streak" />
+| | |
+|:--:|:--:|
+| **10+** years payments | **50+** bank / PSP integrations |
+| **20+** engineers led | **SG · HK · AU** multi-market platforms |
+| Go · Kafka · CRDB · AWS | Ledger · MCA · Crypto · FX · Card |
+
+<sub>Most production work lives in private fintech repos — public contribution counters understate day-to-day shipping.</sub>
+
 </div>
 
 ---
