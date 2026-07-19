@@ -105,12 +105,80 @@ Over the last **9 years**, I've successfully integrated with **50+ banks and pay
 
 ---
 
-## 🏗️ Payment Architecture
+## 🏗️ Payment Architecture (current)
 
-<img width="1306" height="720" alt="Screenshot 2025-09-22 at 11 11 12 AM" src="https://github.com/user-attachments/assets/4488e2d0-e5cf-455e-a024-f393776ea4f7" />
+> **Source of truth for this diagram:** single-codebase modular Core + Payout rails · multi-region by design (Singapore first) · on-ramp **and** off-ramp on one engine.  
+> Not the old multi-service sketch (no DynamoDB-as-payout-store, no required API Gateway / separate AML service at launch).
+
+### Platform shape
+
+```mermaid
+flowchart TB
+  subgraph Clients["Client layer"]
+    WEB[Web / Hosted checkout]
+    MOB[Mobile]
+    MER[Merchant API]
+  end
+
+  subgraph Core["core-service · ONE codebase · modular monolith"]
+    API["API · auth · rate limits<br/>/v1/payments · /v1/payouts · /v1/transfers"]
+    WRK["Worker · outbox · saga · expiry"]
+    ONB[Onboarding · business|person · home_region]
+    ACC[Account · MCA fiat + crypto]
+    TXN[Txn engine · payment | payout | transfer]
+    LED[Ledger · PostJournalEntry only]
+    CMP[Compliance client · AML vendors]
+  end
+
+  CRDB[("CockroachDB · home_region · SG first")]
+  RD[(Redis)]
+  DOCS[(Regional doc storage)]
+
+  subgraph Payout["payout-service · ONE codebase"]
+    PS[Adapters · Dispatch · FX · deposit ingestion]
+    MY[(MySQL)]
+  end
+
+  subgraph Ext["External"]
+    BANK[Banks / PSPs / rails]
+    CUST[Crypto custody]
+    AMLV[AML / chain analytics]
+  end
+
+  WEB & MOB & MER --> API
+  API --> ONB & ACC & TXN
+  TXN --> LED & CMP
+  API --> CRDB & RD
+  WRK --> CRDB
+  ONB --> DOCS
+  TXN <-->|gRPC| PS
+  PS --> MY
+  PS --> BANK & CUST
+  CMP --> AMLV
+  CUST & BANK -->|webhooks| PS
+  PS -->|status / payin| WRK
+```
+
+### On-ramp + off-ramp (same Core)
+
+| | **On-ramp (collection)** | **Off-ramp (payout)** |
+|---|---|---|
+| API | `POST /v1/payments` | `POST /v1/payouts` → confirm |
+| Ledger | Pending credit → post after AML + finality | Debit hold first → post/void |
+| AML | Async hold | Sync fail-closed |
+| Rails | Deposit / VA via payout-service | Dispatch via payout-service |
+| Assets | Fiat **and** crypto MCA | Fiat **and** crypto destinations |
+
+Internal **transfers** are ledger-only (no rails). One ledger, one MCA model, one `home_region` tree.
+
+### Non-negotiables baked into this architecture
+
+- **Single source code** — expand US/EU by config + capacity, not regional forks  
+- **Multi-region ready** from day one (`home_region`); **launch Singapore**  
+- **Core owns money truth** (CockroachDB); Payout Service never holds customer balances  
+- **Modular monolith** for Account / Onboarding / compliance client at launch; extract on trigger  
 
 ---
-
 ## 🎓 Background & Education
 
 I'm passionate about building developer-friendly, resilient payment platforms and driving engineering excellence. I thrive at the intersection of strategy, architecture, and execution, turning complex payments challenges into scalable solutions.
