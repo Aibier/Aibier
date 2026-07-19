@@ -55,7 +55,7 @@ Ledger design · multi-currency wallets · cross-border payouts · card issuing 
 
 **YouTrip**: led 20+ engineers across MCA and YouBiz; Family Card, 3DS, top-ups, business accounts; multi-currency wallets and cards processing at large scale; engineering career ladder.
 
-**Aspire**: payment architecture for multi-currency business accounts across Singapore, Hong Kong, and Australia; virtual accounts, payout, and FX provider integrations.
+**Aspire**: payment architecture for multi-currency business accounts across Singapore, Hong Kong, and Australia; core money movement flows (pay-in, payout, transfer), virtual accounts, and FX provider integrations.
 
 **Thunes**: tech lead for GrabPay and TikTok influencer pay; high-volume APAC corridors; 15+ partners including Alipay, DBS, RippleNet, and MoneyGram.
 
