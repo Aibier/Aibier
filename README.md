@@ -11,7 +11,7 @@
 <br/>
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/tony007/)
-[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:tony.aizize@you.co)
+[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:tony.aizize@no.co)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Aibier)
 [![Profile views](https://komarev.com/ghpvc/?username=Aibier&label=Profile%20views&color=0e75b6&style=for-the-badge)](https://github.com/Aibier)
 ![Followers](https://img.shields.io/github/followers/Aibier?style=for-the-badge&logo=github&label=Followers&color=24292f)
