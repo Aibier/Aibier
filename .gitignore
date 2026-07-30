@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (not used; ignore if present locally)
+node_modules/
+package-lock.json
+dist/
