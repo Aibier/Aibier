@@ -4,7 +4,7 @@
 
 ### Payment Architect · Engineering Leader · Crypto Platform
 
-**Senior Engineering Manager** · Crypto Platform & Infrastructure 🇸🇬
+**Triple A: Senior Engineering Manager** · Crypto Platform & Infrastructure 🇸🇬
 
 *Ex-[YouTrip](https://www.you.co) · Ex-[Aspire](https://aspireapp.com) · Ex-[Thunes](https://www.thunes.com) · 10+ years shipping money systems*
 
