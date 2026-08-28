@@ -102,7 +102,7 @@ flowchart TB
  C[Merchant API]
  end
 
- API[Core API · auth · rate limits]
+ API[AWS API Gateway]
  CORE[Core Service · ledger · transactions]
  PAY[Payout Service · bank · crypto · FX]
 
@@ -126,10 +126,10 @@ flowchart TB
  API --> CORE
  CORE --> PAY
  CORE --> F
+ CORE --> G
+ CORE --> I
  PAY --> D
  PAY --> E
- API --> G
- API --> I
  PAY --> H
 ```
 
