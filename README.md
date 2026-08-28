@@ -29,7 +29,7 @@ Most of my career has been inside regulated fintech: building systems that banks
 
 <div align="center">
 
-![GitHub streak](https://streak-stats.demolab.com/?user=Aibier&theme=default&hide_border=true&date_format=M%20j%5B%2C%20Y%5D)
+![GitHub streak](./profile/streak.svg)
 
 ![Activity graph](https://github-readme-activity-graph.vercel.app/graph?username=Aibier&bg_color=ffffff&color=0969da&line=0969da&point=0550ae&area=true&hide_border=true&area_color=ddf4ff)
 
